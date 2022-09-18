@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>opp_server</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="opp-library">
+      <HintPath>..\..\opp-library\opp-library\bin\Debug\netcoreapp3.1\opp-library.dll</HintPath>
+    </Reference>
+    <Reference Include="opp_lib">
+      <HintPath>..\..\opp_lib\opp_lib\bin\Debug\opp_lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
