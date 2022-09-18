@@ -4,7 +4,7 @@ Kuriamas projektas – 2D futbolo žaidimas. Žaidimas skirtas ne vienam žaidė
 
 * Žemėlapio objektai: aikštė, vartai, kamuolys, kliūtys.
 * Žaidėjai: vartininkas, gynėjas, puolėjas.
-* Lygiai: įprasta aikštė, paplūdimio futbolo aikštelė, aiktšė kosmose (nėra trinties tarp kamuolio ir dangos).
+* Lygiai: įprasta aikštė, paplūdimio futbolo aikštelė, aikštė kosmose (nėra trinties tarp kamuolio ir dangos).
 * Komunikacija: SignalR.
 * Backend: C#.
 * Grafika: Windows.Forms.
