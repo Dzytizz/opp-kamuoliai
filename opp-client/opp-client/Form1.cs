@@ -19,6 +19,8 @@ namespace opp_client
         private string playerID;
         public PlayerInput playerInput;
 
+        Dictionary<string, PictureBox> mpObjects; 
+
         public Form1()
         {
             InitializeComponent();
@@ -34,6 +36,7 @@ namespace opp_client
 
             playerID = "";
             playerInput = new PlayerInput();
+            mpObjects = new Dictionary<string, PictureBox>();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -43,6 +46,8 @@ namespace opp_client
             //    var newMessage = $"{user}: {message}";
             //    messagesList.Items.Add(newMessage);
             //});
+
+
 
             connection.On<string>("JoinGameResponse", (response) =>
             {
@@ -59,6 +64,21 @@ namespace opp_client
             {
                 GameState gameStateResponse = JsonConvert.DeserializeObject<GameState>(response);
                 logList.Items.Add(gameStateResponse.ToString());
+
+                foreach (KeyValuePair<string, Player> entry in gameStateResponse.Players)
+                {
+                    if (!mpObjects.ContainsKey(entry.Key))
+                    {
+                        PictureBox pb = new PictureBox();
+                        pb.Width = 50;
+                        pb.Height = 50;
+                        pb.BackColor = Color.Aquamarine;
+                        mpObjects.Add(entry.Key, pb);
+                        this.Controls.Add(pb);
+                    }
+      
+                    mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
+                }
             });
 
             try
@@ -86,6 +106,18 @@ namespace opp_client
                 {
                     logList.Items.Add(ex.Message);
                 }
+            }
+
+            if (!playerID.Equals(""))
+            {
+                try
+                {
+                    await connection.InvokeAsync("GameStateRequest");
+                }
+                catch (Exception ex)
+                {
+                    logList.Items.Add(ex.Message);
+                } 
             }
         }
 
