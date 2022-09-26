@@ -1,7 +1,7 @@
 ﻿
 namespace opp_client
 {
-    partial class Form1
+    partial class ClientWindow
     {
         /// <summary>
         /// Required designer variable.

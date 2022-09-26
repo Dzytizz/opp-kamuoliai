@@ -13,7 +13,7 @@ using opp_lib;
 
 namespace opp_client
 {
-    public partial class Form1 : Form
+    public partial class ClientWindow : Form
     {
         private HubConnection connection;
         private string playerID;
@@ -21,7 +21,7 @@ namespace opp_client
 
         Dictionary<string, PictureBox> mpObjects; 
 
-        public Form1()
+        public ClientWindow()
         {
             InitializeComponent();
             connection = new HubConnectionBuilder()
