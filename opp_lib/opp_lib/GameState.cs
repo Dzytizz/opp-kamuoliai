@@ -3,31 +3,98 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace opp_lib
 {
     public class GameState
     {
-        public Dictionary<string, Player> Players;
+        //public ConcurrentBag<Team> Teams;
+        public List<Team> Teams;
+        //public Dictionary<string, Player> Players;
 
         public GameState()
         {
-            Players = new Dictionary<string, Player>();
+            //Teams = new ConcurrentBag<Team>();
+            Teams = new List<Team>();
+            //Players = new Dictionary<string, Player>();
+        }
+
+        public GameState Copy()
+        {
+            List<Team> newTeams = new List<Team>();
+            for (int i = 0; i < Teams.Count; i++)
+            {
+                newTeams.Add(new Team());
+                newTeams[i].Color = Teams[i].Color;
+
+                foreach(KeyValuePair<string,Player> entry in Teams[i].Players.ToList())
+                {
+                    newTeams[i].Players.Add(entry.Key, entry.Value);
+                }
+                
+            }
+            GameState newGameState = new GameState();
+            newGameState.Teams = newTeams;
+            return newGameState;
+        }
+
+        public Player TryFindPlayer (string playerID)
+        {
+            Player player = null;
+            for (int i = Teams.Count-1; i >= 0; i--)
+            {
+                if (Teams[i].Players.TryGetValue(playerID, out player))
+                {
+                    return player;
+                }
+            }
+
+            return null;
+        }
+
+        public int TryFindPlayerTeamIndex(string playerID)
+        {
+            for (int i = Teams.Count-1; i >= 0 ; i--)
+            {
+                if (Teams[i].Players.ContainsKey(playerID))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         public void UpdatePlayer(string playerID, PlayerInput playerInput)
         {
-            Players[playerID].UpdatePosition(playerInput);
+            Player player = TryFindPlayer(playerID);
+            if(player != null) 
+            {
+                player.UpdatePosition(playerInput);
+            }
         }
 
         public override string ToString()
         {
             string s = "";
-            foreach (KeyValuePair<string, Player> entry in Players)
+            foreach (Team team in Teams)
             {
-                s += entry.Value.ToString() + "\n";
+                foreach (KeyValuePair<string, Player> entry in team.Players)
+                {
+                    s += entry.Value.ToString() + "|";
+                }
             }
             return s;
+
+            //return "PLZ NEED IMPLEMENT";
+
+
+            //string s = "";
+            //foreach (KeyValuePair<string, Player> entry in Players)
+            //{
+            //    s += entry.Value.ToString() + "\n";
+            //}
+            //return s;
         }
     }
 }

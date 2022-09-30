@@ -15,18 +15,18 @@ namespace opp_client
 {
     public partial class ClientWindow : Form
     {
-        private HubConnection connection;
-        private string playerID;
+        public HubConnection connection;
+        public string playerID;
         public PlayerInput playerInput;
 
         Dictionary<string, PictureBox> mpObjects; 
 
-        public ClientWindow()
+        public ClientWindow(HubConnection connection, string playerID)
         {
             InitializeComponent();
-            connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:44330/gamehub")
-                .Build();
+
+            this.connection = connection;
+            this.playerID = playerID;
 
             connection.Closed += async (error) =>
             {
@@ -39,7 +39,7 @@ namespace opp_client
             mpObjects = new Dictionary<string, PictureBox>();
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
+        private void ClientWindow_Load(object sender, EventArgs e)
         {
             //connection.On<string, string>("ReceiveMessage", (user, message) =>
             //{
@@ -47,53 +47,50 @@ namespace opp_client
             //    messagesList.Items.Add(newMessage);
             //});
 
-
-
-            connection.On<string>("JoinGameResponse", (response) =>
-            {
-                playerID = response;
-                playerIDLabel.Text = playerID;
-            });
+            //connection.On<string>("JoinGameResponse", (response) =>
+            //{
+            //    playerID = response;
+            //    playerIDLabel.Text = playerID;
+            //});
 
             connection.On<string>("UpdatePlayerPositionResponse", (response) =>
             {
-                logList.Items.Add(response);
+                //logList.Items.Add(response);
             });
 
             connection.On<string>("GameStateResponse", (response) =>
             {
                 GameState gameStateResponse = JsonConvert.DeserializeObject<GameState>(response);
-                logList.Items.Add(gameStateResponse.ToString());
+                //logList.Items.Add(gameStateResponse.ToString());
 
-                foreach (KeyValuePair<string, Player> entry in gameStateResponse.Players)
+                for (int i = gameStateResponse.Teams.Count - 1; i >= 0; i--)
                 {
-                    if (!mpObjects.ContainsKey(entry.Key))
+                    Team team = gameStateResponse.Teams[i];
+                    
+                    foreach(KeyValuePair<string, Player> entry in team.Players)
                     {
-                        PictureBox pb = new PictureBox();
-                        pb.Width = 50;
-                        pb.Height = 50;
-                        pb.BackColor = Color.Aquamarine;
-                        mpObjects.Add(entry.Key, pb);
-                        this.Controls.Add(pb);
+                        if (!mpObjects.ContainsKey(entry.Key))
+                        {
+                            PictureBox pb = new PictureBox();
+                            pb.Width = 50;
+                            pb.Height = 50;
+                            pb.BackColor = Color.FromName(team.Color);
+                            mpObjects.Add(entry.Key, pb);
+                            this.Controls.Add(pb);
+                        }
+
+                        mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
                     }
-      
-                    mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
+
+                    for (int j = gameStateResponse.Teams[i].Players.Count - 1; j >= 0; j--)
+                    {
+                       
+                    }
                 }
             });
-
-            try
-            {
-                await connection.StartAsync();
-                logList.Items.Add("Connection started");
-                await connection.InvokeAsync("JoinGameRequest");
-            }
-            catch (Exception ex)
-            {
-                logList.Items.Add(ex.Message);
-            }
         }
 
-        private async void mainGameLoop_Tick(object sender, EventArgs e)
+        private async void MainGameLoop_Tick(object sender, EventArgs e)
         {
             if (playerInput.IsActive() && !playerID.Equals(""))
             {

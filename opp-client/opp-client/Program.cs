@@ -16,7 +16,8 @@ namespace opp_client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ClientWindow());
+            Application.Run(new TeamSelect());
+            //Application.Run(new ClientWindow());
         }
     }
 }

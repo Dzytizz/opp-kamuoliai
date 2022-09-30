@@ -13,7 +13,6 @@ namespace opp_lib
         public float XPosition { get; set; }
         public float YPosition { get; set; }
         public float Speed = 5;
-        //public int Team { get; set; }
 
         public Player(string name, float xPosition, float yPosition)
         {
@@ -30,40 +29,40 @@ namespace opp_lib
                 YPosition -= Speed / 1.414f;
             }
 
-            if (playerInput.Down && playerInput.Right)
+            else if (playerInput.Down && playerInput.Right)
             {
                 XPosition += Speed / 1.414f;
                 YPosition += Speed / 1.414f;
             }
 
-            if (playerInput.Down && playerInput.Left)
+            else if (playerInput.Down && playerInput.Left)
             {
                 XPosition -= Speed / 1.414f;
                 YPosition += Speed / 1.414f;
             }
 
-            if (playerInput.Up && playerInput.Left)
+            else if (playerInput.Up && playerInput.Left)
             {
                 XPosition -= Speed / 1.414f;
                 YPosition -= Speed / 1.414f;
             }
 
-            if (playerInput.Up)
+            else if (playerInput.Up)
             {
                 YPosition -= Speed;
             }
 
-            if (playerInput.Right)
+            else if (playerInput.Right)
             {
                 XPosition += Speed;
             }
 
-            if (playerInput.Down)
+            else if (playerInput.Down)
             {
                 YPosition += Speed;
             }
 
-            if (playerInput.Left)
+            else if (playerInput.Left)
             {
                 XPosition -= Speed;
             }

@@ -32,7 +32,7 @@ namespace opp_client
             this.components = new System.ComponentModel.Container();
             this.playerIDLabel = new System.Windows.Forms.Label();
             this.logList = new System.Windows.Forms.ListBox();
-            this.mainGameLoop = new System.Windows.Forms.Timer(this.components);
+            this.MainGameLoop = new System.Windows.Forms.Timer(this.components);
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -49,17 +49,17 @@ namespace opp_client
             // 
             this.logList.FormattingEnabled = true;
             this.logList.ItemHeight = 16;
-            this.logList.Location = new System.Drawing.Point(20, 363);
+            this.logList.Location = new System.Drawing.Point(19, 330);
             this.logList.Margin = new System.Windows.Forms.Padding(4);
             this.logList.Name = "logList";
-            this.logList.Size = new System.Drawing.Size(1029, 132);
+            this.logList.Size = new System.Drawing.Size(1070, 132);
             this.logList.TabIndex = 1;
             // 
-            // mainGameLoop
+            // MainGameLoop
             // 
-            this.mainGameLoop.Enabled = true;
-            this.mainGameLoop.Interval = 20;
-            this.mainGameLoop.Tick += new System.EventHandler(this.mainGameLoop_Tick);
+            this.MainGameLoop.Enabled = true;
+            this.MainGameLoop.Interval = 20;
+            this.MainGameLoop.Tick += new System.EventHandler(this.MainGameLoop_Tick);
             // 
             // button2
             // 
@@ -72,19 +72,19 @@ namespace opp_client
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form1
+            // ClientWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(1112, 554);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.logList);
             this.Controls.Add(this.playerIDLabel);
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Name = "ClientWindow";
+            this.Text = "ClientWindow";
+            this.Load += new System.EventHandler(this.ClientWindow_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyIsUp);
             this.ResumeLayout(false);
@@ -96,7 +96,7 @@ namespace opp_client
 
         private System.Windows.Forms.Label playerIDLabel;
         private System.Windows.Forms.ListBox logList;
-        private System.Windows.Forms.Timer mainGameLoop;
+        private System.Windows.Forms.Timer MainGameLoop;
         private System.Windows.Forms.Button button2;
     }
 }
