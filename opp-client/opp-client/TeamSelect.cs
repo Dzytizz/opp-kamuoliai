@@ -112,7 +112,7 @@ namespace opp_client
         {
             try
             {
-                await connection.InvokeAsync("JoinTeamRequst", 1, "Blue", playerID);
+                await connection.InvokeAsync("JoinTeamRequest", 1, "Blue", playerID);
             }
             catch (Exception ex)
             {

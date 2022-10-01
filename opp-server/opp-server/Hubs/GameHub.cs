@@ -14,7 +14,7 @@ namespace opp_server.Hubs
 
         public GameHub(GameState gameState)
         {
-            GameState = gameState;
+            GameState = GameState.GetInstance();
         }
 
         //public async Task JoinGameRequest()

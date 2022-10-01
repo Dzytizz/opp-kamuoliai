@@ -20,7 +20,8 @@ namespace opp_server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(opt => new GameState());
+            //services.AddSingleton(opt => GameState());
+            services.AddSingleton(opt => GameState.GetInstance());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

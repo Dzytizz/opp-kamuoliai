@@ -9,11 +9,17 @@ namespace opp_lib
 {
     public class GameState
     {
+        private static GameState Instance = new GameState();
         public List<Team> Teams;
 
-        public GameState()
+        private GameState()
         {
             Teams = new List<Team>();
+        }
+
+        public static GameState GetInstance()
+        {
+            return Instance;
         }
 
         public GameState Copy()
