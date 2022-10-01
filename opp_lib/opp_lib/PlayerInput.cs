@@ -33,5 +33,10 @@ namespace opp_lib
         {
             return (Up || Down || Left || Right);
         }
+
+        public void Clear()
+        {
+            Up = false; Down = false; Left = false; Right = false;
+        }
     }
 }

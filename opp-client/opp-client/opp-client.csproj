@@ -163,6 +163,9 @@
     <Compile Include="ClientWindow.Designer.cs">
       <DependentUpon>ClientWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="OvalPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeamSelect.cs">

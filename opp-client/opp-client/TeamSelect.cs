@@ -29,23 +29,49 @@ namespace opp_client
                 await connection.StartAsync();
             };
 
-            listBox.Items.Add("Teams are empty.");
             playerID = "";
         }
 
         private async void TeamSelect_Load(object sender, EventArgs e)
         {
-
-            connection.On<string>("JoinTeamResponse", (response) =>
+            connection.On<string, string>("JoinTeamResponse", (newPlayerID, teamColor) =>
             {
-                playerID = response.Split('|')[0];
-                listBox.Items.Add($"Player with ID {playerID} added to a {response.Split('|')[1]} team");
+                playerID = newPlayerID;
+                listBox.Items.Add($"Player with ID {newPlayerID} added to a {teamColor} team");
+            });
+
+            // This response happens when a player joins/leaves a team
+            connection.On<int, int>("ReceivePlayerCount", (teamIndex, count) =>
+            {
+                int current = -1;
+                listBox.Items.Add(teamIndex);
+                listBox.Items.Add(count);
+                switch (teamIndex)
+                {
+                    case 0:
+                        current = Int32.Parse(teamACounter.Text);
+                        teamACounter.Text = (current + count).ToString();
+                        break;
+                    case 1:
+                        current = Int32.Parse(teamBCounter.Text);
+                        teamBCounter.Text = (current + count).ToString();
+                        break;
+                }
+   
+            });
+
+            // This response happens when a new client is launched (to update its team counters)
+            connection.On<int, int>("PlayerCountResponse", (teamACount, teamBCount) =>
+            {
+                teamACounter.Text = teamACount.ToString();
+                teamBCounter.Text = teamBCount.ToString();
             });
 
             try
             {
                 await connection.StartAsync();
                 listBox.Items.Add("Connection started");
+                await connection.InvokeAsync("PlayerCountRequest");
             }
             catch (Exception ex)
             {
@@ -53,8 +79,7 @@ namespace opp_client
             }
         }
 
-        // start
-        private void button3_Click(object sender, EventArgs e)
+        private void StartGameButton_Click(object sender, EventArgs e)
         {
             if (!playerID.Equals(""))
             {
@@ -69,11 +94,11 @@ namespace opp_client
         }
 
         // join a
-        private async void button1_Click(object sender, EventArgs e)
+        private async void JoinTeamAButton_Click(object sender, EventArgs e)
         {
             try
             {
-                await connection.InvokeAsync("JoinTeam", 0, "Red", playerID);
+                await connection.InvokeAsync("JoinTeamRequest", 0, "Red", playerID);
             }
             catch (Exception ex)
             {
@@ -83,11 +108,11 @@ namespace opp_client
         }
 
         // join b
-        private async void button2_Click(object sender, EventArgs e)
+        private async void JoinTeamBButton_Click(object sender, EventArgs e)
         {
             try
             {
-                await connection.InvokeAsync("JoinTeam", 1, "Blue", playerID);
+                await connection.InvokeAsync("JoinTeamRequst", 1, "Blue", playerID);
             }
             catch (Exception ex)
             {

@@ -53,10 +53,10 @@ namespace opp_client
             //    playerIDLabel.Text = playerID;
             //});
 
-            connection.On<string>("UpdatePlayerPositionResponse", (response) =>
-            {
-                //logList.Items.Add(response);
-            });
+            //connection.On<string>("UpdatePlayerPositionResponse", (response) =>
+            //{
+            //    logList.Items.Add(response);
+            //});
 
             connection.On<string>("GameStateResponse", (response) =>
             {
@@ -71,10 +71,14 @@ namespace opp_client
                     {
                         if (!mpObjects.ContainsKey(entry.Key))
                         {
-                            PictureBox pb = new PictureBox();
+                            OvalPictureBox pb = new OvalPictureBox();
                             pb.Width = 50;
                             pb.Height = 50;
                             pb.BackColor = Color.FromName(team.Color);
+                            if (entry.Key.Equals(playerID))
+                            {
+                                pb.BackColor =ControlPaint.LightLight(pb.BackColor);
+                            }
                             mpObjects.Add(entry.Key, pb);
                             this.Controls.Add(pb);
                         }
@@ -136,6 +140,11 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
+        }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            playerInput.Clear();
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)

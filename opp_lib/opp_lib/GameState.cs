@@ -9,15 +9,11 @@ namespace opp_lib
 {
     public class GameState
     {
-        //public ConcurrentBag<Team> Teams;
         public List<Team> Teams;
-        //public Dictionary<string, Player> Players;
 
         public GameState()
         {
-            //Teams = new ConcurrentBag<Team>();
             Teams = new List<Team>();
-            //Players = new Dictionary<string, Player>();
         }
 
         public GameState Copy()
@@ -62,6 +58,7 @@ namespace opp_lib
                     return i;
                 }
             }
+
             return -1;
         }
 
@@ -85,16 +82,6 @@ namespace opp_lib
                 }
             }
             return s;
-
-            //return "PLZ NEED IMPLEMENT";
-
-
-            //string s = "";
-            //foreach (KeyValuePair<string, Player> entry in Players)
-            //{
-            //    s += entry.Value.ToString() + "\n";
-            //}
-            //return s;
         }
     }
 }

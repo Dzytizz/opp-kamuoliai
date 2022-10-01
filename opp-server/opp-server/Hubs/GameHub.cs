@@ -40,7 +40,7 @@ namespace opp_server.Hubs
             Player player = GameState.TryFindPlayer(playerID);
             player.UpdatePosition(playerInput);
             //GameState.Players[playerID].UpdatePosition(playerInput); <============
-            await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated");
+            //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
         }
 
         public async Task GameStateRequest()
@@ -50,16 +50,8 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeam(int teamIndex, string color, string oldPlayerID)
+        public async Task JoinTeamRequest(int teamIndex, string color, string oldPlayerID)
         {
-            if(GameState.Teams.Count == 0)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    GameState.Teams.Add(new Team(new Dictionary<string, Player>(), "Gray"));
-                }
-            }
-
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
             if (existingTeamIndex == -1) // if doesn't exist generate new ID
@@ -69,6 +61,7 @@ namespace opp_server.Hubs
             else // if exists remove and set newPlayerID to oldPlayerID
             {
                 GameState.Teams[existingTeamIndex].Players.Remove(oldPlayerID);
+                await Clients.All.SendAsync("ReceivePlayerCount", existingTeamIndex, -1);   // also update teamCounter in all clients (removes one)
                 newPlayerID = oldPlayerID;
             }
 
@@ -77,7 +70,20 @@ namespace opp_server.Hubs
 
             GameState.Teams[teamIndex].Color = color;
 
-            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", $"{newPlayerID}|{color}");
+            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, color);
+            await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
+        }
+        public async Task PlayerCountRequest()
+        {
+            if (GameState.Teams.Count == 0)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    GameState.Teams.Add(new Team(new Dictionary<string, Player>(), "Gray"));
+                }
+            }
+
+            await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
         }
 
         //public async Task SendMessage(string user, string message)
