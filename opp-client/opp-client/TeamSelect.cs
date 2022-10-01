@@ -44,8 +44,6 @@ namespace opp_client
             connection.On<int, int>("ReceivePlayerCount", (teamIndex, count) =>
             {
                 int current = -1;
-                listBox.Items.Add(teamIndex);
-                listBox.Items.Add(count);
                 switch (teamIndex)
                 {
                     case 0:
