@@ -106,6 +106,7 @@ namespace opp_client
             this.Controls.Add(this.comboBox1);
             this.Name = "TeamCreation";
             this.Text = "TeamCreation";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TeamCreation_FormClosed);
             this.Load += new System.EventHandler(this.TeamCreation_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using opp_lib;
 using Newtonsoft.Json;
 using opp_server.Classes.Factory;
+using opp_server.Classes.Abstract_Factory;
 
 namespace opp_server.Hubs
 {
     public class GameHub : Hub
     {
         public GameState GameState;
+        public Level Level;
 
-        public GameHub(GameState gameState)
+        public GameHub(GameState gameState, Level level)
         {
             GameState = GameState.GetInstance();
+            this.Level = level;
         }
 
         //public async Task JoinGameRequest()
@@ -65,6 +68,29 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("AreTeamsCreatedResponse", response);
         }
 
+        public async Task TeamColorsRequest()
+        {
+            string team1Color = GameState.Teams[0].Color;
+            string team2Color = GameState.Teams[1].Color;
+            await Clients.Client(Context.ConnectionId).SendAsync("TeamColorsResponse", team1Color, team2Color);
+        }
+
+        public async Task LevelRequest()
+        {
+            GenerateLevel();
+            string levelJSON = JsonConvert.SerializeObject(Level);
+            await Clients.Client(Context.ConnectionId).SendAsync("LevelResponse", levelJSON);
+        }
+
+        public async Task LevelChangeRequest()
+        {
+            GameState.currentLevel++;
+            GenerateLevel();
+            string levelJSON = JsonConvert.SerializeObject(Level);
+            await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
+        }
+
+
         public async Task UpdatePlayerPositionRequest(string playerID, string playerInputJSON)
         {
             PlayerInput playerInput = JsonConvert.DeserializeObject<PlayerInput>(playerInputJSON);
@@ -81,7 +107,7 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeamRequest(int teamIndex, string color, string oldPlayerID)
+        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID)
         {
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
@@ -99,9 +125,7 @@ namespace opp_server.Hubs
             Player newPlayer = new Player($"Team{teamIndex}Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
 
-            GameState.Teams[teamIndex].Color = color;
-
-            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, color);
+            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }
         public async Task PlayerCountRequest()
@@ -115,6 +139,36 @@ namespace opp_server.Hubs
             }
 
             await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
+        }
+
+        private void GenerateLevel()
+        {
+            AbstractLevelFactory factory;
+            int gatesYPosition = 100;
+            int rightGatesXPosition = 812;
+            switch (GameState.currentLevel)
+            {
+                case 1:
+                    factory = new Level1Factory();
+                    gatesYPosition = 100;
+                    break;
+                case 2:
+                    factory = new Level2Factory();
+                    //pakeist
+                    gatesYPosition = 75;
+                    break;
+                default:
+                    factory = new Level1Factory();
+                    break;
+            }
+            Gates leftGates = factory.CreateGates(0, gatesYPosition);
+            Gates rightGates = factory.CreateGates(rightGatesXPosition, gatesYPosition);
+            Field field = factory.CreateField();
+            //Padaryt random ir daug
+            Obstacle obstacle = factory.CreateObstacle(375, 150);
+            List<Obstacle> obstacles = new List<Obstacle>();
+            obstacles.Add(obstacle);
+            Level.SetLevel(leftGates, rightGates, field, obstacles);
         }
 
         //public async Task SendMessage(string user, string message)

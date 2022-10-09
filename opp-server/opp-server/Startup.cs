@@ -22,6 +22,7 @@ namespace opp_server
         {
             //services.AddSingleton(opt => GameState());
             services.AddSingleton(opt => GameState.GetInstance());
+            services.AddSingleton(opt => new Level());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

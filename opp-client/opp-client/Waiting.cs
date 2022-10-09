@@ -32,31 +32,29 @@ namespace opp_client
         {
             connection.On<bool>("IsAdminResponse", (isAdmin) =>
             {
+                if (!this.Visible) return;
                 if(isAdmin)
-                {
+                {                
                     TeamCreation teamCreationWindow = new TeamCreation(connection);
                     teamCreationWindow.Show();
-                    Hide();
+                    this.Hide();
                 }
             });
             connection.On("CreateTeamsResponse", () =>
             {
-                //TeamSelect teamSelectWindow = new TeamSelect();
-                //teamSelectWindow.Show();
-                //Close();
+                if (!this.Visible) return;
                 TeamSelect teamSelectWindow = new TeamSelect(connection);
-                Hide();
-                teamSelectWindow.ShowDialog();
-                Hide();
+                teamSelectWindow.Show();
+                this.Hide();
             });
             connection.On<bool>("AreTeamsCreatedResponse", (response) =>
             {
+                if (!this.Visible) return;
                 if (response)
                 {
                     TeamSelect teamSelectWindow = new TeamSelect(connection);
-                    
                     teamSelectWindow.Show();
-                    Hide();
+                    this.Hide();
                 }
             });
             try
@@ -68,6 +66,11 @@ namespace opp_client
             catch (Exception ex)
             {
             }
+        }
+
+        private void Waiting_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -30,9 +30,11 @@ namespace opp_client
         {
             connection.On("CreateTeamsResponse", () =>
             {
+                if (!this.Visible) return;
                 TeamSelect teamSelectWindow = new TeamSelect(connection);
                 teamSelectWindow.Show();
                 this.Hide();
+
             });
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 1;
@@ -72,6 +74,11 @@ namespace opp_client
             {
                 
             }
+        }
+
+        private void TeamCreation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -49,6 +49,7 @@ namespace opp_client
             this.Controls.Add(this.label1);
             this.Name = "Waiting";
             this.Text = "Waiting";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Waiting_FormClosed);
             this.Load += new System.EventHandler(this.Waiting_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

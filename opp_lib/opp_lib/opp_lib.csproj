@@ -42,15 +42,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Field.cs" />
+    <Compile Include="Fields\FieldLevel2.cs" />
+    <Compile Include="Fields\FieldLevel1.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Obstacle.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="Gates.cs" />
+    <Compile Include="Gatess\GatesLevel2.cs" />
+    <Compile Include="Gatess\GatesLevel1.cs" />
+    <Compile Include="Obstacles\ObstacleLevel2.cs" />
+    <Compile Include="Obstacles\ObstacleLevel1.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Teams\BlueTeam.cs" />
     <Compile Include="Teams\GreenTeam.cs" />
-    <Compile Include="Teams\Yellow.cs" />
+    <Compile Include="Teams\YellowTeam.cs" />
     <Compile Include="Teams\RedTeam.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

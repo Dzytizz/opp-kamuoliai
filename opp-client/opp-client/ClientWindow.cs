@@ -19,7 +19,10 @@ namespace opp_client
         public string playerID;
         public PlayerInput playerInput;
 
-        Dictionary<string, PictureBox> mpObjects; 
+        Dictionary<string, PictureBox> mpObjects;
+        PictureBox leftGates;
+        PictureBox rightGates;
+        List<PictureBox> obstacles;
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -39,7 +42,7 @@ namespace opp_client
             mpObjects = new Dictionary<string, PictureBox>();
         }
 
-        private void ClientWindow_Load(object sender, EventArgs e)
+        private async void ClientWindow_Load(object sender, EventArgs e)
         {
             //connection.On<string, string>("ReceiveMessage", (user, message) =>
             //{
@@ -92,6 +95,47 @@ namespace opp_client
                     }
                 }
             });
+
+            connection.On<string>("LevelResponse", (response) => 
+            {
+                Level level = JsonConvert.DeserializeObject<Level>(response);
+                leftGates = CreateGates(level.leftGates);
+                rightGates = CreateGates(level.rightGates);
+                CreateField(level.field);
+                this.Controls.Add(leftGates);
+                this.Controls.Add(rightGates);
+                obstacles = new List<PictureBox>();
+                foreach(Obstacle o in level.obstacles)
+                {
+                    PictureBox obstacle = CreateObstacle(o);
+                    obstacles.Add(obstacle);
+                    this.Controls.Add(obstacle);
+                }
+            });
+
+            connection.On<string>("LevelChangeResponse", (response) => 
+            {
+                Level level = JsonConvert.DeserializeObject<Level>(response);
+                ClearObstacles();
+                UpdateGates(leftGates, level.leftGates);
+                UpdateGates(rightGates, level.rightGates);
+                CreateField(level.field);
+                foreach (Obstacle o in level.obstacles)
+                {
+                    PictureBox obstacle = CreateObstacle(o);
+                    obstacles.Add(obstacle);
+                    this.Controls.Add(obstacle);
+                }
+            });
+
+            try
+            {
+                await connection.InvokeAsync("LevelRequest");
+            }
+            catch (Exception ex)
+            {
+                logList.Items.Add(ex.Message);
+            }
         }
 
         private async void MainGameLoop_Tick(object sender, EventArgs e)
@@ -147,7 +191,7 @@ namespace opp_client
             playerInput.Clear();
         }
 
-        private void KeyIsUp(object sender, KeyEventArgs e)
+        private async void KeyIsUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
             {
@@ -165,6 +209,17 @@ namespace opp_client
             {
                 playerInput.Right = false;
             }
+            if (e.KeyCode == Keys.N)
+            {
+                try
+                {
+                    await connection.InvokeAsync("LevelChangeRequest");
+                }
+                catch (Exception ex)
+                {
+                    logList.Items.Add(ex.Message);
+                }
+            }
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -177,6 +232,53 @@ namespace opp_client
             {
                 logList.Items.Add(ex.Message);
             }
+        }
+
+        private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private PictureBox CreateGates(Gates gates)
+        {
+            PictureBox picture = new PictureBox();
+            picture.Width = gates.width;
+            picture.Height = gates.height;
+            picture.BackColor = Color.FromName(gates.color);
+            picture.Location = new Point(gates.xPosition, gates.yPosition);
+            return picture;
+        }
+
+        private void CreateField(Field field)
+        {
+            this.BackColor = Color.FromName(field.color);
+        }
+
+        private PictureBox CreateObstacle(Obstacle obstacle)
+        {
+            PictureBox picture = new PictureBox();
+            picture.Width = obstacle.width;
+            picture.Height = obstacle.height;
+            picture.BackColor = Color.FromName(obstacle.color);
+            picture.Location = new Point(obstacle.xPosition, obstacle.yPosition);
+            return picture;
+        }
+
+        private void ClearObstacles()
+        {
+            foreach(PictureBox obstacle in obstacles)
+            {
+                this.Controls.Remove(obstacle);
+            }
+            obstacles.Clear();
+        }
+
+        private void UpdateGates(PictureBox picture, Gates gates)
+        {
+            picture.Width = gates.width;
+            picture.Height = gates.height;
+            picture.BackColor = Color.FromName(gates.color);
+            picture.Location = new Point(gates.xPosition, gates.yPosition);
         }
 
         //private async void button1_Click(object sender, EventArgs e)

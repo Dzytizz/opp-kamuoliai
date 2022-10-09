@@ -12,10 +12,12 @@ namespace opp_lib
         private static GameState Instance = new GameState();
         public List<Team> Teams;
         public bool adminExists = false;
+        public int currentLevel;
 
         private GameState()
         {
             Teams = new List<Team>();
+            currentLevel = 1;
         }
 
         public static GameState GetInstance()

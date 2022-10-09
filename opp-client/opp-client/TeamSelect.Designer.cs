@@ -40,9 +40,10 @@
             // 
             // JoinTeamAButton
             // 
-            this.JoinTeamAButton.Location = new System.Drawing.Point(61, 116);
+            this.JoinTeamAButton.Location = new System.Drawing.Point(46, 94);
+            this.JoinTeamAButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.JoinTeamAButton.Name = "JoinTeamAButton";
-            this.JoinTeamAButton.Size = new System.Drawing.Size(197, 83);
+            this.JoinTeamAButton.Size = new System.Drawing.Size(148, 67);
             this.JoinTeamAButton.TabIndex = 0;
             this.JoinTeamAButton.Text = "Join Team A";
             this.JoinTeamAButton.UseVisualStyleBackColor = true;
@@ -50,9 +51,10 @@
             // 
             // JoinTeamBButton
             // 
-            this.JoinTeamBButton.Location = new System.Drawing.Point(468, 116);
+            this.JoinTeamBButton.Location = new System.Drawing.Point(351, 94);
+            this.JoinTeamBButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.JoinTeamBButton.Name = "JoinTeamBButton";
-            this.JoinTeamBButton.Size = new System.Drawing.Size(197, 83);
+            this.JoinTeamBButton.Size = new System.Drawing.Size(148, 67);
             this.JoinTeamBButton.TabIndex = 1;
             this.JoinTeamBButton.Text = "Join Team B";
             this.JoinTeamBButton.UseVisualStyleBackColor = true;
@@ -61,17 +63,18 @@
             // listBox
             // 
             this.listBox.FormattingEnabled = true;
-            this.listBox.ItemHeight = 16;
-            this.listBox.Location = new System.Drawing.Point(61, 218);
+            this.listBox.Location = new System.Drawing.Point(46, 177);
+            this.listBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(604, 84);
+            this.listBox.Size = new System.Drawing.Size(454, 69);
             this.listBox.TabIndex = 2;
             // 
             // StartGameButton
             // 
-            this.StartGameButton.Location = new System.Drawing.Point(326, 116);
+            this.StartGameButton.Location = new System.Drawing.Point(244, 94);
+            this.StartGameButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.StartGameButton.Name = "StartGameButton";
-            this.StartGameButton.Size = new System.Drawing.Size(75, 41);
+            this.StartGameButton.Size = new System.Drawing.Size(56, 33);
             this.StartGameButton.TabIndex = 4;
             this.StartGameButton.Text = "Start Game";
             this.StartGameButton.UseVisualStyleBackColor = true;
@@ -80,44 +83,48 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 43);
+            this.label1.Location = new System.Drawing.Point(44, 35);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 16);
+            this.label1.Size = new System.Drawing.Size(123, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "Red Team Player Count:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(465, 43);
+            this.label2.Location = new System.Drawing.Point(349, 35);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(155, 16);
+            this.label2.Size = new System.Drawing.Size(124, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "Blue Team Player Count:";
             // 
             // teamACounter
             // 
             this.teamACounter.AutoSize = true;
-            this.teamACounter.Location = new System.Drawing.Point(58, 73);
+            this.teamACounter.Location = new System.Drawing.Point(44, 59);
+            this.teamACounter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.teamACounter.Name = "teamACounter";
-            this.teamACounter.Size = new System.Drawing.Size(14, 16);
+            this.teamACounter.Size = new System.Drawing.Size(13, 13);
             this.teamACounter.TabIndex = 7;
             this.teamACounter.Text = "0";
             // 
             // teamBCounter
             // 
             this.teamBCounter.AutoSize = true;
-            this.teamBCounter.Location = new System.Drawing.Point(465, 73);
+            this.teamBCounter.Location = new System.Drawing.Point(349, 59);
+            this.teamBCounter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.teamBCounter.Name = "teamBCounter";
-            this.teamBCounter.Size = new System.Drawing.Size(14, 16);
+            this.teamBCounter.Size = new System.Drawing.Size(13, 13);
             this.teamBCounter.TabIndex = 8;
             this.teamBCounter.Text = "0";
             // 
             // TeamSelect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(721, 323);
+            this.ClientSize = new System.Drawing.Size(541, 262);
             this.Controls.Add(this.teamBCounter);
             this.Controls.Add(this.teamACounter);
             this.Controls.Add(this.label2);
@@ -126,8 +133,10 @@
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.JoinTeamBButton);
             this.Controls.Add(this.JoinTeamAButton);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TeamSelect";
             this.Text = "TeamSelect";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TeamSelect_FormClosed);
             this.Load += new System.EventHandler(this.TeamSelect_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

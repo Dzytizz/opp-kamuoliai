@@ -30,10 +30,11 @@ namespace opp_client
             playerID = "";
         }
 
-        private void TeamSelect_Load(object sender, EventArgs e)
+        private async void TeamSelect_Load(object sender, EventArgs e)
         {
             connection.On<string, string>("JoinTeamResponse", (newPlayerID, teamColor) =>
             {
+                if (!this.Visible) return;
                 playerID = newPlayerID;
                 listBox.Items.Add($"Player with ID {newPlayerID} added to a {teamColor} team");
             });
@@ -41,6 +42,7 @@ namespace opp_client
             // This response happens when a player joins/leaves a team
             connection.On<int, int>("ReceivePlayerCount", (teamIndex, count) =>
             {
+                if (!this.Visible) return;
                 int current = -1;
                 switch (teamIndex)
                 {
@@ -59,9 +61,27 @@ namespace opp_client
             // This response happens when a new client is launched (to update its team counters)
             connection.On<int, int>("PlayerCountResponse", (teamACount, teamBCount) =>
             {
+                if (!this.Visible) return;
                 teamACounter.Text = teamACount.ToString();
                 teamBCounter.Text = teamBCount.ToString();
             });
+
+            connection.On<string, string>("TeamColorsResponse", (team1Color, team2Color) =>
+            {
+                if (!this.Visible) return;
+                label1.Text = $"{team1Color} Team Player Count";
+                label2.Text = $"{team2Color} Team Player Count";
+            });
+
+            try
+            {
+                await connection.InvokeAsync("TeamColorsRequest");
+            }
+            catch (Exception ex)
+            {
+                listBox.Items.Add(ex.Message);
+
+            }
         }
 
         private void StartGameButton_Click(object sender, EventArgs e)
@@ -83,7 +103,7 @@ namespace opp_client
         {
             try
             {
-                await connection.InvokeAsync("JoinTeamRequest", 0, "Red", playerID);
+                await connection.InvokeAsync("JoinTeamRequest", 0, playerID);
             }
             catch (Exception ex)
             {
@@ -97,12 +117,17 @@ namespace opp_client
         {
             try
             {
-                await connection.InvokeAsync("JoinTeamRequest", 1, "Blue", playerID);
+                await connection.InvokeAsync("JoinTeamRequest", 1, playerID);
             }
             catch (Exception ex)
             {
                 listBox.Items.Add(ex.Message);
             }
+        }
+
+        private void TeamSelect_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
