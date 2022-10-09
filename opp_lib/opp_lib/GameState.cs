@@ -11,6 +11,7 @@ namespace opp_lib
     {
         private static GameState Instance = new GameState();
         public List<Team> Teams;
+        public bool adminExists = false;
 
         private GameState()
         {

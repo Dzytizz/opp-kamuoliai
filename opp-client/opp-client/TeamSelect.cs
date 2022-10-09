@@ -13,15 +13,13 @@ namespace opp_client
 {
     public partial class TeamSelect : Form
     {
-        public static HubConnection connection;
+        public HubConnection connection;
         public static string playerID;
 
-        public TeamSelect()
+        public TeamSelect(HubConnection connection)
         {
             InitializeComponent();
-            connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:44330/gamehub")
-                .Build();
+            this.connection = connection;
 
             connection.Closed += async (error) =>
             {
@@ -32,7 +30,7 @@ namespace opp_client
             playerID = "";
         }
 
-        private async void TeamSelect_Load(object sender, EventArgs e)
+        private void TeamSelect_Load(object sender, EventArgs e)
         {
             connection.On<string, string>("JoinTeamResponse", (newPlayerID, teamColor) =>
             {
@@ -64,17 +62,6 @@ namespace opp_client
                 teamACounter.Text = teamACount.ToString();
                 teamBCounter.Text = teamBCount.ToString();
             });
-
-            try
-            {
-                await connection.StartAsync();
-                listBox.Items.Add("Connection started");
-                await connection.InvokeAsync("PlayerCountRequest");
-            }
-            catch (Exception ex)
-            {
-                listBox.Items.Add(ex.Message);
-            }
         }
 
         private void StartGameButton_Click(object sender, EventArgs e)

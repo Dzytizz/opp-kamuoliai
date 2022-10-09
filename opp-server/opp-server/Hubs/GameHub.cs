@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using opp_lib;
 using Newtonsoft.Json;
+using opp_server.Classes.Factory;
 
 namespace opp_server.Hubs
 {
@@ -33,6 +34,36 @@ namespace opp_server.Hubs
         //    }
         //    await Clients.Client(Context.ConnectionId).SendAsync("JoinGameResponse", response);
         //}
+
+        public async Task IsAdminRequest()
+        {      
+            if(!GameState.adminExists)
+            {
+                GameState.adminExists = true;
+                await Clients.Client(Context.ConnectionId).SendAsync("IsAdminResponse", true);
+            }
+            else
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync("IsAdminResponse", false);
+            }
+
+            //GameState.Players[playerID].UpdatePosition(playerInput); <============
+            //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
+        }
+
+        public async Task CreateTeamsRequest(string team1Color, string team2Color)
+        {
+            Creator creator = new TeamFactory();
+            GameState.Teams.Add(creator.GetTeam(team1Color));
+            GameState.Teams.Add(creator.GetTeam(team2Color));
+            await Clients.All.SendAsync("CreateTeamsResponse");
+        }
+
+        public async Task AreTeamsCreatedRequest()
+        {
+            bool response = GameState.Teams.Count == 2;
+            await Clients.Client(Context.ConnectionId).SendAsync("AreTeamsCreatedResponse", response);
+        }
 
         public async Task UpdatePlayerPositionRequest(string playerID, string playerInputJSON)
         {

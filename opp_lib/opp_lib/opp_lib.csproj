@@ -47,6 +47,10 @@
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="Teams\BlueTeam.cs" />
+    <Compile Include="Teams\GreenTeam.cs" />
+    <Compile Include="Teams\Yellow.cs" />
+    <Compile Include="Teams\RedTeam.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
