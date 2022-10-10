@@ -5,16 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using opp_lib;
 using Newtonsoft.Json;
+using opp_server.Classes.Factory;
+using opp_server.Classes.Abstract_Factory;
+using opp_server.Classes.Observer;
 
 namespace opp_server.Hubs
 {
     public class GameHub : Hub
     {
         public GameState GameState;
+        public Level Level;
+        public Server Server;
 
-        public GameHub(GameState gameState)
+        public GameHub(GameState gameState, Level level, Server server)
         {
             GameState = GameState.GetInstance();
+            this.Level = level;
+            this.Server = server;
         }
 
         //public async Task JoinGameRequest()
@@ -34,11 +41,65 @@ namespace opp_server.Hubs
         //    await Clients.Client(Context.ConnectionId).SendAsync("JoinGameResponse", response);
         //}
 
+        public async Task IsAdminRequest()
+        {      
+            if(!GameState.adminExists)
+            {
+                GameState.adminExists = true;
+                await Clients.Client(Context.ConnectionId).SendAsync("IsAdminResponse", true);
+            }
+            else
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync("IsAdminResponse", false);
+            }
+
+            //GameState.Players[playerID].UpdatePosition(playerInput); <============
+            //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
+        }
+
+        public async Task CreateTeamsRequest(string team1Color, string team2Color)
+        {
+            Creator creator = new TeamFactory();
+            GameState.Teams.Add(creator.GetTeam(team1Color));
+            GameState.Teams.Add(creator.GetTeam(team2Color));
+            await Clients.All.SendAsync("CreateTeamsResponse");
+        }
+
+        public async Task AreTeamsCreatedRequest()
+        {
+            bool response = GameState.Teams.Count == 2;
+            await Clients.Client(Context.ConnectionId).SendAsync("AreTeamsCreatedResponse", response);
+        }
+
+        public async Task TeamColorsRequest()
+        {
+            string team1Color = GameState.Teams[0].Color;
+            string team2Color = GameState.Teams[1].Color;
+            await Clients.Client(Context.ConnectionId).SendAsync("TeamColorsResponse", team1Color, team2Color);
+        }
+
+        public async Task LevelRequest()
+        {
+            GenerateLevel();
+            string levelJSON = JsonConvert.SerializeObject(Level);
+            await Clients.Client(Context.ConnectionId).SendAsync("LevelResponse", levelJSON);
+        }
+
+        public async Task LevelChangeRequest()
+        {
+            GameState.currentLevel++;
+            GenerateLevel();
+            string levelJSON = JsonConvert.SerializeObject(Level);
+            await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
+        }
+
+
         public async Task UpdatePlayerPositionRequest(string playerID, string playerInputJSON)
         {
             PlayerInput playerInput = JsonConvert.DeserializeObject<PlayerInput>(playerInputJSON);
             Player player = GameState.TryFindPlayer(playerID);
             player.UpdatePosition(playerInput);
+            Server.Send();
             //GameState.Players[playerID].UpdatePosition(playerInput); <============
             //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
         }
@@ -50,7 +111,7 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeamRequest(int teamIndex, string color, string oldPlayerID)
+        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID)
         {
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
@@ -67,10 +128,8 @@ namespace opp_server.Hubs
 
             Player newPlayer = new Player($"Team{teamIndex}Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
-
-            GameState.Teams[teamIndex].Color = color;
-
-            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, color);
+            Server.Subscribe(new Client(Clients.Client(Context.ConnectionId)));
+            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }
         public async Task PlayerCountRequest()
@@ -84,6 +143,36 @@ namespace opp_server.Hubs
             }
 
             await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
+        }
+
+        private void GenerateLevel()
+        {
+            AbstractLevelFactory factory;
+            int gatesYPosition = 100;
+            int rightGatesXPosition = 812;
+            switch (GameState.currentLevel)
+            {
+                case 1:
+                    factory = new Level1Factory();
+                    gatesYPosition = 100;
+                    break;
+                case 2:
+                    factory = new Level2Factory();
+                    //pakeist
+                    gatesYPosition = 75;
+                    break;
+                default:
+                    factory = new Level1Factory();
+                    break;
+            }
+            Gates leftGates = factory.CreateGates(0, gatesYPosition);
+            Gates rightGates = factory.CreateGates(rightGatesXPosition, gatesYPosition);
+            Field field = factory.CreateField();
+            //Padaryt random ir daug
+            Obstacle obstacle = factory.CreateObstacle(375, 150);
+            List<Obstacle> obstacles = new List<Obstacle>();
+            obstacles.Add(obstacle);
+            Level.SetLevel(leftGates, rightGates, field, obstacles);
         }
 
         //public async Task SendMessage(string user, string message)

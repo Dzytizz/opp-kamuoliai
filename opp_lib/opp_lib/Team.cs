@@ -17,6 +17,12 @@ namespace opp_lib
             this.Color = "Gray";
         }
 
+        public Team(string color)
+        {
+            this.Players = new Dictionary<string, Player>();
+            this.Color = color;
+        }
+
         public Team(Dictionary<string, Player> players, string color)
         {
             this.Players = players;
