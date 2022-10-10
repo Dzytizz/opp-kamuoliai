@@ -185,6 +185,18 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
+            if (e.KeyCode == Keys.E)
+            {
+                playerInput.ToJog = true;
+            }
+            if (e.KeyCode == Keys.Q)
+            {
+                playerInput.ToRun = true;
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                playerInput.ToJump = true;
+            }
         }
 
         protected override void OnDeactivate(EventArgs e)
@@ -210,6 +222,19 @@ namespace opp_client
             {
                 playerInput.Right = false;
             }
+
+            if (e.KeyCode == Keys.E)
+            {
+                playerInput.ToJog = false;
+            }
+            if (e.KeyCode == Keys.Q)
+            {
+                playerInput.ToRun = false;
+            }
+            if (e.KeyCode == Keys.Space)
+            {
+                playerInput.ToJump = false;
+
             if (e.KeyCode == Keys.N)
             {
                 try
@@ -220,6 +245,7 @@ namespace opp_client
                 {
                     logList.Items.Add(ex.Message);
                 }
+
             }
         }
 
