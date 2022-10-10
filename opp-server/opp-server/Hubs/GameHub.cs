@@ -7,6 +7,7 @@ using opp_lib;
 using Newtonsoft.Json;
 using opp_server.Classes.Factory;
 using opp_server.Classes.Abstract_Factory;
+using opp_server.Classes.Observer;
 
 namespace opp_server.Hubs
 {
@@ -14,11 +15,13 @@ namespace opp_server.Hubs
     {
         public GameState GameState;
         public Level Level;
+        public Server Server;
 
-        public GameHub(GameState gameState, Level level)
+        public GameHub(GameState gameState, Level level, Server server)
         {
             GameState = GameState.GetInstance();
             this.Level = level;
+            this.Server = server;
         }
 
         //public async Task JoinGameRequest()
@@ -96,6 +99,7 @@ namespace opp_server.Hubs
             PlayerInput playerInput = JsonConvert.DeserializeObject<PlayerInput>(playerInputJSON);
             Player player = GameState.TryFindPlayer(playerID);
             player.UpdatePosition(playerInput);
+            Server.Send();
             //GameState.Players[playerID].UpdatePosition(playerInput); <============
             //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
         }
@@ -124,7 +128,7 @@ namespace opp_server.Hubs
 
             Player newPlayer = new Player($"Team{teamIndex}Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
-
+            Server.Subscribe(new Client(Clients.Client(Context.ConnectionId)));
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }

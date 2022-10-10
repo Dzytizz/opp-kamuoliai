@@ -131,6 +131,7 @@ namespace opp_client
             try
             {
                 await connection.InvokeAsync("LevelRequest");
+                await connection.InvokeAsync("GameStateRequest");
             }
             catch (Exception ex)
             {
@@ -153,7 +154,7 @@ namespace opp_client
                 }
             }
 
-            if (!playerID.Equals(""))
+           /* if (!playerID.Equals(""))
             {
                 try
                 {
@@ -163,7 +164,7 @@ namespace opp_client
                 {
                     logList.Items.Add(ex.Message);
                 } 
-            }
+            }*/
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
