@@ -234,7 +234,7 @@ namespace opp_client
             if (e.KeyCode == Keys.Space)
             {
                 playerInput.ToJump = false;
-
+            }
             if (e.KeyCode == Keys.N)
             {
                 try
