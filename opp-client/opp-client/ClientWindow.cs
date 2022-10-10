@@ -153,17 +153,17 @@ namespace opp_client
                 }
             }
 
-            if (!playerID.Equals(""))
-            {
-                try
-                {
-                    await connection.InvokeAsync("GameStateRequest");
-                }
-                catch (Exception ex)
-                {
-                    logList.Items.Add(ex.Message);
-                } 
-            }
+            //if (!playerID.Equals(""))
+            //{
+            //    try
+            //    {
+            //        await connection.InvokeAsync("GameStateRequest");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        logList.Items.Add(ex.Message);
+            //    } 
+            //}
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using opp_server.Hubs;
 using opp_lib;
+using opp_server.Classes.Observer;
 
 namespace opp_server
 {
@@ -23,6 +24,7 @@ namespace opp_server
             //services.AddSingleton(opt => GameState());
             services.AddSingleton(opt => GameState.GetInstance());
             services.AddSingleton(opt => new Level());
+            services.AddSingleton(opt => new Server());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });
