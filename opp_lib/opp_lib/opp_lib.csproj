@@ -46,6 +46,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategy\Algorithm.cs" />
+    <Compile Include="Strategy\Jog.cs" />
+    <Compile Include="Strategy\Jump.cs" />
+    <Compile Include="Strategy\Run.cs" />
+    <Compile Include="Strategy\Walk.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
