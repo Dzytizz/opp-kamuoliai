@@ -10,7 +10,7 @@ namespace opp_server.Classes.Observer
     {
         protected List<Client> ClientsList = new List<Client>();
         public abstract void Send();
-        public abstract void Recieve();
+        public abstract void Receive();
         public void Subscribe(Client param)
         {
             ClientsList.Add(param);

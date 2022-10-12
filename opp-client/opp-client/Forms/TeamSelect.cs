@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using opp_client.Singleton;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,14 @@ namespace opp_client
 
         private async void TeamSelect_Load(object sender, EventArgs e)
         {
+            ThemeManager tm = ThemeManager.GetInstance();
+            this.BackColor = tm.BackgroundDark;
+            this.Font = tm.TextFont;
+            foreach (Control control in this.Controls)
+            {
+                tm.UpdateColor(control);
+            }
+
             connection.On<string, string>("JoinTeamResponse", (newPlayerID, teamColor) =>
             {
                 if (!this.Visible) return;

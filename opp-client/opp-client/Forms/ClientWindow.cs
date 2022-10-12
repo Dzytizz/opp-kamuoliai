@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using opp_lib;
+using opp_client.Singleton;
 
 namespace opp_client
 {
@@ -44,6 +45,14 @@ namespace opp_client
 
         private async void ClientWindow_Load(object sender, EventArgs e)
         {
+            ThemeManager tm = ThemeManager.GetInstance();
+            this.BackColor = tm.BackgroundDark;
+            this.Font = tm.TextFont;
+            foreach (Control control in this.Controls)
+            {
+                tm.UpdateColor(control);
+            }
+
             //connection.On<string, string>("ReceiveMessage", (user, message) =>
             //{
             //    var newMessage = $"{user}: {message}";
@@ -242,18 +251,6 @@ namespace opp_client
         protected override void OnDeactivate(EventArgs e)
         {
             playerInput.Clear();
-        }
-
-        private async void button2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                await connection.InvokeAsync("GameStateRequest");
-            }
-            catch (Exception ex)
-            {
-                logList.Items.Add(ex.Message);
-            }
         }
 
         private void ClientWindow_FormClosed(object sender, FormClosedEventArgs e)

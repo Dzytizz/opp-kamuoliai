@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using opp_client.Singleton;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +29,18 @@ namespace opp_client
             };
         }
 
+  
+
         private async void Waiting_Load(object sender, EventArgs e)
         {
+            ThemeManager tm = ThemeManager.GetInstance();
+            this.BackColor = tm.BackgroundDark;
+            this.Font = tm.TextFont;
+            foreach (Control control in this.Controls)
+            {
+                tm.UpdateColor(control);
+            }
+
             connection.On<bool>("IsAdminResponse", (isAdmin) =>
             {
                 if (!this.Visible) return;
@@ -60,11 +71,13 @@ namespace opp_client
             try
             {
                 await connection.StartAsync();
+                listBox1.Items.Add("Connection successful");
                 await connection.InvokeAsync("AreTeamsCreatedRequest");
                 await connection.InvokeAsync("IsAdminRequest");
             }
             catch (Exception ex)
             {
+                listBox1.Items.Add(ex.Message);
             }
         }
 

@@ -157,10 +157,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientWindow.cs">
+    <Compile Include="Forms\ClientWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClientWindow.Designer.cs">
+    <Compile Include="Forms\ClientWindow.Designer.cs">
       <DependentUpon>ClientWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="OvalPictureBox.cs">
@@ -168,25 +168,26 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeamCreation.cs">
+    <Compile Include="Forms\TeamCreation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TeamCreation.Designer.cs">
+    <Compile Include="Forms\TeamCreation.Designer.cs">
       <DependentUpon>TeamCreation.cs</DependentUpon>
     </Compile>
-    <Compile Include="TeamSelect.cs">
+    <Compile Include="Forms\TeamSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TeamSelect.Designer.cs">
+    <Compile Include="Forms\TeamSelect.Designer.cs">
       <DependentUpon>TeamSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Waiting.cs">
+    <Compile Include="Forms\Waiting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Waiting.Designer.cs">
+    <Compile Include="Forms\Waiting.Designer.cs">
       <DependentUpon>Waiting.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ClientWindow.resx">
+    <Compile Include="Singleton\ThemeManager.cs" />
+    <EmbeddedResource Include="Forms\ClientWindow.resx">
       <DependentUpon>ClientWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -198,13 +199,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TeamCreation.resx">
+    <EmbeddedResource Include="Forms\TeamCreation.resx">
       <DependentUpon>TeamCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TeamSelect.resx">
+    <EmbeddedResource Include="Forms\TeamSelect.resx">
       <DependentUpon>TeamSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Waiting.resx">
+    <EmbeddedResource Include="Forms\Waiting.resx">
       <DependentUpon>Waiting.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

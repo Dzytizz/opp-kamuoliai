@@ -8,7 +8,7 @@ namespace opp_server.Classes.Observer
 {
     public class Server : Subject
     {
-        public override void Recieve()
+        public override void Receive()
         {
             Send();
         }

@@ -11,16 +11,16 @@ namespace opp_server.Classes.Observer
 {
     public class Client : Observer
     {
-        public IClientProxy client;
+        public IClientProxy ClientProxy;
         public Client(IClientProxy client)
         {
-            this.client = client;
+            this.ClientProxy = client;
         }
         public override async void Update()
         {
             GameState gsCopy = GameState.GetInstance().Copy();
             string gameStateJSON = JsonConvert.SerializeObject(gsCopy);
-            await client.SendAsync("GameStateResponse", gameStateJSON);
+            await ClientProxy.SendAsync("GameStateResponse", gameStateJSON);
         }
     }
 }
