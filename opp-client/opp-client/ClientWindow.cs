@@ -141,11 +141,13 @@ namespace opp_client
 
         private async void MainGameLoop_Tick(object sender, EventArgs e)
         {
-            if (playerInput.IsActive() && !playerID.Equals(""))
+            if (!playerID.Equals(""))
             {
+                if(playerInput.IsActive())
                 try
                 {
                     string playerInputJSON = JsonConvert.SerializeObject(playerInput);
+                    playerInput.ResetJump();
                     await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
                 }
                 catch (Exception ex)
@@ -173,23 +175,20 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
-            if (e.KeyCode == Keys.E)
+
+            if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
-                playerInput.ToJog = true;
+                playerInput.ToWalk = true;
             }
-            if (e.KeyCode == Keys.Q)
+            if (e.KeyCode == Keys.ShiftKey) // faster (3)
             {
                 playerInput.ToRun = true;
             }
-            if (e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.Space && playerInput.ToJumpKeyUp) // fastest/dash (4)
             {
                 playerInput.ToJump = true;
+                playerInput.ToJumpKeyUp = false;
             }
-        }
-
-        protected override void OnDeactivate(EventArgs e)
-        {
-            playerInput.Clear();
         }
 
         private async void KeyIsUp(object sender, KeyEventArgs e)
@@ -211,18 +210,20 @@ namespace opp_client
                 playerInput.Right = false;
             }
 
-            if (e.KeyCode == Keys.E)
+            if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
-                playerInput.ToJog = false;
+                playerInput.ToWalk = false;
             }
-            if (e.KeyCode == Keys.Q)
+            if (e.KeyCode == Keys.ShiftKey) // faster (3)
             {
                 playerInput.ToRun = false;
             }
-            if (e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.Space) // fastest/dash (4)
             {
                 playerInput.ToJump = false;
+                playerInput.ToJumpKeyUp = true;
             }
+
             if (e.KeyCode == Keys.N)
             {
                 try
@@ -235,6 +236,12 @@ namespace opp_client
                 }
 
             }
+        }
+
+        // Clears inputs if window goes out of focus
+        protected override void OnDeactivate(EventArgs e)
+        {
+            playerInput.Clear();
         }
 
         private async void button2_Click(object sender, EventArgs e)

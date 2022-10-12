@@ -12,19 +12,21 @@ namespace opp_lib
         public bool Down { get; set; }
         public bool Left { get; set; }
         public bool Right { get; set; }
-        public bool ToJog { get; set; }
         public bool ToRun { get; set; }
+        public bool ToWalk { get; set; }
         public bool ToJump { get; set; }
+        public bool ToJumpKeyUp { get; set; }
 
-        public PlayerInput(bool up, bool down, bool left, bool right, bool toJog, bool toRun, bool toJump)
+        public PlayerInput(bool up, bool down, bool left, bool right, bool toRun, bool toWalk, bool toJump, bool toJumpKeyUp)
         {
             Up = up;
             Down = down;
             Left = left;
             Right = right;
-            ToJog = toJog;
             ToRun = toRun;
+            ToWalk = toWalk;
             ToJump = toJump;
+            ToJumpKeyUp = toJumpKeyUp;
         }
 
         public PlayerInput()
@@ -33,19 +35,25 @@ namespace opp_lib
             Down = false;
             Left = false;
             Right = false;
-            ToJog = false;
             ToRun = false;
+            ToWalk = false;
             ToJump = false;
+            ToJumpKeyUp = true;
+        }
+
+        public void ResetJump()
+        {
+            if (ToJump) ToJump = false;
         }
 
         public bool IsActive()
         {
-            return (Up || Down || Left || Right || ToJog || ToRun || ToJump);
+            return (Up || Down || Left || Right);
         }
 
         public void Clear()
         {
-            Up = false; Down = false; Left = false; Right = false; ToJog = false; ToRun = false; ToJump = false;
+            Up = false; Down = false; Left = false; Right = false; ToRun = false; ToWalk = false; ToJump = false;
         }
     }
 }

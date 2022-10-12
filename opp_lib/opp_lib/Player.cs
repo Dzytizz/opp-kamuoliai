@@ -15,7 +15,7 @@ namespace opp_lib
         public float XPosition { get; set; }
         public float YPosition { get; set; }
         public float Speed { get; set; } = 5;
-        private Algorithm Algorithm { get; set; }
+        private MovementMode MovementMode { get; set; }
 
         public Player(string name, float xPosition, float yPosition)
         {
@@ -24,9 +24,9 @@ namespace opp_lib
             YPosition = yPosition;
         }
 
-        public void Action(PlayerInput playerInput)
+        public void Move(PlayerInput playerInput)
         {
-            List<float> positions = this.Algorithm.BehaveDifferently(playerInput, Speed, XPosition, YPosition);
+            List<float> positions = this.MovementMode.MoveDifferently(playerInput, Speed, XPosition, YPosition);
             if (positions.Count == 2)
             {
                 XPosition = positions[0];
@@ -36,23 +36,23 @@ namespace opp_lib
 
         public void UpdatePosition(PlayerInput playerInput)
         {
-            if (playerInput.ToRun)
+            if (playerInput.ToWalk)
             {
-                Algorithm = new Run();
+                MovementMode = new Walk(); // slowest (1)
             }
-            else if (playerInput.ToJog)
+            else if (playerInput.ToRun)
             {
-                Algorithm = new Jog();
+                MovementMode = new Run(); // faster (3)
             }
             else if (playerInput.ToJump)
             {
-                Algorithm = new Jump();
+                MovementMode = new Jump(); // fastest (4)
             }
             else
             {
-                Algorithm = new Walk();
+                MovementMode = new Jog(); // normal (2)
             }
-            Action(playerInput);
+            Move(playerInput);
         }
         public override string ToString()
         {

@@ -76,11 +76,11 @@ namespace opp_client
             try
             {
                 await connection.InvokeAsync("TeamColorsRequest");
+                await connection.InvokeAsync("PlayerCountRequest");
             }
             catch (Exception ex)
             {
                 listBox.Items.Add(ex.Message);
-
             }
         }
 

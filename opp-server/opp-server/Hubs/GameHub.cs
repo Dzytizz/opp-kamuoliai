@@ -134,14 +134,6 @@ namespace opp_server.Hubs
         }
         public async Task PlayerCountRequest()
         {
-            if (GameState.Teams.Count == 0)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    GameState.Teams.Add(new Team(new Dictionary<string, Player>(), "Gray"));
-                }
-            }
-
             await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
         }
 

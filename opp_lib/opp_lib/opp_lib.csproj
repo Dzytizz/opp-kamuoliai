@@ -43,29 +43,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Field.cs" />
-    <Compile Include="Fields\FieldLevel2.cs" />
-    <Compile Include="Fields\FieldLevel1.cs" />
+    <Compile Include="Abstract Factory\Fields\FieldLevel2.cs" />
+    <Compile Include="Abstract Factory\Fields\FieldLevel1.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Gates.cs" />
-    <Compile Include="Gates\GatesLevel2.cs" />
-    <Compile Include="Gates\GatesLevel1.cs" />
-    <Compile Include="Obstacles\ObstacleLevel2.cs" />
-    <Compile Include="Obstacles\ObstacleLevel1.cs" />
+    <Compile Include="Abstract Factory\Gates\GatesLevel2.cs" />
+    <Compile Include="Abstract Factory\Gates\GatesLevel1.cs" />
+    <Compile Include="Abstract Factory\Obstacles\ObstacleLevel2.cs" />
+    <Compile Include="Abstract Factory\Obstacles\ObstacleLevel1.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\Algorithm.cs" />
+    <Compile Include="Strategy\MovementMode.cs" />
     <Compile Include="Strategy\Jog.cs" />
     <Compile Include="Strategy\Jump.cs" />
     <Compile Include="Strategy\Run.cs" />
     <Compile Include="Strategy\Walk.cs" />
     <Compile Include="Team.cs" />
-    <Compile Include="Teams\BlueTeam.cs" />
-    <Compile Include="Teams\GreenTeam.cs" />
-    <Compile Include="Teams\YellowTeam.cs" />
-    <Compile Include="Teams\RedTeam.cs" />
+    <Compile Include="Factory\Teams\BlueTeam.cs" />
+    <Compile Include="Factory\Teams\GreenTeam.cs" />
+    <Compile Include="Factory\Teams\YellowTeam.cs" />
+    <Compile Include="Factory\Teams\RedTeam.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
