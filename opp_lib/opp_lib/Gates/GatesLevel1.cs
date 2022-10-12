@@ -10,8 +10,8 @@ namespace opp_lib.Gatess
     {
         public GatesLevel1(int xPosition, int yPosition) : base(200, "Black")
         {
-            this.xPosition = xPosition;
-            this.yPosition = yPosition;
+            this.XPosition = xPosition;
+            this.YPosition = yPosition;
         }
     }
 }

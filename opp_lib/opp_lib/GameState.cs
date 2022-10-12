@@ -9,15 +9,15 @@ namespace opp_lib
 {
     public class GameState
     {
-        private static GameState Instance = new GameState();
-        public List<Team> Teams;
-        public bool adminExists = false;
-        public int currentLevel;
+        private static GameState Instance { get; set; } = new GameState();
+        public List<Team> Teams { get; set; }
+        public bool AdminExists { get; set; } = false;
+        public int CurrentLevel { get; set; }
 
         private GameState()
         {
             Teams = new List<Team>();
-            currentLevel = 1;
+            CurrentLevel = 1;
         }
 
         public static GameState GetInstance()

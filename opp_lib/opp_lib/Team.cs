@@ -8,8 +8,8 @@ namespace opp_lib
 {
     public class Team
     {
-        public Dictionary<string, Player> Players;
-        public string Color;
+        public Dictionary<string, Player> Players { get; set; }
+        public string Color { get; set; }
 
         public Team()
         {

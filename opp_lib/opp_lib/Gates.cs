@@ -8,16 +8,16 @@ namespace opp_lib
 {
     public class Gates
     {
-        public int xPosition;
-        public int yPosition;
-        public int width = 20;
-        public int height;
-        public string color;
+        public int XPosition { get; set; }
+        public int YPosition { get; set; }
+        public int Width { get; set; } = 20;
+        public int Height { get; set; }
+        public string Color { get; set; }
 
         public Gates(int height, string color)
         {
-            this.height = height;
-            this.color = color;
+            this.Height = height;
+            this.Color = color;
         }
     }
 }

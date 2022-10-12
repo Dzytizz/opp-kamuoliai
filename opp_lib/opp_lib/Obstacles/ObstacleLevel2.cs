@@ -10,8 +10,8 @@ namespace opp_lib.Obstacles
     {
         public ObstacleLevel2(int xPosition, int yPosition): base(50, 50, "Black")
         {
-            this.xPosition = xPosition;
-            this.yPosition = yPosition;
+            this.XPosition = xPosition;
+            this.YPosition = yPosition;
         }
     }
 }

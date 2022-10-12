@@ -17,7 +17,7 @@ namespace opp_server.Hubs
         public Level Level;
         public Server Server;
 
-        public GameHub(GameState gameState, Level level, Server server)
+        public GameHub(Level level, Server server)
         {
             GameState = GameState.GetInstance();
             this.Level = level;
@@ -43,9 +43,9 @@ namespace opp_server.Hubs
 
         public async Task IsAdminRequest()
         {      
-            if(!GameState.adminExists)
+            if(!GameState.AdminExists)
             {
-                GameState.adminExists = true;
+                GameState.AdminExists = true;
                 await Clients.Client(Context.ConnectionId).SendAsync("IsAdminResponse", true);
             }
             else
@@ -87,7 +87,7 @@ namespace opp_server.Hubs
 
         public async Task LevelChangeRequest()
         {
-            GameState.currentLevel++;
+            GameState.CurrentLevel++;
             GenerateLevel();
             string levelJSON = JsonConvert.SerializeObject(Level);
             await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
@@ -150,7 +150,7 @@ namespace opp_server.Hubs
             AbstractLevelFactory factory;
             int gatesYPosition = 100;
             int rightGatesXPosition = 812;
-            switch (GameState.currentLevel)
+            switch (GameState.CurrentLevel)
             {
                 case 1:
                     factory = new Level1Factory();

@@ -8,7 +8,6 @@ namespace opp_lib.Strategy
 {
     public class Walk : Algorithm
     {
-
         public override List<float> BehaveDifferently(PlayerInput playerInput, float speed, float xPosition, float yPosition)
         {
             List<float> positions = new List<float>();

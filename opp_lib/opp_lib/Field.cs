@@ -8,13 +8,13 @@ namespace opp_lib
 {
     public class Field
     {
-        public string color;
-        public float frictionMultiplier;
+        public string Color { get; set; }
+        public float FrictionMultiplier { get; set; }
 
         public Field(string color, float frictionMultiplier)
         {
-            this.color = color;
-            this.frictionMultiplier = frictionMultiplier;
+            this.Color = color;
+            this.FrictionMultiplier = frictionMultiplier;
         }
     }
 }

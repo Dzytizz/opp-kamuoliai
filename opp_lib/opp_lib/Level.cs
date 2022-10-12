@@ -8,22 +8,22 @@ namespace opp_lib
 {
     public class Level
     {
-        public Gates leftGates;
-        public Gates rightGates;
-        public Field field;
-        public List<Obstacle> obstacles;
+        public Gates LeftGates { get; set; }
+        public Gates RightGates { get; set; }
+        public Field Field { get; set; }
+        public List<Obstacle> Obstacles { get; set; }
 
         public Level()
         {
-            this.obstacles = new List<Obstacle>();
+            this.Obstacles = new List<Obstacle>();
         }
 
         public void SetLevel(Gates leftGates, Gates rightGates, Field field, List<Obstacle> obstacles)
         {
-            this.leftGates = leftGates;
-            this.rightGates = rightGates;
-            this.field = field;
-            this.obstacles = obstacles;
+            this.LeftGates = leftGates;
+            this.RightGates = rightGates;
+            this.Field = field;
+            this.Obstacles = obstacles;
         }
     }
 }

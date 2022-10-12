@@ -49,8 +49,8 @@
     <Compile Include="Obstacle.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Gates.cs" />
-    <Compile Include="Gatess\GatesLevel2.cs" />
-    <Compile Include="Gatess\GatesLevel1.cs" />
+    <Compile Include="Gates\GatesLevel2.cs" />
+    <Compile Include="Gates\GatesLevel1.cs" />
     <Compile Include="Obstacles\ObstacleLevel2.cs" />
     <Compile Include="Obstacles\ObstacleLevel1.cs" />
     <Compile Include="Player.cs" />

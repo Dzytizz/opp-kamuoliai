@@ -99,13 +99,13 @@ namespace opp_client
             connection.On<string>("LevelResponse", (response) => 
             {
                 Level level = JsonConvert.DeserializeObject<Level>(response);
-                leftGates = CreateGates(level.leftGates);
-                rightGates = CreateGates(level.rightGates);
-                CreateField(level.field);
+                leftGates = CreateGates(level.LeftGates);
+                rightGates = CreateGates(level.RightGates);
+                CreateField(level.Field);
                 this.Controls.Add(leftGates);
                 this.Controls.Add(rightGates);
                 obstacles = new List<PictureBox>();
-                foreach(Obstacle o in level.obstacles)
+                foreach(Obstacle o in level.Obstacles)
                 {
                     PictureBox obstacle = CreateObstacle(o);
                     obstacles.Add(obstacle);
@@ -117,10 +117,10 @@ namespace opp_client
             {
                 Level level = JsonConvert.DeserializeObject<Level>(response);
                 ClearObstacles();
-                UpdateGates(leftGates, level.leftGates);
-                UpdateGates(rightGates, level.rightGates);
-                CreateField(level.field);
-                foreach (Obstacle o in level.obstacles)
+                UpdateGates(leftGates, level.LeftGates);
+                UpdateGates(rightGates, level.RightGates);
+                CreateField(level.Field);
+                foreach (Obstacle o in level.Obstacles)
                 {
                     PictureBox obstacle = CreateObstacle(o);
                     obstacles.Add(obstacle);
@@ -153,18 +153,6 @@ namespace opp_client
                     logList.Items.Add(ex.Message);
                 }
             }
-
-           /* if (!playerID.Equals(""))
-            {
-                try
-                {
-                    await connection.InvokeAsync("GameStateRequest");
-                }
-                catch (Exception ex)
-                {
-                    logList.Items.Add(ex.Message);
-                } 
-            }*/
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -269,25 +257,25 @@ namespace opp_client
         private PictureBox CreateGates(Gates gates)
         {
             PictureBox picture = new PictureBox();
-            picture.Width = gates.width;
-            picture.Height = gates.height;
-            picture.BackColor = Color.FromName(gates.color);
-            picture.Location = new Point(gates.xPosition, gates.yPosition);
+            picture.Width = gates.Width;
+            picture.Height = gates.Height;
+            picture.BackColor = Color.FromName(gates.Color);
+            picture.Location = new Point(gates.XPosition, gates.YPosition);
             return picture;
         }
 
         private void CreateField(Field field)
         {
-            this.BackColor = Color.FromName(field.color);
+            this.BackColor = Color.FromName(field.Color);
         }
 
         private PictureBox CreateObstacle(Obstacle obstacle)
         {
             PictureBox picture = new PictureBox();
-            picture.Width = obstacle.width;
-            picture.Height = obstacle.height;
-            picture.BackColor = Color.FromName(obstacle.color);
-            picture.Location = new Point(obstacle.xPosition, obstacle.yPosition);
+            picture.Width = obstacle.Width;
+            picture.Height = obstacle.Height;
+            picture.BackColor = Color.FromName(obstacle.Color);
+            picture.Location = new Point(obstacle.XPosition, obstacle.YPosition);
             return picture;
         }
 
@@ -302,10 +290,10 @@ namespace opp_client
 
         private void UpdateGates(PictureBox picture, Gates gates)
         {
-            picture.Width = gates.width;
-            picture.Height = gates.height;
-            picture.BackColor = Color.FromName(gates.color);
-            picture.Location = new Point(gates.xPosition, gates.yPosition);
+            picture.Width = gates.Width;
+            picture.Height = gates.Height;
+            picture.BackColor = Color.FromName(gates.Color);
+            picture.Location = new Point(gates.XPosition, gates.YPosition);
         }
 
         //private async void button1_Click(object sender, EventArgs e)
