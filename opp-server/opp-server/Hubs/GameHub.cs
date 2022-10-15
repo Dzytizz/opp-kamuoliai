@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using opp_server.Classes.Factory;
 using opp_server.Classes.Abstract_Factory;
 using opp_server.Classes.Observer;
+using opp_server.Classes.Builder;
 
 namespace opp_server.Hubs
 {
@@ -16,12 +17,14 @@ namespace opp_server.Hubs
         public GameState GameState;
         public Level Level;
         public Server Server;
+        public Ball Ball;
 
-        public GameHub(Level level, Server server)
+        public GameHub(Level level, Server server, Ball ball)
         {
             GameState = GameState.GetInstance();
             this.Level = level;
             this.Server = server;
+            this.Ball = ball;
         }
 
         //public async Task JoinGameRequest()
@@ -40,6 +43,15 @@ namespace opp_server.Hubs
         //    }
         //    await Clients.Client(Context.ConnectionId).SendAsync("JoinGameResponse", response);
         //}
+
+        public async Task BallRequest()
+        {
+            // ======= some code that updates ball position goes here =======
+            //Ball.XPosition += 2;
+
+            string ballJSON = JsonConvert.SerializeObject(Ball, Formatting.None, new JsonSerializerSettings(){ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+            await Clients.All.SendAsync("BallResponse", ballJSON);
+        }
 
         public async Task IsAdminRequest()
         {      
@@ -92,7 +104,6 @@ namespace opp_server.Hubs
             string levelJSON = JsonConvert.SerializeObject(Level);
             await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
         }
-
 
         public async Task UpdatePlayerPositionRequest(string playerID, string playerInputJSON)
         {

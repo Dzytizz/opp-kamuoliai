@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using opp_lib;
 using opp_client.Singleton;
+using System.IO;
+using opp_client.Properties;
 
 namespace opp_client
 {
@@ -24,6 +26,8 @@ namespace opp_client
         PictureBox leftGates;
         PictureBox rightGates;
         List<PictureBox> obstacles;
+
+        Control ballControl;
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -41,6 +45,8 @@ namespace opp_client
             playerID = "";
             playerInput = new PlayerInput();
             mpObjects = new Dictionary<string, PictureBox>();
+
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
         }
 
         private async void ClientWindow_Load(object sender, EventArgs e)
@@ -70,6 +76,58 @@ namespace opp_client
             //    logList.Items.Add(response);
             //});
 
+            connection.On<string>("BallResponse", (response) =>
+            {
+                Ball ball = JsonConvert.DeserializeObject<Ball>(response);
+
+                if(ballControl == null) // if no ball is created, create one using Builder
+                {
+                    // initial setup
+                    OvalPictureBox pb = new OvalPictureBox();
+                    pb.Width = pb.Height = ball.VisualParts[0].Radius;
+                    pb.BackColor = Color.FromName(ball.MainColor);
+                    ballControl = pb;
+                    this.Controls.Add(ballControl);
+
+                    // layered images
+                    Control lastLayer = ballControl;
+                    for (int i = 0; i < ball.VisualParts.Count; i++)
+                    {
+                        BallVisual bv = ball.VisualParts[i];
+
+                        pb = new OvalPictureBox();
+                        pb.Width = pb.Height = bv.Radius;
+                        pb.BackColor = Color.Transparent;
+
+                        pb.Image = (Image)Resources.ResourceManager.GetObject(bv.ImageName);
+                        pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                        pb.BringToFront();
+
+                        ballControl.Controls.Add(pb);
+
+                        lastLayer.Controls.Add(pb);
+                        lastLayer = lastLayer.Controls[0];
+                    }
+
+                    // edge always on top
+                    if (ball.HasEdge)
+                    {
+                        pb = new OvalPictureBox();
+                        pb.Width = pb.Height = ball.Radius;
+                        pb.BackColor = Color.Transparent;
+
+                        pb.Image = Resources.border;
+                        pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                        pb.BringToFront();
+
+                        lastLayer.Controls.Add(pb);
+                    }
+                }
+
+                // else ball location is updated only
+                ballControl.Location = new Point(ball.XPosition, ball.YPosition);
+            });
+
             connection.On<string>("GameStateResponse", (response) =>
             {
                 GameState gameStateResponse = JsonConvert.DeserializeObject<GameState>(response);
@@ -78,8 +136,8 @@ namespace opp_client
                 for (int i = gameStateResponse.Teams.Count - 1; i >= 0; i--)
                 {
                     Team team = gameStateResponse.Teams[i];
-                    
-                    foreach(KeyValuePair<string, Player> entry in team.Players)
+
+                    foreach (KeyValuePair<string, Player> entry in team.Players)
                     {
                         if (!mpObjects.ContainsKey(entry.Key))
                         {
@@ -89,18 +147,13 @@ namespace opp_client
                             pb.BackColor = Color.FromName(team.Color);
                             if (entry.Key.Equals(playerID))
                             {
-                                pb.BackColor =ControlPaint.LightLight(pb.BackColor);
+                                pb.BackColor = ControlPaint.LightLight(pb.BackColor);
                             }
                             mpObjects.Add(entry.Key, pb);
                             this.Controls.Add(pb);
                         }
 
                         mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
-                    }
-
-                    for (int j = gameStateResponse.Teams[i].Players.Count - 1; j >= 0; j--)
-                    {
-                       
                     }
                 }
             });
@@ -141,6 +194,7 @@ namespace opp_client
             {
                 await connection.InvokeAsync("LevelRequest");
                 await connection.InvokeAsync("GameStateRequest");
+                await connection.InvokeAsync("BallRequest");
             }
             catch (Exception ex)
             {
@@ -152,12 +206,25 @@ namespace opp_client
         {
             if (!playerID.Equals(""))
             {
+                // send inputs to server
                 if(playerInput.IsActive())
+                {
+                    try
+                    {
+                        string playerInputJSON = JsonConvert.SerializeObject(playerInput);
+                        playerInput.ResetJump();
+                        await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
+                    }
+                    catch (Exception ex)
+                    {
+                        logList.Items.Add(ex.Message);
+                    }
+                }
+            
+                // request recalculated ball position from server
                 try
                 {
-                    string playerInputJSON = JsonConvert.SerializeObject(playerInput);
-                    playerInput.ResetJump();
-                    await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
+                    await connection.InvokeAsync("BallRequest");
                 }
                 catch (Exception ex)
                 {

@@ -28,7 +28,6 @@ namespace opp_lib
             ToJump = toJump;
             ToJumpKeyUp = toJumpKeyUp;
         }
-
         public PlayerInput()
         {
             Up = false;
@@ -40,7 +39,6 @@ namespace opp_lib
             ToJump = false;
             ToJumpKeyUp = true;
         }
-
         public void ResetJump()
         {
             if (ToJump) ToJump = false;
