@@ -23,5 +23,10 @@ namespace opp_server.Classes.Builder
         {
             return builder.AddCircles().AddLines().AddDots().AddEdge().Build();
         }
+
+        public Ball ConstructInflated(Builder builder)
+        {
+            return builder.AddAir().AddAir().AddAir().AddAir().Build();
+        }
     }
 }

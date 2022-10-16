@@ -76,7 +76,7 @@ namespace opp_client
             this.Controls.Add(this.label2);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Waiting";
             this.Text = "Waiting";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Waiting_FormClosed);

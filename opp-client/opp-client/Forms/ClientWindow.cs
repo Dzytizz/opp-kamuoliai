@@ -84,7 +84,7 @@ namespace opp_client
                 {
                     // initial setup
                     OvalPictureBox pb = new OvalPictureBox();
-                    pb.Width = pb.Height = ball.VisualParts[0].Radius;
+                    pb.Width = pb.Height = ball.Radius;
                     pb.BackColor = Color.FromName(ball.MainColor);
                     ballControl = pb;
                     this.Controls.Add(ballControl);
@@ -123,7 +123,6 @@ namespace opp_client
                         lastLayer.Controls.Add(pb);
                     }
                 }
-
                 // else ball location is updated only
                 ballControl.Location = new Point(ball.XPosition, ball.YPosition);
             });
@@ -365,6 +364,11 @@ namespace opp_client
             picture.Height = gates.Height;
             picture.BackColor = Color.FromName(gates.Color);
             picture.Location = new Point(gates.XPosition, gates.YPosition);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
 
         //private async void button1_Click(object sender, EventArgs e)

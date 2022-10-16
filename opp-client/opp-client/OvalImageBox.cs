@@ -21,7 +21,8 @@ namespace opp_client
             base.OnResize(e);
             using (var gp = new GraphicsPath())
             {
-                gp.AddEllipse(new Rectangle(0, 0, this.Width - 1, this.Height - 1));
+                gp.AddEllipse(0, 0, this.Width - 1, this.Height - 1);
+
                 this.Region = new Region(gp);
             }
         }

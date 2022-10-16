@@ -34,5 +34,11 @@ namespace opp_server.Classes.Builder
             CurrentBall.VisualParts.Add(bv);
             return this;
         }
+
+        public override Builder AddAir()
+        {
+            CurrentBall.Radius += 5;
+            return this;
+        }
     }
 }
