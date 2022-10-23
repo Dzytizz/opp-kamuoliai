@@ -15,6 +15,8 @@ using System.IO;
 using opp_client.Properties;
 using opp_lib.Decorator;
 using opp_client.PlayerDecorators;
+using opp_client.Prototype;
+
 
 namespace opp_client
 {
@@ -135,6 +137,7 @@ namespace opp_client
                 GameState gameStateResponse = JsonConvert.DeserializeObject<GameState>(response);
                 //logList.Items.Add(gameStateResponse.ToString());
 
+                int teamNumber = 0;
                 for (int i = gameStateResponse.Teams.Count - 1; i >= 0; i--)
                 {
                     Team team = gameStateResponse.Teams[i];
@@ -168,6 +171,41 @@ namespace opp_client
 
                         mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
                     }
+                    int nullPosition = 0;
+                    
+                    Fan fan1 = new Fan(nullPosition, nullPosition, team.Color, 20);
+
+                    if (teamNumber == 0)
+                    {
+                        for (int j = 0; j < 10; j++)
+                        {
+                            Fan fan = fan1.Clone() as Fan;
+                            fan.XPosition = fan1.XPosition + 40 + j * 40;
+                            fan.YPosition = fan1.YPosition + 340;
+                            OvalPictureBox fanBox = fan.CreateFan();
+                            int ihash = fan.GetHashCode();
+                            // Console.WriteLine(ihash);
+                            //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
+                            this.Controls.Add(fanBox);
+                        }
+                    }
+
+                    if (teamNumber == 1)
+                    {
+                        for (int j = 0; j < 10; j++)
+                        {
+                            Fan fan = (Fan)fan1.Clone();
+                            fan.XPosition = fan1.XPosition + 430 + j * 40;
+                            fan.YPosition = fan1.YPosition + 340;
+                            OvalPictureBox fanBox = fan.CreateFan();
+                            int ihash = fan.GetHashCode();
+                            //Console.WriteLine(ihash);
+                            //Console.WriteLine("Antra komanda " + j + ": " + ihash);
+                            this.Controls.Add(fanBox);
+                        }
+                    }
+                    teamNumber++;
+
                 }
             });
 

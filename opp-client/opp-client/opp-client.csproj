@@ -186,6 +186,7 @@
     <Compile Include="Forms\Waiting.Designer.cs">
       <DependentUpon>Waiting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Prototype\Fan.cs" />
     <Compile Include="Singleton\ThemeManager.cs" />
     <EmbeddedResource Include="Forms\ClientWindow.resx">
       <DependentUpon>ClientWindow.cs</DependentUpon>
