@@ -122,7 +122,7 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID)
+        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
         {
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
@@ -137,7 +137,7 @@ namespace opp_server.Hubs
                 newPlayerID = oldPlayerID;
             }
 
-            Player newPlayer = new Player($"Team{teamIndex}Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
+            Player newPlayer = new Player(playerName, 0, 0, playerUniform, playerNumber);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
             Server.Subscribe(new Client(Clients.Client(Context.ConnectionId)));
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
