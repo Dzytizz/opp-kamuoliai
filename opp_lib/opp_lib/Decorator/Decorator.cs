@@ -9,10 +9,10 @@ namespace opp_lib.Decorator
 {
     public abstract class Decorator : IDecorator
     {
-        public Player Player;
-        public Decorator(Player player)
+        public IDecorator Component;
+        public Decorator(IDecorator component)
         {
-            Player = player;
+            Component = component;
         }
 
         public abstract OvalPictureBox Display(string teamColor);

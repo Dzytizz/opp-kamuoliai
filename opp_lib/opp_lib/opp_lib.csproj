@@ -48,12 +48,9 @@
     <Compile Include="BallVisual.cs" />
     <Compile Include="Decorator\Decorator.cs" />
     <Compile Include="Decorator\IDecorator.cs" />
-    <Compile Include="Decorator\LabelDecorator.cs" />
     <Compile Include="OvalPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Decorator\UniformDecorator.cs" />
-    <Compile Include="Decorator\UniformNumberDecorator.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Abstract Factory\Fields\FieldLevel2.cs" />
     <Compile Include="Abstract Factory\Fields\FieldLevel1.cs" />

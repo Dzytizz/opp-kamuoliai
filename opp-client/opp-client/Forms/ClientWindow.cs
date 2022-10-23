@@ -14,6 +14,7 @@ using opp_client.Singleton;
 using System.IO;
 using opp_client.Properties;
 using opp_lib.Decorator;
+using opp_client.PlayerDecorators;
 
 namespace opp_client
 {
@@ -152,8 +153,10 @@ namespace opp_client
                             //}
                             //mpObjects.Add(entry.Key, pb);
                             //this.Controls.Add(pb);
-                            Decorator labelDecorator = new LabelDecorator(entry.Value);
-                            OvalPictureBox pb = labelDecorator.Display(team.Color);
+                            Decorator playerNameDecorator = new PlayerNameDecorator(entry.Value, entry.Value.Name);
+                            Decorator playerUniformDecorator = new PlayerUniformDecorator(playerNameDecorator, entry.Value.UniformName);
+                            Decorator playerNumberDecorator = new PlayerNumberDecorator(playerUniformDecorator, entry.Value.Number.ToString());
+                            OvalPictureBox pb = playerNumberDecorator.Display(team.Color);
                             if (entry.Key.Equals(playerID))
                             {
                                 pb.BackColor = ControlPaint.LightLight(pb.BackColor);

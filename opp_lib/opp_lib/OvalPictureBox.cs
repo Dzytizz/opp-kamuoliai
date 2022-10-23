@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace opp_lib.Decorator
+namespace opp_lib
 {
     public class OvalPictureBox : PictureBox
     {

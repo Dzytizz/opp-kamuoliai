@@ -17,12 +17,16 @@ namespace opp_lib
         public float YPosition { get; set; }
         public float Speed { get; set; } = 5;
         private MovementMode MovementMode { get; set; }
+        public string UniformName { get; set; }
+        public int Number { get; set; }
 
-        public Player(string name, float xPosition, float yPosition)
+        public Player(string name, float xPosition, float yPosition, string uniformName, int number)
         {
             Name = name;
             XPosition = xPosition;
             YPosition = yPosition;
+            UniformName = uniformName;
+            Number = number;
         }
 
         public void Move(PlayerInput playerInput)
