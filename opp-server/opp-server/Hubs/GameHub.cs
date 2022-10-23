@@ -137,7 +137,7 @@ namespace opp_server.Hubs
                 newPlayerID = oldPlayerID;
             }
 
-            Player newPlayer = new Player($"Team{teamIndex}Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
+            Player newPlayer = new Player($"Player{GameState.Teams.ElementAt(teamIndex).Players.Count + 1}", 0, 0);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
             Server.Subscribe(new Client(Clients.Client(Context.ConnectionId)));
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);

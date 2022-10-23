@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace opp_client
+namespace opp_lib.Decorator
 {
     public class OvalPictureBox : PictureBox
     {
@@ -26,5 +26,19 @@ namespace opp_client
                 this.Region = new Region(gp);
             }
         }
+
+        //public static OvalPictureBox SquareToOval(PictureBox pictureBox)
+        //{
+        //    OvalPictureBox ovalPictureBox = new OvalPictureBox();
+        //    ovalPictureBox.Width = pictureBox.Width;
+        //    ovalPictureBox.Height = pictureBox.Height;
+        //    ovalPictureBox.BackColor = pictureBox.BackColor;
+        //    ovalPictureBox.Location = pictureBox.Location;
+        //    foreach (Control control in pictureBox.Controls)
+        //    {
+        //        ovalPictureBox.Controls.Add(control);
+        //    }
+        //    return ovalPictureBox;
+        //}
     }
 }

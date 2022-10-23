@@ -13,6 +13,7 @@ using opp_lib;
 using opp_client.Singleton;
 using System.IO;
 using opp_client.Properties;
+using opp_lib.Decorator;
 
 namespace opp_client
 {
@@ -26,6 +27,7 @@ namespace opp_client
         PictureBox leftGates;
         PictureBox rightGates;
         List<PictureBox> obstacles;
+        Control temp;
 
         Control ballControl;
 
@@ -140,16 +142,25 @@ namespace opp_client
                     {
                         if (!mpObjects.ContainsKey(entry.Key))
                         {
-                            OvalPictureBox pb = new OvalPictureBox();
-                            pb.Width = 50;
-                            pb.Height = 50;
-                            pb.BackColor = Color.FromName(team.Color);
+                            //OvalPictureBox pb = new OvalPictureBox();
+                            //pb.Width = 50;
+                            //pb.Height = 50;
+                            //pb.BackColor = Color.FromName(team.Color);
+                            //if (entry.Key.Equals(playerID))
+                            //{
+                            //    pb.BackColor = ControlPaint.LightLight(pb.BackColor);
+                            //}
+                            //mpObjects.Add(entry.Key, pb);
+                            //this.Controls.Add(pb);
+                            Decorator labelDecorator = new LabelDecorator(entry.Value);
+                            OvalPictureBox pb = labelDecorator.Display(team.Color);
                             if (entry.Key.Equals(playerID))
                             {
                                 pb.BackColor = ControlPaint.LightLight(pb.BackColor);
                             }
                             mpObjects.Add(entry.Key, pb);
                             this.Controls.Add(pb);
+           
                         }
 
                         mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
