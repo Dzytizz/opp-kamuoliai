@@ -49,7 +49,7 @@ namespace opp_lib
 
         public bool IsActive()
         {
-            return (Up || Down || Left || Right);
+            return (Up || Down || Left || Right || ToUndo);
         }
 
         public void Clear()

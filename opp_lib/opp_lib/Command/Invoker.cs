@@ -19,6 +19,8 @@ namespace opp_lib.Command
             if (current > 0)
             {
                 Command command = commands[--current] as Command;
+                
+                
                 positions = command.Undo();
             }
             return positions;
@@ -35,21 +37,21 @@ namespace opp_lib.Command
             }
             else if (playerInput.Right)
             {
-                Command command = new JumpUp(this.jump, playerInput, speed, xPosition, yPosition);
+                Command command = new JumpRight(this.jump, playerInput, speed, xPosition, yPosition);
                 positions = command.Execute();
                 commands.Add(command);
                 current++;
             }
             else if (playerInput.Down)
             {
-                Command command = new JumpUp(this.jump, playerInput, speed, xPosition, yPosition);
+                Command command = new JumpDown(this.jump, playerInput, speed, xPosition, yPosition);
                 positions = command.Execute();
                 commands.Add(command);
                 current++;
             }
             else if (playerInput.Left)
             {
-                Command command = new JumpUp(this.jump, playerInput, speed, xPosition, yPosition);
+                Command command = new JumpLeft(this.jump, playerInput, speed, xPosition, yPosition);
                 positions = command.Execute();
                 commands.Add(command);
                 current++;

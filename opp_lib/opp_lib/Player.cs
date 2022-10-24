@@ -42,8 +42,8 @@ namespace opp_lib
         {
             if (positions.Count == 2)
             {
-                XPosition = positions[0];
-                YPosition = positions[1];
+                this.XPosition = positions[0];
+                this.YPosition = positions[1];
             }
         }
 
@@ -67,6 +67,7 @@ namespace opp_lib
             }
             else if (playerInput.ToUndo)
             {
+                //Console.WriteLine("Doing");
                 List<float> positions = invoker.Undo(playerInput, Speed, XPosition, YPosition);
                 SetPositions(positions);
                 //MovementMode = new Jump(); // fastest (4)

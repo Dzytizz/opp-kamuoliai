@@ -226,6 +226,7 @@ namespace opp_client
                     {
                         string playerInputJSON = JsonConvert.SerializeObject(playerInput);
                         playerInput.ResetJump();
+                        playerInput.ToUndo = false;
                         await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
                     }
                     catch (Exception ex)
@@ -264,7 +265,7 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
-            if (e.KeyCode == Keys.Z)
+            if (e.KeyCode == Keys.B)
             {
                 playerInput.ToUndo = true;
             }
@@ -301,7 +302,7 @@ namespace opp_client
             {
                 playerInput.Right = false;
             }
-            if (e.KeyCode == Keys.Z)
+            if (e.KeyCode == Keys.B)
             {
                 playerInput.ToUndo = false;
             }

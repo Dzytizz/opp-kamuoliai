@@ -8,6 +8,7 @@ namespace opp_lib.Command
 {
     public abstract class Command
     {
+
         public abstract List<float> Execute();
         public abstract List<float> Undo();
 
