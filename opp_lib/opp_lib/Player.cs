@@ -1,4 +1,5 @@
-﻿using opp_lib.Decorator;
+﻿using opp_lib.Command;
+using opp_lib.Decorator;
 using opp_lib.Strategy;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace opp_lib
         public string UniformName { get; set; }
         public int Number { get; set; }
 
+        Invoker invoker = new Invoker();
+
         public Player(string name, float xPosition, float yPosition, string uniformName, int number)
         {
             Name = name;
@@ -32,10 +35,15 @@ namespace opp_lib
         public void Move(PlayerInput playerInput)
         {
             List<float> positions = this.MovementMode.MoveDifferently(playerInput, Speed, XPosition, YPosition);
+            SetPositions(positions);
+        }
+
+        public void SetPositions (List<float> positions)
+        {
             if (positions.Count == 2)
             {
-                XPosition = positions[0];
-                YPosition = positions[1];
+                this.XPosition = positions[0];
+                this.YPosition = positions[1];
             }
         }
 
@@ -44,20 +52,32 @@ namespace opp_lib
             if (playerInput.ToWalk)
             {
                 MovementMode = new Walk(); // slowest (1)
+                Move(playerInput);
             }
             else if (playerInput.ToRun)
             {
                 MovementMode = new Run(); // faster (3)
+                Move(playerInput);
             }
             else if (playerInput.ToJump)
             {
-                MovementMode = new Jump(); // fastest (4)
+                List<float> positions = invoker.DoJump(playerInput, Speed, XPosition, YPosition);
+                SetPositions(positions);
+                //MovementMode = new Jump(); // fastest (4)
+            }
+            else if (playerInput.ToUndo)
+            {
+                //Console.WriteLine("Doing");
+                List<float> positions = invoker.Undo(playerInput, Speed, XPosition, YPosition);
+                SetPositions(positions);
+                //MovementMode = new Jump(); // fastest (4)
             }
             else
             {
                 MovementMode = new Jog(); // normal (2)
+                Move(playerInput);
             }
-            Move(playerInput);
+            
         }
         public override string ToString()
         {

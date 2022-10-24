@@ -264,6 +264,7 @@ namespace opp_client
                     {
                         string playerInputJSON = JsonConvert.SerializeObject(playerInput);
                         playerInput.ResetJump();
+                        playerInput.ToUndo = false;
                         await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
                     }
                     catch (Exception ex)
@@ -302,7 +303,11 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
-
+            if (e.KeyCode == Keys.B)
+            {
+                playerInput.ToUndo = true;
+                playerInput.ToUndoKeyUp = false;
+            }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
                 playerInput.ToWalk = true;
@@ -336,7 +341,11 @@ namespace opp_client
             {
                 playerInput.Right = false;
             }
-
+            if (e.KeyCode == Keys.B)
+            {
+                playerInput.ToUndo = false;
+                playerInput.ToUndoKeyUp = true;
+            }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
                 playerInput.ToWalk = false;
