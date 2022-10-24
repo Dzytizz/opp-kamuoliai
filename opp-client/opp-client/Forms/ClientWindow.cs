@@ -81,11 +81,44 @@ namespace opp_client
             //    logList.Items.Add(response);
             //});
 
+            connection.On<string, string>("TeamColorsResponse", (team1Color, team2Color) =>
+            {
+                int nullPosition = 0;
+                int radius = 20;
+                Fan fan1 = new Fan(nullPosition, nullPosition, team1Color, radius);
+
+                for (int j = 0; j < 10; j++)
+                {
+                    Fan fan = fan1.Clone() as Fan;
+                    fan.XPosition = fan1.XPosition + 40 + j * 40;
+                    fan.YPosition = fan1.YPosition + 340;
+                    OvalPictureBox fanBox = fan.CreateFan();
+                    int ihash = fan.GetHashCode();
+                    // Console.WriteLine(ihash);
+                    //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
+                    this.Controls.Add(fanBox);
+                }
+
+                fan1 = new Fan(nullPosition, nullPosition, team2Color, radius);
+
+                for (int j = 0; j < 10; j++)
+                {
+                    Fan fan = (Fan)fan1.Clone();
+                    fan.XPosition = fan1.XPosition + 430 + j * 40;
+                    fan.YPosition = fan1.YPosition + 340;
+                    OvalPictureBox fanBox = fan.CreateFan();
+                    int ihash = fan.GetHashCode();
+                    //Console.WriteLine(ihash);
+                    //Console.WriteLine("Antra komanda " + j + ": " + ihash);
+                    this.Controls.Add(fanBox);
+                }
+            });
+
             connection.On<string>("BallResponse", (response) =>
             {
                 Ball ball = JsonConvert.DeserializeObject<Ball>(response);
 
-                if(ballControl == null) // if no ball is created, create one using Builder
+                if (ballControl == null) // if no ball is created, create one using Builder
                 {
                     // initial setup
                     OvalPictureBox pb = new OvalPictureBox();
@@ -166,50 +199,15 @@ namespace opp_client
                             }
                             mpObjects.Add(entry.Key, pb);
                             this.Controls.Add(pb);
-           
+
                         }
 
                         mpObjects[entry.Key].Location = new Point((int)entry.Value.XPosition, (int)entry.Value.YPosition);
                     }
-                    int nullPosition = 0;
-                    
-                    Fan fan1 = new Fan(nullPosition, nullPosition, team.Color, 20);
-
-                    if (teamNumber == 0)
-                    {
-                        for (int j = 0; j < 10; j++)
-                        {
-                            Fan fan = fan1.Clone() as Fan;
-                            fan.XPosition = fan1.XPosition + 40 + j * 40;
-                            fan.YPosition = fan1.YPosition + 340;
-                            OvalPictureBox fanBox = fan.CreateFan();
-                            int ihash = fan.GetHashCode();
-                            // Console.WriteLine(ihash);
-                            //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
-                            this.Controls.Add(fanBox);
-                        }
-                    }
-
-                    if (teamNumber == 1)
-                    {
-                        for (int j = 0; j < 10; j++)
-                        {
-                            Fan fan = (Fan)fan1.Clone();
-                            fan.XPosition = fan1.XPosition + 430 + j * 40;
-                            fan.YPosition = fan1.YPosition + 340;
-                            OvalPictureBox fanBox = fan.CreateFan();
-                            int ihash = fan.GetHashCode();
-                            //Console.WriteLine(ihash);
-                            //Console.WriteLine("Antra komanda " + j + ": " + ihash);
-                            this.Controls.Add(fanBox);
-                        }
-                    }
-                    teamNumber++;
-
                 }
             });
 
-            connection.On<string>("LevelResponse", (response) => 
+            connection.On<string>("LevelResponse", (response) =>
             {
                 Level level = JsonConvert.DeserializeObject<Level>(response);
                 leftGates = CreateGates(level.LeftGates);
@@ -218,7 +216,7 @@ namespace opp_client
                 this.Controls.Add(leftGates);
                 this.Controls.Add(rightGates);
                 obstacles = new List<PictureBox>();
-                foreach(Obstacle o in level.Obstacles)
+                foreach (Obstacle o in level.Obstacles)
                 {
                     PictureBox obstacle = CreateObstacle(o);
                     obstacles.Add(obstacle);
@@ -226,7 +224,7 @@ namespace opp_client
                 }
             });
 
-            connection.On<string>("LevelChangeResponse", (response) => 
+            connection.On<string>("LevelChangeResponse", (response) =>
             {
                 Level level = JsonConvert.DeserializeObject<Level>(response);
                 ClearObstacles();
@@ -246,6 +244,7 @@ namespace opp_client
                 await connection.InvokeAsync("LevelRequest");
                 await connection.InvokeAsync("GameStateRequest");
                 await connection.InvokeAsync("BallRequest");
+                await connection.InvokeAsync("TeamColorsRequest");
             }
             catch (Exception ex)
             {
@@ -258,7 +257,7 @@ namespace opp_client
             if (!playerID.Equals(""))
             {
                 // send inputs to server
-                if(playerInput.IsActive())
+                if (playerInput.IsActive())
                 {
                     try
                     {
@@ -272,7 +271,7 @@ namespace opp_client
                         logList.Items.Add(ex.Message);
                     }
                 }
-            
+
                 // request recalculated ball position from server
                 try
                 {
@@ -287,7 +286,7 @@ namespace opp_client
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.W)
             {
                 playerInput.Up = true;
             }
@@ -412,7 +411,7 @@ namespace opp_client
 
         private void ClearObstacles()
         {
-            foreach(PictureBox obstacle in obstacles)
+            foreach (PictureBox obstacle in obstacles)
             {
                 this.Controls.Remove(obstacle);
             }
