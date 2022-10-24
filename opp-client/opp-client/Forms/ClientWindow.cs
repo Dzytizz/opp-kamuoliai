@@ -268,6 +268,7 @@ namespace opp_client
             if (e.KeyCode == Keys.B)
             {
                 playerInput.ToUndo = true;
+                playerInput.ToUndoKeyUp = false;
             }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
@@ -305,6 +306,7 @@ namespace opp_client
             if (e.KeyCode == Keys.B)
             {
                 playerInput.ToUndo = false;
+                playerInput.ToUndoKeyUp = true;
             }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {

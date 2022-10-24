@@ -17,8 +17,9 @@ namespace opp_lib
         public bool ToJump { get; set; }
         public bool ToUndo { get; set; }
         public bool ToJumpKeyUp { get; set; }
+        public bool ToUndoKeyUp { get; set; }
 
-        public PlayerInput(bool up, bool down, bool left, bool right, bool toRun, bool toWalk, bool toJump, bool toJumpKeyUp, bool toUndo)
+        public PlayerInput(bool up, bool down, bool left, bool right, bool toRun, bool toWalk, bool toJump, bool toJumpKeyUp, bool toUndo, bool toUndoKeyUp)
         {
             Up = up;
             Down = down;
@@ -29,6 +30,7 @@ namespace opp_lib
             ToJump = toJump;
             ToJumpKeyUp = toJumpKeyUp;
             ToUndo = toUndo;
+            ToUndoKeyUp = toUndoKeyUp;
         }
         public PlayerInput()
         {

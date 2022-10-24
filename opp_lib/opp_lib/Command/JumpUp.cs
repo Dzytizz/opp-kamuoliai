@@ -32,8 +32,8 @@ namespace opp_lib.Command
         {
             this.playerInput.Up = false;
             this.playerInput.Down = true;
-
-            List<float> positions = jump.MoveDifferently(this.playerInput, this.speed, this.xPosition, this.yPosition);
+            //List<float> positions = jump.MoveDifferently(this.playerInput, this.speed, this.xPosition, this.yPosition);
+            List<float> positions = new List<float> { this.xPosition, this.yPosition };
             return positions;
         }
     }
