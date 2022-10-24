@@ -264,7 +264,10 @@ namespace opp_client
             {
                 playerInput.Right = true;
             }
-
+            if (e.KeyCode == Keys.Z)
+            {
+                playerInput.ToUndo = true;
+            }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
                 playerInput.ToWalk = true;
@@ -298,7 +301,10 @@ namespace opp_client
             {
                 playerInput.Right = false;
             }
-
+            if (e.KeyCode == Keys.Z)
+            {
+                playerInput.ToUndo = false;
+            }
             if (e.KeyCode == Keys.ControlKey) // slowest (1)
             {
                 playerInput.ToWalk = false;
