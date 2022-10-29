@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using opp_client.Facade;
 using opp_client.Singleton;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace opp_client
     public partial class Waiting : Form
     {
         public static HubConnection connection;
+
+        private ThemeClient themeClient = new ThemeClient();
         public Waiting()
         {
             InitializeComponent();
@@ -33,13 +36,7 @@ namespace opp_client
 
         private async void Waiting_Load(object sender, EventArgs e)
         {
-            ThemeManager tm = ThemeManager.GetInstance();
-            this.BackColor = tm.BackgroundDark;
-            this.Font = tm.TextFont;
-            foreach (Control control in this.Controls)
-            {
-                tm.UpdateColor(control);
-            }
+            themeClient.ApplyTheme(this);
 
             connection.On<bool>("IsAdminResponse", (isAdmin) =>
             {

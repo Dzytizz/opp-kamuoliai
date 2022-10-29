@@ -157,6 +157,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Facade\Facade.cs" />
+    <Compile Include="Facade\InputSubsystem.cs" />
+    <Compile Include="Facade\PlayerClient.cs" />
+    <Compile Include="Facade\PlayerPositionUpdateSubsystem.cs" />
+    <Compile Include="Facade\ThemeApplySubsystem.cs" />
+    <Compile Include="Facade\ThemeClient.cs" />
     <Compile Include="Forms\ClientWindow.cs">
       <SubType>Form</SubType>
     </Compile>

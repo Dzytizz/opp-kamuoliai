@@ -46,7 +46,12 @@ namespace opp_lib
         }
         public void ResetJump()
         {
-            if (ToJump) ToJump = false;
+            ToJump = false;
+        }
+
+        public void ResetUndo()
+        {
+            ToUndo = false;
         }
 
         public bool IsActive()

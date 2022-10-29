@@ -16,7 +16,7 @@ using opp_client.Properties;
 using opp_lib.Decorator;
 using opp_client.PlayerDecorators;
 using opp_client.Prototype;
-
+using opp_client.Facade;
 
 namespace opp_client
 {
@@ -30,9 +30,10 @@ namespace opp_client
         PictureBox leftGates;
         PictureBox rightGates;
         List<PictureBox> obstacles;
-        Control temp;
-
         Control ballControl;
+
+        ThemeClient themeClient = new ThemeClient();
+        PlayerClient playerClient = new PlayerClient();
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -56,13 +57,8 @@ namespace opp_client
 
         private async void ClientWindow_Load(object sender, EventArgs e)
         {
-            ThemeManager tm = ThemeManager.GetInstance();
-            this.BackColor = tm.BackgroundDark;
-            this.Font = tm.TextFont;
-            foreach (Control control in this.Controls)
-            {
-                tm.UpdateColor(control);
-            }
+            //ThemeManager tm = ThemeManager.GetInstance();
+            themeClient.ApplyTheme(this);
 
             //connection.On<string, string>("ReceiveMessage", (user, message) =>
             //{
@@ -261,10 +257,8 @@ namespace opp_client
                 {
                     try
                     {
-                        string playerInputJSON = JsonConvert.SerializeObject(playerInput);
-                        playerInput.ResetJump();
-                        playerInput.ToUndo = false;
-                        await connection.InvokeAsync("UpdatePlayerPositionRequest", playerID, playerInputJSON);
+                        playerClient.ProcessMovement(ref playerInput, connection, playerID);
+                    
                     }
                     catch (Exception ex)
                     {

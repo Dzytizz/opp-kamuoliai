@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using opp_client.Facade;
 using opp_client.Singleton;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace opp_client
     {
         public HubConnection connection;
 
+        ThemeClient themeClient = new ThemeClient();
+
         public TeamCreation(HubConnection connection)
         {
             InitializeComponent();
@@ -29,13 +32,7 @@ namespace opp_client
 
         private void TeamCreation_Load(object sender, EventArgs e)
         {
-            ThemeManager tm = ThemeManager.GetInstance();
-            this.BackColor = tm.BackgroundDark;
-            this.Font = tm.TextFont;
-            foreach (Control control in this.Controls)
-            {
-                tm.UpdateColor(control);
-            }
+            themeClient.ApplyTheme(this);
 
             connection.On("CreateTeamsResponse", () =>
             {
