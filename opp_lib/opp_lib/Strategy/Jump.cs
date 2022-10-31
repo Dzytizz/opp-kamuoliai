@@ -1,4 +1,5 @@
-﻿using System;
+﻿using opp_lib.AdapterMath;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,24 +9,31 @@ namespace opp_lib.Strategy
 {
     public class Jump : MovementMode
     {
+        private ITarget target = new MathAdapter();
+        public float MakeRequest(float number)
+        {
+            float ans = target.Calculate(number, 'P');
+            return ans;
+        }
         public override List<float> MoveDifferently(PlayerInput playerInput, float speed, float xPosition, float yPosition)
         {
             List<float> positions = new List<float>();
+            float pow = MakeRequest(speed);
             if (playerInput.Up)
             {
-                yPosition -= speed * speed;
+                yPosition -= pow;
             }
             else if (playerInput.Right)
             {
-                xPosition += speed * speed;
+                xPosition += pow;
             }
             else if (playerInput.Down)
             {
-                yPosition += speed * speed;
+                yPosition += pow;
             }
             else if (playerInput.Left)
             {
-                xPosition -= speed * speed;
+                xPosition -= pow;
             }
 
             positions.Add(xPosition);

@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdapterMath\Adaptee.cs" />
+    <Compile Include="AdapterMath\ITarget.cs" />
+    <Compile Include="AdapterMath\MathAdapter.cs" />
     <Compile Include="Ball.cs" />
     <Compile Include="BallVisual.cs" />
     <Compile Include="Bridge\Color.cs" />
