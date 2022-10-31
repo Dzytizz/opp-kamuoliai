@@ -46,6 +46,11 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="BallVisual.cs" />
+    <Compile Include="Bridge\Color.cs" />
+    <Compile Include="Bridge\OrangeColor.cs" />
+    <Compile Include="Bridge\PurpleColor.cs" />
+    <Compile Include="Bridge\RectangleObstacle.cs" />
+    <Compile Include="Bridge\SquareObstacle.cs" />
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\JumpDown.cs" />
     <Compile Include="Command\JumpLeft.cs" />

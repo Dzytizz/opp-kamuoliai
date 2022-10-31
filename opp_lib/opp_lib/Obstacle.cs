@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using opp_lib.Bridge;
 using System.Threading.Tasks;
 
 namespace opp_lib
@@ -13,12 +14,14 @@ namespace opp_lib
         public int Width { get;set; }
         public int Height { get;set; }
         public string Color { get;set; }
-
-        public Obstacle(int width, int height, string color)
+        
+        //int width, int height, string color
+        public Obstacle()
         {
-            this.Width = width;
-            this.Height = height;
-            this.Color = color;
+            // this.Color = c;
+            // this.Width = width;
+            // this.Height = height;
+            // this.Color = color;
         }
     }
 }
