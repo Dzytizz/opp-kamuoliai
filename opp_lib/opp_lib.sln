@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "opp_lib", "opp_lib\opp_lib.csproj", "{29FEE9AA-3F3B-43A1-BF88-E920511C31AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "opp_lib.UnitTests", "opp_lib.UnitTests\opp_lib.UnitTests.csproj", "{703B093C-68FB-470B-9640-A6AE76B4C03B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{29FEE9AA-3F3B-43A1-BF88-E920511C31AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29FEE9AA-3F3B-43A1-BF88-E920511C31AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29FEE9AA-3F3B-43A1-BF88-E920511C31AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{703B093C-68FB-470B-9640-A6AE76B4C03B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{703B093C-68FB-470B-9640-A6AE76B4C03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{703B093C-68FB-470B-9640-A6AE76B4C03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{703B093C-68FB-470B-9640-A6AE76B4C03B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
