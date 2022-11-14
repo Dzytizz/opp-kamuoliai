@@ -11,40 +11,44 @@ namespace opp_server.Classes.Factory.Tests
     [TestClass()]
     public class TeamFactoryTests
     {
+        private Creator teamFactory;
+
+        [TestInitialize]
+        public void CreateTeamFactory()
+        {
+            teamFactory = new TeamFactory();
+        }
+
         [TestMethod()]
         public void GetTeam_SelectsRedTeam_RedTeam()
         {
             string selectedColor = "Red";
-            Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team is RedTeam);
+            Assert.IsInstanceOfType(team, typeof(RedTeam));
         }
 
         [TestMethod()]
         public void GetTeam_SelectsBlueTeam_BlueTeam()
         {
             string selectedColor = "Blue";
-            Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team is BlueTeam);
+            Assert.IsInstanceOfType(team, typeof(BlueTeam));
         }
 
         [TestMethod()]
         public void GetTeam_SelectsGreenTeam_GreenTeam()
         {
             string selectedColor = "Green";
-            Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team is GreenTeam);
+            Assert.IsInstanceOfType(team, typeof(GreenTeam));
         }
 
         [TestMethod()]
         public void GetTeam_SelectsYellowTeam_YellowTeam()
         {
             string selectedColor = "Yellow";
-            Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team is YellowTeam);
+            Assert.IsInstanceOfType(team, typeof(YellowTeam));
         }
 
         [TestMethod()]
@@ -53,7 +57,7 @@ namespace opp_server.Classes.Factory.Tests
             string selectedColor = "Random";
             Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team == null);
+            Assert.IsNull(team);
         }
     }
 }

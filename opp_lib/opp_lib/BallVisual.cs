@@ -17,5 +17,19 @@ namespace opp_lib
             Radius = radius;
             ImageName = imageName;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BallVisual)
+                return this.Radius == ((BallVisual)obj).Radius
+                    && this.ImageName.Equals(((BallVisual)obj).ImageName);
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Radius.GetHashCode() ^ this.ImageName.GetHashCode();
+        }
     }
 }

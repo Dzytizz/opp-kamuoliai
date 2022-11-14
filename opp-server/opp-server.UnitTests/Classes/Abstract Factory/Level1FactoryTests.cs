@@ -13,28 +13,33 @@ namespace opp_server.Classes.Abstract_Factory.Tests
     [TestClass()]
     public class Level1FactoryTests
     {
+        private AbstractLevelFactory levelFactory;
+
+        [TestInitialize]
+        public void CreateLevelFactory()
+        {
+            levelFactory = new Level1Factory();
+        }
+
         [TestMethod()]
         public void CreateField_CreatesLevel1Field_FieldLevel1()
         {
-            AbstractLevelFactory levelFactory = new Level1Factory();
             Field field = levelFactory.CreateField();
-            Assert.IsTrue(field is FieldLevel1);
+            Assert.IsInstanceOfType(field, typeof(FieldLevel1));
         }
 
         [TestMethod()]
         public void CreateGates_CreatesLevel1Gates_GatesLevel1()
         {
-            AbstractLevelFactory levelFactory = new Level1Factory();
             Gates gates = levelFactory.CreateGates(0, 0);
-            Assert.IsTrue(gates is GatesLevel1);
+            Assert.IsInstanceOfType(gates, typeof(GatesLevel1));
         }
 
         [TestMethod()]
         public void CreateObstacle_CreatesLevel1Obstacle_ObstacleLevel1()
         {
-            AbstractLevelFactory levelFactory = new Level1Factory();
             Obstacle obstacle = levelFactory.CreateObstacle(0, 0);
-            Assert.IsTrue(obstacle is ObstacleLevel1);
+            Assert.IsInstanceOfType(obstacle, typeof(ObstacleLevel1));
         }
     }
 }
