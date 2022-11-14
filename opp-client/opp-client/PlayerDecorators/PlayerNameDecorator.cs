@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace opp_client.PlayerDecorators
 {
-    class PlayerNameDecorator : Decorator
+    public class PlayerNameDecorator : Decorator
     {
         public string Name { get; set; }
         public PlayerNameDecorator(IDecorator component, string name) : base(component)
@@ -29,5 +29,7 @@ namespace opp_client.PlayerDecorators
             playerNameLabel.BringToFront();
             return pb;
         }
+
+        
     }
 }

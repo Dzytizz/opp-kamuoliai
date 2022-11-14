@@ -23,6 +23,7 @@ namespace opp_client.PlayerDecorators
         {
             OvalPictureBox pb = Component.Display(teamColor);
             pb.Image = (Image)Resources.ResourceManager.GetObject(Uniform);
+            pb.Image.Tag = Uniform;
             pb.SizeMode = PictureBoxSizeMode.StretchImage;
             return pb;
         }
