@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using opp_lib;
+using opp_lib.Teams;
 using opp_server.Classes.Factory;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace opp_server.Classes.Factory.Tests
             string selectedColor = "Red";
             Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team.Color.Equals(selectedColor));
+            Assert.IsTrue(team is RedTeam);
         }
 
         [TestMethod()]
@@ -25,7 +26,7 @@ namespace opp_server.Classes.Factory.Tests
             string selectedColor = "Blue";
             Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team.Color.Equals(selectedColor));
+            Assert.IsTrue(team is BlueTeam);
         }
 
         [TestMethod()]
@@ -34,7 +35,7 @@ namespace opp_server.Classes.Factory.Tests
             string selectedColor = "Green";
             Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team.Color.Equals(selectedColor));
+            Assert.IsTrue(team is GreenTeam);
         }
 
         [TestMethod()]
@@ -43,7 +44,7 @@ namespace opp_server.Classes.Factory.Tests
             string selectedColor = "Yellow";
             Creator teamFactory = new TeamFactory();
             Team team = teamFactory.GetTeam(selectedColor);
-            Assert.IsTrue(team.Color.Equals(selectedColor));
+            Assert.IsTrue(team is YellowTeam);
         }
 
         [TestMethod()]
