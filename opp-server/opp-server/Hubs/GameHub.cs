@@ -21,7 +21,7 @@ namespace opp_server.Hubs
 
         public GameHub(Level level, Server server, Ball ball)
         {
-            GameState = GameState.GetInstance();
+            this.GameState = GameState.GetInstance();
             this.Level = level;
             this.Server = server;
             this.Ball = ball;
@@ -112,7 +112,7 @@ namespace opp_server.Hubs
             player.UpdatePosition(playerInput);
             Server.Send();
             //GameState.Players[playerID].UpdatePosition(playerInput); <============
-            //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
+            await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
         }
 
         public async Task GameStateRequest()
