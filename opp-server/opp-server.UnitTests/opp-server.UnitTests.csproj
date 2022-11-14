@@ -18,4 +18,10 @@
     <ProjectReference Include="..\opp-server\opp-server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="opp_lib">
+      <HintPath>..\..\opp_lib\opp_lib\bin\Debug\opp_lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
