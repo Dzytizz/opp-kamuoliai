@@ -43,6 +43,7 @@ namespace opp_lib
             ToJump = false;
             ToUndo = false;
             ToJumpKeyUp = true;
+            ToUndoKeyUp = true;
         }
         public void ResetJump()
         {
