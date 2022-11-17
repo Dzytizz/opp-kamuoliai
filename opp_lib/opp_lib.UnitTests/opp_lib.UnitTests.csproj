@@ -59,6 +59,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BallTests.cs" />
+    <Compile Include="Command\InvokerTests.cs" />
     <Compile Include="GameStateTests.cs" />
     <Compile Include="PlayerInputTests.cs" />
     <Compile Include="PlayerTests.cs" />
