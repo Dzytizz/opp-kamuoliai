@@ -33,7 +33,7 @@ namespace opp_server.Hubs.Tests
         
 
         [TestMethod()]
-        public async Task BallRequest_()
+        public async Task BallRequest_SendsBallRequest_ResponseIsBallJson()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -47,7 +47,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task IsAdminRequest_True()
+        public async Task IsAdminRequest_SetsAdminAlreadyExistsFalse_ResponseIsTrue()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -62,7 +62,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task IsAdminRequest_False()
+        public async Task IsAdminRequest_SetsAdminAlreadyExistsTrue_ResponseIsFalse()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -77,7 +77,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod]
-        public async Task CreateTeamsRequest_()
+        public async Task CreateTeamsRequest_SendsTeamsRequest_ResponseIsEmpty()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -91,7 +91,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task AreTeamsCreatedRequest_False()
+        public async Task AreTeamsCreatedRequest_TeamsAreEmpty_ResponseReturnsFalse()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -106,7 +106,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task AreTeamsCreatedRequest_True()
+        public async Task AreTeamsCreatedRequest_TeamsExistWithData_ResponseReturnsTrue()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -124,7 +124,7 @@ namespace opp_server.Hubs.Tests
         [DataRow("Red", "Blue")]
         [DataRow("Green", "Yellow")]
         [DataTestMethod()]
-        public async Task TeamColorsRequest_(string team1Color, string team2Color)
+        public async Task TeamColorsRequest_SendsRequestForTeamColors_ResponseReturnsTeamColors(string team1Color, string team2Color)
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -140,7 +140,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task LevelRequest_()
+        public async Task LevelRequest_SendsRequestForLevel_ResponseReturnsLevelJSON()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -155,7 +155,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task LevelChangeRequest_()
+        public async Task LevelChangeRequest_ChangesLevelViaLevelChangeRequest_ResponseIsNewLevelJSON()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -170,7 +170,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task UpdatePlayerPositionRequest_()
+        public async Task UpdatePlayerPositionRequest_UpdatesPlayerPositionViaUpdatePlayerPositionRequest_ResponseReturnsUpdatedPlayerPosition()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -193,7 +193,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task GameStateRequest_()
+        public async Task GameStateRequest_SendsGameStateRequest_ResponseReturnsGameStateResponse()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -209,7 +209,7 @@ namespace opp_server.Hubs.Tests
 
         [DataRow(0, "", "name", "dots", 15)]
         [DataTestMethod]
-        public async Task JoinTeamRequest_(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
+        public async Task JoinTeamRequest_SendsJoinTeamRequestWithPlayerData_ResponseReturnsTeamIndexAnd1(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);
@@ -223,7 +223,7 @@ namespace opp_server.Hubs.Tests
         }
 
         [TestMethod()]
-        public async Task PlayerCountRequest_()
+        public async Task PlayerCountRequest_Creates2PlayersAndAddsThemToTeams_ResponseReturnsPlayerCountInTeams()
         {
             gameHub = new GameHub(level, server, ball);
             AssignToHubRequiredProperties(gameHub);

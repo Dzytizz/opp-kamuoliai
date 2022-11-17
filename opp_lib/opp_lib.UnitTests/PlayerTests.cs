@@ -23,7 +23,7 @@ namespace opp_lib.Tests
         [DataRow(1f, 2f)]
         [DataRow(10f, 20f)]
         [DataTestMethod()]
-        public void SetPositions(float position1, float position2)
+        public void SetPositions_SetsPositionsUsingList_PlayerPositionMatchesPositionsListValues(float position1, float position2)
         {
             List<float> positions = new List<float>() { position1, position2 };
 
@@ -34,7 +34,7 @@ namespace opp_lib.Tests
         }
 
         [TestMethod()]
-        public void SetPositions_null()
+        public void SetPositions_SetsOnly1Position_PlayerPositionsDontChange()
         {
             float startX = player.XPosition;
             float startY = player.YPosition;
@@ -56,7 +56,7 @@ namespace opp_lib.Tests
         [DataRow(false, true, true, false)]
         [DataRow(false, true, false, true)]
         [DataTestMethod()]
-        public void UpdatePosition_ToWalk(bool up, bool down, bool right, bool left)
+        public void UpdatePosition_TestsWalkCalculation_CalculatedValuesMatchExpectedValues(bool up, bool down, bool right, bool left)
         {
             PlayerInput input = new PlayerInput();
 
@@ -100,7 +100,7 @@ namespace opp_lib.Tests
         [DataRow(false, true, true, false)]
         [DataRow(false, true, false, true)]
         [DataTestMethod()]
-        public void UpdatePosition_ToRun(bool up, bool down, bool right, bool left)
+        public void UpdatePosition_TestsRunCalculation_CalculatedValuesMatchExpectedValues(bool up, bool down, bool right, bool left)
         {
             PlayerInput input = new PlayerInput();
 
@@ -141,7 +141,7 @@ namespace opp_lib.Tests
         [DataRow(false, false, true, false)]
         [DataRow(false, false, false, true)]
         [DataTestMethod()]
-        public void UpdatePosition_ToJump(bool up, bool down, bool right, bool left)
+        public void UpdatePosition_TestsJumpCalculation_CalculatedValuesMatchExpectedValues(bool up, bool down, bool right, bool left)
         {
             PlayerInput input = new PlayerInput();
 
@@ -179,7 +179,7 @@ namespace opp_lib.Tests
         [DataRow(false, true, true, false)]
         [DataRow(false, true, false, true)]
         [DataTestMethod()]
-        public void UpdatePosition_ToJog(bool up, bool down, bool right, bool left)
+        public void UpdatePosition_TestsJogCalculation_CalculatedValuesMatchExpectedValues(bool up, bool down, bool right, bool left)
         {
             PlayerInput input = new PlayerInput();
 
