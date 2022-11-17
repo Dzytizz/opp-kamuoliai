@@ -60,6 +60,20 @@ namespace opp_lib
             return (Up || Down || Left || Right || ToUndo);
         }
 
+        public bool IsPlusMovement()
+        {
+            return (Up && !Down && !Left && !Right)
+                || (!Up && Down && !Left && !Right)
+                || (!Up && !Down && Left && !Right)
+                || (!Up && !Down && !Left && Right);
+        }
+
+        public bool isDiagonalMovement()
+        {
+            return (Up && Right) || (Up && Left)
+                || (Down && Right) || (Down && Left);
+        }
+
         public void Clear()
         {
             Up = false; Down = false; Left = false; Right = false; ToRun = false; ToWalk = false; ToJump = false; ToUndo = false;
