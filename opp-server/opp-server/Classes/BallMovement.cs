@@ -11,7 +11,7 @@ using System.Timers;
 
 namespace opp_server.Classes
 {
-    public class BallMovement
+    public abstract class BallMovement
     {
         public Ball Ball;
         public Field Field;
