@@ -120,7 +120,8 @@ namespace opp_server.Hubs
 
         public async Task LevelChangeRequest()
         {
-            GameState.CurrentLevel++;
+            if(GameState.CurrentLevel < 3)
+                GameState.CurrentLevel++;
             GenerateLevel();
             string levelJSON = JsonConvert.SerializeObject(Level);
             await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
