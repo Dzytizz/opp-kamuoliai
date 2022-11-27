@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+using Microsoft.Extensions.Hosting.Internal;
 using opp_lib;
 using Newtonsoft.Json;
 using opp_server.Classes.Factory;
@@ -19,16 +21,19 @@ namespace opp_server.Hubs
         public Level Level;
         public Server Server;
         public Ball Ball;
-        public BallMovement BallMovement;
+        public BallMovement[] BallMovements;
 
-        public GameHub(Level level, Server server, Ball ball, BallMovement ballMovement)
+        public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements)
         {
             GameState = GameState.GetInstance();
             this.Level = level;
             this.Server = server;
             this.Ball = ball;
-            this.BallMovement = ballMovement;
-            this.BallMovement.Server = this.Server;
+            this.BallMovements = ballMovements;
+            foreach (var bm in ballMovements)
+            {
+                bm.Server = this.Server;
+            }
         }
 
         //public async Task JoinGameRequest()
@@ -51,7 +56,12 @@ namespace opp_server.Hubs
         public async Task KickBallRequest(string playerID)
         {
             Player player = GameState.TryFindPlayer(playerID);
-            BallMovement.KickBall(player);
+            foreach (var bm in BallMovements)
+            {
+                bm.BallLoop.Enabled = false;
+            }
+            BallMovements[GameState.CurrentLevel-1].BallLoop.Enabled = true;
+            BallMovements[GameState.CurrentLevel-1].KickBall(player);
             await Clients.Client(Context.ConnectionId).SendAsync("KickBallResponse");
         }
 
@@ -123,7 +133,7 @@ namespace opp_server.Hubs
             player.UpdatePosition(playerInput);
             Server.Send();
             //GameState.Players[playerID].UpdatePosition(playerInput); <============
-            //await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
+            await Clients.Client(Context.ConnectionId).SendAsync("UpdatePlayerPositionResponse", playerID + " position updated"); // response was only used for debugging
         }
 
         public async Task GameStateRequest()
@@ -184,12 +194,40 @@ namespace opp_server.Hubs
             Gates leftGates = factory.CreateGates(0, gatesYPosition);
             Gates rightGates = factory.CreateGates(rightGatesXPosition, gatesYPosition);
             Field field = factory.CreateField();
+            foreach (var bm in BallMovements)
+            {
+                bm.Field = field;
+            }
             //Padaryt random ir daug
             Obstacle obstacle = factory.CreateObstacle(375, 150);
             List<Obstacle> obstacles = new List<Obstacle>();
             obstacles.Add(obstacle);
+        
             Level.SetLevel(leftGates, rightGates, field, obstacles);
         }
+
+        //private void SetUpBallMovement(int currentLevel)
+        //{
+        //    if (BallMovement != null)
+        //    {
+        //        BallMovement.BallLoop.Stop();
+        //        BallMovement.BallLoop.Dispose();
+        //        BallMovement = null;
+        //    }
+        //    switch (currentLevel)
+        //    {
+        //        case 1:
+        //            BallMovement = new NormalBallMovement(Ball);
+        //            break;
+        //        case 2:
+        //            BallMovement = new FrictionlessBallMovement(Ball);
+        //            break;
+        //        default:
+        //            BallMovement = new NormalBallMovement(Ball);
+        //            break;
+        //    }   
+        //    BallMovement.Server = Server;
+        //}
 
         //public async Task SendMessage(string user, string message)
         //{

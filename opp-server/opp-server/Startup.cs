@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Timers;
 using Microsoft.Extensions.Hosting;
 using opp_server.Hubs;
 using opp_lib;
@@ -30,12 +31,14 @@ namespace opp_server
             Builder builder = new BallBuilder(createdBall);
             createdBall = Director.ConstructDottyEdged(builder);
 
-            //services.AddSingleton(opt => GameState());
+            BallMovement[] ballMovements = new BallMovement[]
+                { new NormalBallMovement(createdBall), new FrictionlessBallMovement(createdBall), new NormalBallMovement(createdBall) };
+
             services.AddSingleton(opt => GameState.GetInstance());
             services.AddSingleton(opt => new Server());
             services.AddSingleton(opt => new Level());
             services.AddSingleton(opt => createdBall);
-            services.AddSingleton(opt => new BallMovement(createdBall));
+            services.AddSingleton(opt => ballMovements);
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

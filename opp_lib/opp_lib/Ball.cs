@@ -17,7 +17,7 @@ namespace opp_lib
         public string MainColor { get; set; }
         public float Speed { get; set; }
         public float MaxSpeed = 20;
-        public float Decelerate = 1;
+        public float Decelerate = 0.3f;
 
         public Vector2 Direction { get; set; }
         public bool HasEdge { get; set; }
