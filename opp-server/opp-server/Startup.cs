@@ -8,6 +8,7 @@ using opp_server.Hubs;
 using opp_lib;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
+using opp_server.Classes;
 
 namespace opp_server
 {
@@ -25,7 +26,7 @@ namespace opp_server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Ball createdBall = new Ball(40, 0, 0, "White");
+            Ball createdBall = new Ball(40, 200, 200, "White");
             Builder builder = new BallBuilder(createdBall);
             createdBall = Director.ConstructDottyEdged(builder);
 
@@ -34,6 +35,7 @@ namespace opp_server
             services.AddSingleton(opt => new Server());
             services.AddSingleton(opt => new Level());
             services.AddSingleton(opt => createdBall);
+            services.AddSingleton(opt => new BallMovement(createdBall));
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

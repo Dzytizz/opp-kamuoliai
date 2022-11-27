@@ -9,6 +9,7 @@ using opp_server.Classes.Factory;
 using opp_server.Classes.Abstract_Factory;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
+using opp_server.Classes;
 
 namespace opp_server.Hubs
 {
@@ -18,13 +19,16 @@ namespace opp_server.Hubs
         public Level Level;
         public Server Server;
         public Ball Ball;
+        public BallMovement BallMovement;
 
-        public GameHub(Level level, Server server, Ball ball)
+        public GameHub(Level level, Server server, Ball ball, BallMovement ballMovement)
         {
             GameState = GameState.GetInstance();
             this.Level = level;
             this.Server = server;
             this.Ball = ball;
+            this.BallMovement = ballMovement;
+            this.BallMovement.Server = this.Server;
         }
 
         //public async Task JoinGameRequest()
@@ -44,13 +48,20 @@ namespace opp_server.Hubs
         //    await Clients.Client(Context.ConnectionId).SendAsync("JoinGameResponse", response);
         //}
 
+        public async Task KickBallRequest(string playerID)
+        {
+            Player player = GameState.TryFindPlayer(playerID);
+            BallMovement.KickBall(player);
+            await Clients.Client(Context.ConnectionId).SendAsync("KickBallResponse");
+        }
+
         public async Task BallRequest()
         {
             // ======= some code that updates ball position goes here =======
             //Ball.XPosition += 2;
 
             string ballJSON = JsonConvert.SerializeObject(Ball, Formatting.None, new JsonSerializerSettings(){ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
-            await Clients.All.SendAsync("BallResponse", ballJSON);
+            await Clients.Client(Context.ConnectionId).SendAsync("BallResponse", ballJSON);
         }
 
         public async Task IsAdminRequest()
@@ -139,7 +150,9 @@ namespace opp_server.Hubs
 
             Player newPlayer = new Player(playerName, 0, 0, playerUniform, playerNumber);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
-            Server.Subscribe(new Client(Clients.Client(Context.ConnectionId)));
+            Client client = new Client(Clients.Client(Context.ConnectionId));
+            client.Ball = Ball;
+            Server.Subscribe(client);
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }

@@ -265,16 +265,6 @@ namespace opp_client
                         logList.Items.Add(ex.Message);
                     }
                 }
-
-                // request recalculated ball position from server
-                try
-                {
-                    await connection.InvokeAsync("BallRequest");
-                }
-                catch (Exception ex)
-                {
-                    logList.Items.Add(ex.Message);
-                }
             }
         }
 
@@ -364,6 +354,10 @@ namespace opp_client
                     logList.Items.Add(ex.Message);
                 }
 
+            }
+            if(e.KeyCode == Keys.K)
+            {
+                await connection.InvokeAsync("KickBallRequest", playerID);
             }
         }
 
