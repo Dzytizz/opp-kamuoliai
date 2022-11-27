@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Timers;
 using Microsoft.Extensions.Hosting;
 using opp_server.Hubs;
 using opp_lib;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
+using opp_server.Classes;
 
 namespace opp_server
 {
@@ -25,15 +27,18 @@ namespace opp_server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Ball createdBall = new Ball(40, 0, 0, "White");
+            Ball createdBall = new Ball(40, 200, 200, "White");
             Builder builder = new BallBuilder(createdBall);
             createdBall = Director.ConstructDottyEdged(builder);
 
-            //services.AddSingleton(opt => GameState());
+            BallMovement[] ballMovements = new BallMovement[]
+                { new NormalBallMovement(createdBall), new FrictionlessBallMovement(createdBall), new NormalBallMovement(createdBall) };
+
             services.AddSingleton(opt => GameState.GetInstance());
             services.AddSingleton(opt => new Server());
             services.AddSingleton(opt => new Level());
             services.AddSingleton(opt => createdBall);
+            services.AddSingleton(opt => ballMovements);
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

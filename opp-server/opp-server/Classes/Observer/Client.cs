@@ -12,6 +12,7 @@ namespace opp_server.Classes.Observer
     public class Client : Observer
     {
         public IClientProxy ClientProxy;
+        public Ball Ball { get; set; }
         public Client(IClientProxy client)
         {
             this.ClientProxy = client;
@@ -21,6 +22,9 @@ namespace opp_server.Classes.Observer
             GameState gsCopy = GameState.GetInstance().Copy();
             string gameStateJSON = JsonConvert.SerializeObject(gsCopy);
             await ClientProxy.SendAsync("GameStateResponse", gameStateJSON);
+            Ball ballCopy = (Ball)Ball.Clone();
+            string ballJSON = JsonConvert.SerializeObject(ballCopy);
+            await ClientProxy.SendAsync("BallResponse", ballJSON);
         }
     }
 }

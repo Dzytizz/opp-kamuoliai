@@ -8,6 +8,6 @@ namespace opp_lib.Fields
 {
     public class FieldLevel1 : Field
     {
-        public FieldLevel1() : base("ForestGreen", 1f) { }
+        public FieldLevel1() : base("ForestGreen", 0.2f) { }
     }
 }

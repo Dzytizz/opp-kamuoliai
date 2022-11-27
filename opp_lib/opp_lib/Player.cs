@@ -21,6 +21,8 @@ namespace opp_lib
         public string UniformName { get; set; }
         public int Number { get; set; }
 
+        public int Radius { get; set; }
+
         Invoker invoker = new Invoker();
 
         public Player(string name, float xPosition, float yPosition, string uniformName, int number)
@@ -30,6 +32,7 @@ namespace opp_lib
             YPosition = yPosition;
             UniformName = uniformName;
             Number = number;
+            Radius = 50;
         }
 
         public void Move(PlayerInput playerInput)
@@ -87,8 +90,8 @@ namespace opp_lib
         public OvalPictureBox Display(string teamColor)
         {
             OvalPictureBox pb = new OvalPictureBox();
-            pb.Width = 50;
-            pb.Height = 50;
+            pb.Width = Radius;
+            pb.Height = Radius;
             pb.BackColor = Color.FromName(teamColor);
             return pb;
         }
