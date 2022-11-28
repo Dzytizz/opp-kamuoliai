@@ -17,6 +17,7 @@ namespace opp_server.Classes
         public Field Field;
         public Timer BallLoop = new Timer(50);
         public Server Server { get; set; }
+        public Level Level { get; set; }
         public BallMovement(Ball ball)
         {
             this.Ball = ball;

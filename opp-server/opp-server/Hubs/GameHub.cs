@@ -33,6 +33,7 @@ namespace opp_server.Hubs
             foreach (var bm in ballMovements)
             {
                 bm.Server = this.Server;
+                bm.Level = this.Level;
             }
         }
 
