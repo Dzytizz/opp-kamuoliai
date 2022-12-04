@@ -2,7 +2,7 @@
 using System.Timers;
 using opp_lib;
 
-namespace opp_server.Classes
+namespace opp_server.Classes.Template
 {
     public class FrictionlessBallMovement : BallMovement
     {

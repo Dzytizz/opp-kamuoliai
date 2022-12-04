@@ -11,7 +11,7 @@ using opp_server.Classes.Factory;
 using opp_server.Classes.Abstract_Factory;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
-using opp_server.Classes;
+using opp_server.Classes.Template;
 
 namespace opp_server.Hubs
 {
