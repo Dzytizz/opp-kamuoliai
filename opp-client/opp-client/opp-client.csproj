@@ -60,7 +60,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.9.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -228,6 +228,11 @@
       <DependentUpon>Waiting.cs</DependentUpon>
     </Compile>
     <Compile Include="Prototype\Fan.cs" />
+    <Compile Include="Proxy\CommandMessenger.cs" />
+    <Compile Include="Proxy\IMessenger.cs" />
+    <Compile Include="Proxy\MessageMessenger.cs" />
+    <Compile Include="Proxy\Messenger.cs" />
+    <Compile Include="Proxy\MessengerProxy.cs" />
     <Compile Include="Singleton\ThemeManager.cs" />
     <EmbeddedResource Include="Forms\ClientWindow.resx">
       <DependentUpon>ClientWindow.cs</DependentUpon>
