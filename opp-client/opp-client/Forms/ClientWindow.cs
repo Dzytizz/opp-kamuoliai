@@ -18,6 +18,7 @@ using opp_client.PlayerDecorators;
 using opp_client.Prototype;
 using opp_client.Facade;
 using opp_client.Flyweight;
+using opp_client.Proxy;
 
 namespace opp_client
 {
@@ -38,12 +39,15 @@ namespace opp_client
         PlayerClient playerClient = new PlayerClient();
         bool isTyping = false;
 
+        IMessenger messenger;
+
         public ClientWindow(HubConnection connection, string playerID)
         {
             InitializeComponent();
 
             this.connection = connection;
             this.playerID = playerID;
+            messenger = new MessengerProxy(playerID);
 
             connection.Closed += async (error) =>
             {
@@ -51,7 +55,7 @@ namespace opp_client
                 await connection.StartAsync();
             };
 
-            playerID = "";
+            //playerID = "";
             playerInput = new PlayerInput();
             mpObjects = new Dictionary<string, PictureBox>();
 
@@ -486,9 +490,11 @@ namespace opp_client
             {
                 if(chatTextBox.Text.Length > 0)
                 {
+
                     //Cia Kviesti Messenger Proxy
                     //Sita istrinti
-                    await connection.InvokeAsync("SendMessageToAllRequest", playerID, chatTextBox.Text); // <-
+                    messenger.HandleMessageAsync(chatTextBox.Text, connection);
+                    //await connection.InvokeAsync("SendMessageToAllRequest", playerID, chatTextBox.Text); // <-
                     //Sita istrinti
                 }
                 chatTextBox.Hide();
