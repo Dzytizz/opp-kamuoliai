@@ -9,7 +9,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace opp_server.Classes
+namespace opp_server.Classes.Template
 {
     public abstract class BallMovement
     {
@@ -20,7 +20,7 @@ namespace opp_server.Classes
         public Level Level { get; set; }
         public BallMovement(Ball ball)
         {
-            this.Ball = ball;
+            Ball = ball;
             BallLoop.Elapsed += BallLoop_Elapsed;
             BallLoop.Enabled = false;
             BallLoop.AutoReset = true;
@@ -29,11 +29,11 @@ namespace opp_server.Classes
 
         private void BallLoop_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if(Ball.Speed > 0)
+            if (Ball.Speed > 0)
             {
                 AccelerateBall();
                 DecelerateBall();
-                
+
                 ApplyFieldFriction();
 
                 Server.Send();
@@ -51,7 +51,7 @@ namespace opp_server.Classes
         protected virtual void ApplyFieldFriction()
         {
             Ball.Speed -= Ball.Speed * Field.FrictionMultiplier;
-            if(Ball.Speed < 0) Ball.Speed = 0;
+            if (Ball.Speed < 0) Ball.Speed = 0;
         }
 
         public void KickBall(Player player)
@@ -59,7 +59,7 @@ namespace opp_server.Classes
             Vector2 ballPosition = new Vector2(Ball.XPosition, Ball.YPosition);
             Vector2 playerPosition = new Vector2(player.XPosition, player.YPosition);
             float distance = Vector2.Distance(ballPosition, playerPosition);
-            if (distance > Ball.Radius/2 + player.Radius/2 + 15) return;
+            if (distance > Ball.Radius / 2 + player.Radius / 2 + 15) return;
             Vector2 direction = ballPosition - playerPosition;
             Ball.Direction = Vector2.Normalize(direction);
             Ball.Speed = Ball.MaxSpeed;

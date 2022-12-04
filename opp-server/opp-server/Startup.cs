@@ -10,6 +10,7 @@ using opp_lib;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
 using opp_server.Classes;
+using opp_server.Classes.Template;
 
 namespace opp_server
 {
