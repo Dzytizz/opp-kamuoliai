@@ -36,6 +36,7 @@ namespace opp_client
 
         ThemeClient themeClient = new ThemeClient();
         PlayerClient playerClient = new PlayerClient();
+        bool isTyping = false;
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -58,6 +59,8 @@ namespace opp_client
 
             snowflakes = new List<Tuple<Snowflake, OvalPictureBox>>();
             GenerateSnowflakes();
+
+            chatTextBox.Hide();
         }
 
         private async void ClientWindow_Load(object sender, EventArgs e)
@@ -240,6 +243,11 @@ namespace opp_client
                 }
             });
 
+            connection.On<string>("SendMessageToAllResponse", (message) =>
+            {
+                logList.Items.Add(message);
+            });
+
             try
             {
                 await connection.InvokeAsync("LevelRequest");
@@ -255,7 +263,7 @@ namespace opp_client
 
         private async void MainGameLoop_Tick(object sender, EventArgs e)
         {
-            if (!playerID.Equals(""))
+            if (!playerID.Equals("") && !isTyping)
             {
                 // send inputs to server
                 if (playerInput.IsActive())
@@ -354,21 +362,27 @@ namespace opp_client
                 playerInput.ToJumpKeyUp = true;
             }
 
-            if (e.KeyCode == Keys.N)
-            {
-                try
-                {
-                    await connection.InvokeAsync("LevelChangeRequest");
-                }
-                catch (Exception ex)
-                {
-                    logList.Items.Add(ex.Message);
-                }
+            //if (e.KeyCode == Keys.N)
+            //{
+            //    try
+            //    {
+            //        List<string> arguments = new List<string>();
+            //        arguments.Add("2");
+            //        await connection.InvokeAsync("LevelChangeRequest", arguments);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        logList.Items.Add(ex.Message);
+            //    }
 
-            }
-            if(e.KeyCode == Keys.K)
+            //}
+            if (e.KeyCode == Keys.K)
             {
                 await connection.InvokeAsync("KickBallRequest", playerID);
+            }
+            if(e.KeyCode == Keys.Enter)
+            {
+                HandleTypingMode();
             }
         }
 
@@ -456,6 +470,29 @@ namespace opp_client
                 OvalPictureBox pb = snowflake.CreateSnowflake();
                 snowflakes.Add(Tuple.Create(snowflake, pb));
                 this.Controls.Add(pb);
+            }
+        }
+
+        private async void HandleTypingMode()
+        {
+            isTyping = !isTyping;
+            if(isTyping)
+            {
+                chatTextBox.Text = "";
+                chatTextBox.Show();
+                this.ActiveControl = chatTextBox;
+            }
+            else
+            {
+                if(chatTextBox.Text.Length > 0)
+                {
+                    //Cia Kviesti Messenger Proxy
+                    //Sita istrinti
+                    await connection.InvokeAsync("SendMessageToAllRequest", playerID, chatTextBox.Text); // <-
+                    //Sita istrinti
+                }
+                chatTextBox.Hide();
+                this.ActiveControl = logList;
             }
         }
 

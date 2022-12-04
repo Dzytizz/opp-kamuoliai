@@ -200,6 +200,10 @@
     <Compile Include="Forms\ClientWindow.Designer.cs">
       <DependentUpon>ClientWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interpreter\Command.cs" />
+    <Compile Include="Interpreter\CommandInterpreter.cs" />
+    <Compile Include="Interpreter\IInterpreter.cs" />
+    <Compile Include="Interpreter\ParsedCommand.cs" />
     <Compile Include="PlayerDecorators\PlayerNameDecorator.cs" />
     <Compile Include="PlayerDecorators\PlayerNumberDecorator.cs" />
     <Compile Include="PlayerDecorators\PlayerUniformDecorator.cs" />

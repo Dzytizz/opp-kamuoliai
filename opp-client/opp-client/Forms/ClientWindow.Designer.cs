@@ -34,6 +34,7 @@ namespace opp_client
             this.logList = new System.Windows.Forms.ListBox();
             this.MainGameLoop = new System.Windows.Forms.Timer(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.chatTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // playerIDLabel
@@ -64,12 +65,20 @@ namespace opp_client
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // chatTextBox
+            // 
+            this.chatTextBox.Location = new System.Drawing.Point(15, 447);
+            this.chatTextBox.Name = "chatTextBox";
+            this.chatTextBox.Size = new System.Drawing.Size(803, 20);
+            this.chatTextBox.TabIndex = 2;
+            // 
             // ClientWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(834, 450);
+            this.ClientSize = new System.Drawing.Size(834, 480);
+            this.Controls.Add(this.chatTextBox);
             this.Controls.Add(this.logList);
             this.Controls.Add(this.playerIDLabel);
             this.KeyPreview = true;
@@ -90,6 +99,7 @@ namespace opp_client
         private System.Windows.Forms.ListBox logList;
         private System.Windows.Forms.Timer MainGameLoop;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.TextBox chatTextBox;
     }
 }
 

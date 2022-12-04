@@ -54,6 +54,13 @@ namespace opp_server.Hubs
         //    await Clients.Client(Context.ConnectionId).SendAsync("JoinGameResponse", response);
         //}
 
+        public async Task SendMessageToAllRequest(string playerID, string message)
+        {
+            string playerName = GameState.TryFindPlayer(playerID).Name;
+            string formedMessage = String.Format("{0}: {1}", playerName, message);
+            await Clients.All.SendAsync("SendMessageToAllResponse", formedMessage);
+        }
+
         public async Task KickBallRequest(string playerID)
         {
             Player player = GameState.TryFindPlayer(playerID);
@@ -119,10 +126,19 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("LevelResponse", levelJSON);
         }
 
-        public async Task LevelChangeRequest()
+        public async Task LevelChangeRequest(List<string> arguments)
         {
-            if(GameState.CurrentLevel < 3)
-                GameState.CurrentLevel++;
+            //if(GameState.CurrentLevel < 3)
+            //    GameState.CurrentLevel++;
+            try
+            {
+                int level = Int32.Parse(arguments[0]);
+                GameState.CurrentLevel = level;
+            }
+            catch
+            {
+                return;
+            }
             GenerateLevel();
             string levelJSON = JsonConvert.SerializeObject(Level);
             await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
