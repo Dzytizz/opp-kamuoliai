@@ -17,6 +17,7 @@ using opp_lib.Decorator;
 using opp_client.PlayerDecorators;
 using opp_client.Prototype;
 using opp_client.Facade;
+using opp_client.Flyweight;
 
 namespace opp_client
 {
@@ -31,6 +32,7 @@ namespace opp_client
         PictureBox rightGates;
         List<PictureBox> obstacles;
         Control ballControl;
+        List<Tuple<Snowflake, OvalPictureBox>> snowflakes;
 
         ThemeClient themeClient = new ThemeClient();
         PlayerClient playerClient = new PlayerClient();
@@ -53,6 +55,9 @@ namespace opp_client
             mpObjects = new Dictionary<string, PictureBox>();
 
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
+            snowflakes = new List<Tuple<Snowflake, OvalPictureBox>>();
+            GenerateSnowflakes();
         }
 
         private async void ClientWindow_Load(object sender, EventArgs e)
@@ -266,6 +271,12 @@ namespace opp_client
                     }
                 }
             }
+
+            foreach(Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
+            {
+                tuple.Item1.MoveDown();
+                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
+            }
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -417,6 +428,35 @@ namespace opp_client
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void GenerateSnowflakes()
+        {
+            Random r = new Random();
+            for(int i = 0; i < 30; i++)
+            {
+                SnowflakeType type = SnowflakeFactory.GetSnowflakeType("small", "blue", 5, 15);
+                Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
+                OvalPictureBox pb = snowflake.CreateSnowflake();
+                snowflakes.Add(Tuple.Create(snowflake, pb));
+                this.Controls.Add(pb);
+            }
+            for (int i = 0; i < 20; i++)
+            {
+                SnowflakeType type = SnowflakeFactory.GetSnowflakeType("medium", "blue", 10, 10);
+                Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
+                OvalPictureBox pb = snowflake.CreateSnowflake();
+                snowflakes.Add(Tuple.Create(snowflake, pb));
+                this.Controls.Add(pb);
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                SnowflakeType type = SnowflakeFactory.GetSnowflakeType("large", "blue", 15, 5);
+                Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
+                OvalPictureBox pb = snowflake.CreateSnowflake();
+                snowflakes.Add(Tuple.Create(snowflake, pb));
+                this.Controls.Add(pb);
+            }
         }
 
         //private async void button1_Click(object sender, EventArgs e)
