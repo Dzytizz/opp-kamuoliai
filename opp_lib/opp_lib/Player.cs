@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using opp_lib.Chain_of_Responsibility;
 
 namespace opp_lib
 {
@@ -25,6 +26,8 @@ namespace opp_lib
 
         Invoker invoker = new Invoker();
 
+        private MovementHandler MovementChain;
+
         public Player(string name, float xPosition, float yPosition, string uniformName, int number)
         {
             Name = name;
@@ -33,6 +36,16 @@ namespace opp_lib
             UniformName = uniformName;
             Number = number;
             Radius = 50;
+
+            // creation and setup of movement handler
+            MovementHandler jog = new JogHandler(this);
+            MovementHandler run = new RunHandler(this);
+            MovementHandler jump = new JumpHandler(this);
+            MovementHandler undo = new UndoHandler(this);
+            MovementHandler walk = new WalkHandler(this);
+
+            this.MovementChain = jog;
+            jog.SetSuccessor(run.SetSuccessor(jump.SetSuccessor(undo.SetSuccessor(walk))));
         }
 
         public void Move(PlayerInput playerInput)
@@ -50,37 +63,47 @@ namespace opp_lib
             }
         }
 
+        public Invoker GetInvoker()
+        {
+            return this.invoker;
+        }
+
+        public void SetMovementMode(MovementMode movementMode)
+        {
+            this.MovementMode = movementMode;
+        }
+
         public void UpdatePosition(PlayerInput playerInput)
         {
-            if (playerInput.ToWalk)
-            {
-                MovementMode = new Walk(); // slowest (1)
-                Move(playerInput);
-            }
-            else if (playerInput.ToRun)
-            {
-                MovementMode = new Run(); // faster (3)
-                Move(playerInput);
-            }
-            else if (playerInput.ToJump)
-            {
-                List<float> positions = invoker.DoJump(playerInput, Speed, XPosition, YPosition);
-                SetPositions(positions);
-                //MovementMode = new Jump(); // fastest (4)
-            }
-            else if (playerInput.ToUndo)
-            {
-                //Console.WriteLine("Doing");
-                List<float> positions = invoker.Undo(playerInput, Speed, XPosition, YPosition);
-                SetPositions(positions);
-                //MovementMode = new Jump(); // fastest (4)
-            }
-            else
-            {
-                MovementMode = new Jog(); // normal (2)
-                Move(playerInput);
-            }
-            
+            this.MovementChain.HandleMovementType(playerInput);
+            //if (playerInput.ToWalk)
+            //{
+            //    MovementMode = new Walk(); // slowest (1)
+            //    Move(playerInput);
+            //}
+            //else if (playerInput.ToRun)
+            //{
+            //    MovementMode = new Run(); // faster (3)
+            //    Move(playerInput);
+            //}
+            //else if (playerInput.ToJump)
+            //{
+            //    List<float> positions = invoker.DoJump(playerInput, Speed, XPosition, YPosition);
+            //    SetPositions(positions);
+            //    //MovementMode = new Jump(); // fastest (4)
+            //}
+            //else if (playerInput.ToUndo)
+            //{
+            //    //Console.WriteLine("Doing");
+            //    List<float> positions = invoker.Undo(playerInput, Speed, XPosition, YPosition);
+            //    SetPositions(positions);
+            //    //MovementMode = new Jump(); // fastest (4)
+            //}
+            //else
+            //{
+            //    MovementMode = new Jog(); // normal (2)
+            //    Move(playerInput);
+            //}
         }
         public override string ToString()
         {

@@ -54,6 +54,12 @@
     <Compile Include="Bridge\PurpleColor.cs" />
     <Compile Include="Bridge\RectangleObstacle.cs" />
     <Compile Include="Bridge\SquareObstacle.cs" />
+    <Compile Include="Chain of Responsibility\JogHandler.cs" />
+    <Compile Include="Chain of Responsibility\JumpHandler.cs" />
+    <Compile Include="Chain of Responsibility\MovementHandler.cs" />
+    <Compile Include="Chain of Responsibility\RunHandler.cs" />
+    <Compile Include="Chain of Responsibility\UndoHandler.cs" />
+    <Compile Include="Chain of Responsibility\WalkHandler.cs" />
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\JumpDown.cs" />
     <Compile Include="Command\JumpLeft.cs" />
