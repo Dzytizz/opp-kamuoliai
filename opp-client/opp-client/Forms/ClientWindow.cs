@@ -19,6 +19,7 @@ using opp_client.Prototype;
 using opp_client.Facade;
 using opp_client.Flyweight;
 using opp_client.Proxy;
+using opp_client.Visitor;
 
 namespace opp_client
 {
@@ -40,6 +41,12 @@ namespace opp_client
         bool isTyping = false;
 
         IMessenger messenger;
+
+        Fans fans = new Fans();
+        UpDownVisitor upDownVisitor = new UpDownVisitor();
+        LeftRightVisitor leftRightVisitor = new LeftRightVisitor();
+        SizeIncreaseVisitor sizeIncreaseVisitor = new SizeIncreaseVisitor();
+        System.Random rng = new System.Random();
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -93,7 +100,7 @@ namespace opp_client
             {
                 int nullPosition = 0;
                 int radius = 20;
-                Fan fan1 = new Fan(nullPosition, nullPosition, team1Color, radius);
+                Fan fan1 = new Fan(nullPosition, nullPosition, team1Color, radius, rng);
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -101,13 +108,14 @@ namespace opp_client
                     fan.XPosition = fan1.XPosition + 40 + j * 40;
                     fan.YPosition = fan1.YPosition + 340;
                     OvalPictureBox fanBox = fan.CreateFan();
+                    fans.Attach(fan, fanBox);
                     int ihash = fan.GetHashCode();
                     // Console.WriteLine(ihash);
                     //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
                 }
 
-                fan1 = new Fan(nullPosition, nullPosition, team2Color, radius);
+                fan1 = new Fan(nullPosition, nullPosition, team2Color, radius, rng);
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -115,6 +123,7 @@ namespace opp_client
                     fan.XPosition = fan1.XPosition + 430 + j * 40;
                     fan.YPosition = fan1.YPosition + 340;
                     OvalPictureBox fanBox = fan.CreateFan();
+                    fans.Attach(fan, fanBox);
                     int ihash = fan.GetHashCode();
                     //Console.WriteLine(ihash);
                     //Console.WriteLine("Antra komanda " + j + ": " + ihash);
@@ -288,6 +297,10 @@ namespace opp_client
                 tuple.Item1.MoveDown();
                 tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
             }
+
+            fans.Animate(upDownVisitor);
+            fans.Animate(leftRightVisitor);
+            fans.Animate(sizeIncreaseVisitor);
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)

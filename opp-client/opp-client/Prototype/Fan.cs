@@ -6,23 +6,31 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using opp_lib;
-
+using opp_client.Visitor;
 
 namespace opp_client.Prototype
 {
-    public class Fan : ICloneable
+    public class Fan : Element, ICloneable
     {
         public int XPosition { get; set; }
         public int YPosition { get; set; }
         public string ColorOfFan { get; set; }
         public int Radius { get; set; }
 
-        public Fan(int xPosition, int yPosition, string color, int radius)
+        public int Direction { get; set; }
+        float timer = 0f;
+        float maxVal = 3f;
+        float step = 0.2f;
+
+        public Fan(int xPosition, int yPosition, string color, int radius, System.Random rng)
         {
             this.XPosition = xPosition;
             this.YPosition = yPosition;
             this.ColorOfFan = color;
             this.Radius = radius;
+            this.Direction = rng.NextDouble() <= 0.5f ? this.Direction = 1 : this.Direction = -1;
+
+            timer = (float)(rng.NextDouble() * maxVal);
         }
         public OvalPictureBox CreateFan()
         {
@@ -38,6 +46,18 @@ namespace opp_client.Prototype
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+
+        public override void Animate(IVisitor visitor)
+        {
+            timer += step * Direction;
+            if (timer < 0 || timer > maxVal)
+            {
+                Direction *= -1;
+            }
+
+            visitor.Visit(this);
         }
     }
 }

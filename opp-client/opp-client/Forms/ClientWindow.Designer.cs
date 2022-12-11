@@ -40,17 +40,20 @@ namespace opp_client
             // playerIDLabel
             // 
             this.playerIDLabel.AutoSize = true;
-            this.playerIDLabel.Location = new System.Drawing.Point(12, 9);
+            this.playerIDLabel.Location = new System.Drawing.Point(16, 11);
+            this.playerIDLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.playerIDLabel.Name = "playerIDLabel";
-            this.playerIDLabel.Size = new System.Drawing.Size(0, 13);
+            this.playerIDLabel.Size = new System.Drawing.Size(0, 16);
             this.playerIDLabel.TabIndex = 0;
             // 
             // logList
             // 
             this.logList.FormattingEnabled = true;
-            this.logList.Location = new System.Drawing.Point(14, 371);
+            this.logList.ItemHeight = 16;
+            this.logList.Location = new System.Drawing.Point(19, 457);
+            this.logList.Margin = new System.Windows.Forms.Padding(4);
             this.logList.Name = "logList";
-            this.logList.Size = new System.Drawing.Size(804, 69);
+            this.logList.Size = new System.Drawing.Size(1071, 84);
             this.logList.TabIndex = 1;
             // 
             // MainGameLoop
@@ -67,21 +70,23 @@ namespace opp_client
             // 
             // chatTextBox
             // 
-            this.chatTextBox.Location = new System.Drawing.Point(15, 447);
+            this.chatTextBox.Location = new System.Drawing.Point(20, 550);
+            this.chatTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.chatTextBox.Name = "chatTextBox";
-            this.chatTextBox.Size = new System.Drawing.Size(803, 20);
+            this.chatTextBox.Size = new System.Drawing.Size(1069, 22);
             this.chatTextBox.TabIndex = 2;
             // 
             // ClientWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(834, 480);
+            this.ClientSize = new System.Drawing.Size(1112, 591);
             this.Controls.Add(this.chatTextBox);
             this.Controls.Add(this.logList);
             this.Controls.Add(this.playerIDLabel);
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ClientWindow";
             this.Text = "ClientWindow";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientWindow_FormClosed);

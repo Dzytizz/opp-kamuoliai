@@ -234,6 +234,12 @@
     <Compile Include="Proxy\Messenger.cs" />
     <Compile Include="Proxy\MessengerProxy.cs" />
     <Compile Include="Singleton\ThemeManager.cs" />
+    <Compile Include="Visitor\Element.cs" />
+    <Compile Include="Visitor\Fans.cs" />
+    <Compile Include="Visitor\IVisitor.cs" />
+    <Compile Include="Visitor\LeftRightVisitor.cs" />
+    <Compile Include="Visitor\SizeIncreaseVisitor.cs" />
+    <Compile Include="Visitor\UpDownVisitor.cs" />
     <EmbeddedResource Include="Forms\ClientWindow.resx">
       <DependentUpon>ClientWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -298,6 +304,7 @@
   <ItemGroup>
     <Content Include="Resources\snowflake.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
