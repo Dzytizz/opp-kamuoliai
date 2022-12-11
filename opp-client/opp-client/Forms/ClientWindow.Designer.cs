@@ -35,6 +35,7 @@ namespace opp_client
             this.MainGameLoop = new System.Windows.Forms.Timer(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.chatTextBox = new System.Windows.Forms.TextBox();
+            this.AnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // playerIDLabel
@@ -76,6 +77,11 @@ namespace opp_client
             this.chatTextBox.Size = new System.Drawing.Size(1069, 22);
             this.chatTextBox.TabIndex = 2;
             // 
+            // AnimationTimer
+            // 
+            this.AnimationTimer.Enabled = true;
+            this.AnimationTimer.Tick += new System.EventHandler(this.AnimationTimer_Tick);
+            // 
             // ClientWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -105,6 +111,7 @@ namespace opp_client
         private System.Windows.Forms.Timer MainGameLoop;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TextBox chatTextBox;
+        private System.Windows.Forms.Timer AnimationTimer;
     }
 }
 

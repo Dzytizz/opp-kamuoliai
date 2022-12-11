@@ -42,7 +42,7 @@ namespace opp_client
 
         IMessenger messenger;
 
-        Fans fans = new Fans();
+        Fans animatedFans = new Fans();
         UpDownVisitor upDownVisitor = new UpDownVisitor();
         LeftRightVisitor leftRightVisitor = new LeftRightVisitor();
         SizeIncreaseVisitor sizeIncreaseVisitor = new SizeIncreaseVisitor();
@@ -100,7 +100,7 @@ namespace opp_client
             {
                 int nullPosition = 0;
                 int radius = 20;
-                Fan fan1 = new Fan(nullPosition, nullPosition, team1Color, radius, rng);
+                Fan fan1 = new Fan(nullPosition, nullPosition, team1Color, radius);
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -108,14 +108,15 @@ namespace opp_client
                     fan.XPosition = fan1.XPosition + 40 + j * 40;
                     fan.YPosition = fan1.YPosition + 340;
                     OvalPictureBox fanBox = fan.CreateFan();
-                    fans.Attach(fan, fanBox);
                     int ihash = fan.GetHashCode();
                     // Console.WriteLine(ihash);
                     //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
+
+                    animatedFans.Attach(new AnimatedFan(fanBox, 1, 0.2f, 3f));
                 }
 
-                fan1 = new Fan(nullPosition, nullPosition, team2Color, radius, rng);
+                fan1 = new Fan(nullPosition, nullPosition, team2Color, radius);
 
                 for (int j = 0; j < 10; j++)
                 {
@@ -123,11 +124,12 @@ namespace opp_client
                     fan.XPosition = fan1.XPosition + 430 + j * 40;
                     fan.YPosition = fan1.YPosition + 340;
                     OvalPictureBox fanBox = fan.CreateFan();
-                    fans.Attach(fan, fanBox);
                     int ihash = fan.GetHashCode();
                     //Console.WriteLine(ihash);
                     //Console.WriteLine("Antra komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
+
+                    animatedFans.Attach(new AnimatedFan(fanBox, 1, 0.2f, 3f));
                 }
             });
 
@@ -291,16 +293,6 @@ namespace opp_client
                     }
                 }
             }
-
-            foreach(Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
-            {
-                tuple.Item1.MoveDown();
-                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
-            }
-
-            fans.Animate(upDownVisitor);
-            fans.Animate(leftRightVisitor);
-            fans.Animate(sizeIncreaseVisitor);
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)
@@ -512,6 +504,19 @@ namespace opp_client
                 chatTextBox.Hide();
                 this.ActiveControl = logList;
             }
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
+            {
+                tuple.Item1.MoveDown();
+                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
+            }
+
+            animatedFans.Animate(upDownVisitor);
+            animatedFans.Animate(leftRightVisitor);
+            //animatedFans.Animate(sizeIncreaseVisitor);
         }
 
         //private async void button1_Click(object sender, EventArgs e)
