@@ -46,6 +46,7 @@ namespace opp_lib
 
             this.MovementChain = jog;
             jog.SetSuccessor(run.SetSuccessor(jump.SetSuccessor(undo.SetSuccessor(walk))));
+            //jog.SetSuccessor(run.SetSuccessor(jump));
         }
 
         public void Move(PlayerInput playerInput)

@@ -15,12 +15,12 @@ namespace opp_lib.Chain_of_Responsibility
 
         public override void HandleMovementType(PlayerInput playerInput)
         {
-            if (playerInput.ToWalk)
+            if (playerInput.ToRun)
             {
                 Player.SetMovementMode(new Run());
                 Player.Move(playerInput);
             }
-            else if (Successor != null)
+            if (Successor != null)
             {
                 Successor.HandleMovementType(playerInput);
             }

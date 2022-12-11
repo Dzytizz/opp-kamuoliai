@@ -21,7 +21,7 @@ namespace opp_lib.Chain_of_Responsibility
                     .Undo(playerInput, Player.Speed, Player.XPosition, Player.YPosition);
                 Player.SetPositions(positions);
             }
-            else if (Successor != null)
+            if (Successor != null)
             {
                 Successor.HandleMovementType(playerInput);
             }

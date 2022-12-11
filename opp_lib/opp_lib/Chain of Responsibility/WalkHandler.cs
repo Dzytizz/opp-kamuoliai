@@ -20,7 +20,7 @@ namespace opp_lib.Chain_of_Responsibility
                 Player.SetMovementMode(new Walk());
                 Player.Move(playerInput);
             }
-            else if (Successor != null)
+            if (Successor != null)
             {
                 Successor.HandleMovementType(playerInput);
             }

@@ -14,12 +14,13 @@ namespace opp_lib.Chain_of_Responsibility
         public MovementHandler(Player player)
         {
             this.Player = player;
+            this.Successor = null;
         }
 
         public MovementHandler SetSuccessor(MovementHandler successor)
         {
             this.Successor = successor;
-            return Successor;
+            return this;
         }
 
         public abstract void HandleMovementType(PlayerInput playerInput);

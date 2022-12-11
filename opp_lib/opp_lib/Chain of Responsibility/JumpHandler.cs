@@ -15,13 +15,13 @@ namespace opp_lib.Chain_of_Responsibility
 
         public override void HandleMovementType(PlayerInput playerInput)
         {
-            if (playerInput.ToWalk)
+            if (playerInput.ToJump)
             {
                 List<float> positions = Player.GetInvoker()
                     .DoJump(playerInput, Player.Speed, Player.XPosition, Player.YPosition);
                 Player.SetPositions(positions);
-            }
-            else if (Successor != null)
+            } 
+            if (Successor != null)
             {
                 Successor.HandleMovementType(playerInput);
             }

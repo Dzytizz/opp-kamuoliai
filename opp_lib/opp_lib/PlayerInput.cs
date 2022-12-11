@@ -55,6 +55,14 @@ namespace opp_lib
             ToUndo = false;
         }
 
+        public bool IsWalking()
+        {
+            return IsActive() && 
+                    ToRun == false &&
+                    ToWalk == false &&
+                    ToJump == false &&
+                    ToUndo == false;
+        }
         public bool IsActive()
         {
             return (Up || Down || Left || Right || ToUndo);

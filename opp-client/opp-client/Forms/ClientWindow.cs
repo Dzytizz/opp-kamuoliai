@@ -274,8 +274,7 @@ namespace opp_client
                 {
                     try
                     {
-                        playerClient.ProcessMovement(ref playerInput, connection, playerID);
-                    
+                        playerClient.ProcessMovement(ref playerInput, connection, playerID);    
                     }
                     catch (Exception ex)
                     {
@@ -451,7 +450,7 @@ namespace opp_client
         private void GenerateSnowflakes()
         {
             Random r = new Random();
-            for(int i = 0; i < 30; i++)
+            for(int i = 0; i < 30/2; i++)
             {
                 SnowflakeType type = SnowflakeFactory.GetSnowflakeType("small", "blue", 5, 15);
                 Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
@@ -459,7 +458,7 @@ namespace opp_client
                 snowflakes.Add(Tuple.Create(snowflake, pb));
                 this.Controls.Add(pb);
             }
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 20/2; i++)
             {
                 SnowflakeType type = SnowflakeFactory.GetSnowflakeType("medium", "blue", 10, 10);
                 Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
@@ -467,7 +466,7 @@ namespace opp_client
                 snowflakes.Add(Tuple.Create(snowflake, pb));
                 this.Controls.Add(pb);
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10/2; i++)
             {
                 SnowflakeType type = SnowflakeFactory.GetSnowflakeType("large", "blue", 15, 5);
                 Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
