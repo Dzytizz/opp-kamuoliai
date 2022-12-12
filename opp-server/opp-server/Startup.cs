@@ -11,6 +11,7 @@ using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
 using opp_server.Classes;
 using opp_server.Classes.Template;
+using opp_server.Classes.Mediator;
 
 namespace opp_server
 {
@@ -40,6 +41,7 @@ namespace opp_server
             services.AddSingleton(opt => new Level());
             services.AddSingleton(opt => createdBall);
             services.AddSingleton(opt => ballMovements);
+            services.AddSingleton(opt => new ChatRoom());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

@@ -20,7 +20,7 @@ namespace opp_client.Proxy
         {
             if(message[0] == '/')
             {
-                messenger = new CommandMessenger();
+                messenger = new CommandMessenger(this.PlayerID);
             }
             else
             {
