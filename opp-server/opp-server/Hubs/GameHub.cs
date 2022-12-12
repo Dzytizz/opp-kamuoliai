@@ -12,6 +12,7 @@ using opp_server.Classes.Abstract_Factory;
 using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
 using opp_server.Classes.Template;
+using opp_server.Classes.Mediator;
 
 namespace opp_server.Hubs
 {
@@ -22,14 +23,16 @@ namespace opp_server.Hubs
         public Server Server;
         public Ball Ball;
         public BallMovement[] BallMovements;
+        public ChatRoom ChatRoom;
 
-        public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements)
+        public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements, ChatRoom chatRoom)
         {
             this.GameState = GameState.GetInstance();
             this.Level = level;
             this.Server = server;
             this.Ball = ball;
             this.BallMovements = ballMovements;
+            this.ChatRoom = chatRoom;
             foreach (var bm in ballMovements)
             {
                 bm.Server = this.Server;
@@ -60,6 +63,16 @@ namespace opp_server.Hubs
             string formedMessage = String.Format("{0}: {1}", playerName, message);
             await Clients.All.SendAsync("SendMessageToAllResponse", formedMessage);
         }
+        public async Task SendMessageToRequest(string playerID, List<string> arguments)
+        {
+            string to = arguments[0];
+            string from = GameState.TryFindPlayer(playerID).Name;
+            List<string> messageCopy = arguments;
+            messageCopy.RemoveAt(0);
+            string message = String.Join(' ', messageCopy);
+            ChatRoom.Send(from, to, message);
+        }
+
 
         public async Task KickBallRequest(string playerID)
         {
@@ -144,6 +157,8 @@ namespace opp_server.Hubs
             await Clients.All.SendAsync("LevelChangeResponse", levelJSON);
         }
 
+
+
         public async Task UpdatePlayerPositionRequest(string playerID, string playerInputJSON)
         {
             PlayerInput playerInput = JsonConvert.DeserializeObject<PlayerInput>(playerInputJSON);
@@ -179,6 +194,7 @@ namespace opp_server.Hubs
             Player newPlayer = new Player(playerName, 0, 0, playerUniform, playerNumber);
             GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
             Client client = new Client(Clients.Client(Context.ConnectionId));
+            ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
             client.Ball = Ball;
             Server.Subscribe(client);
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);

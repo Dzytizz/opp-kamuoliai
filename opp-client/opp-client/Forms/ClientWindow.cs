@@ -252,6 +252,11 @@ namespace opp_client
                 logList.Items.Add(message);
             });
 
+            connection.On<string>("SendMessageToResponse", (message) =>
+            {
+                logList.Items.Add(message);
+            });
+
             try
             {
                 await connection.InvokeAsync("LevelRequest");

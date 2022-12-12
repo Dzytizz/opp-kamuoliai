@@ -10,6 +10,12 @@ namespace opp_client.Proxy
 {
     public class CommandMessenger : Messenger
     {
+        string PlayerID { get; set; }
+
+        public CommandMessenger(string playerID)
+        {
+            this.PlayerID = playerID;
+        }
         public override async void HandleMessageAsync(string message, HubConnection connection)
         {
             Command c = new Command(message);
@@ -20,6 +26,10 @@ namespace opp_client.Proxy
                 case "changeLevel":
                     await connection.InvokeAsync("LevelChangeRequest", c.ParsedCommand.Arguments);
                     break;
+                case "msg":
+                    await connection.InvokeAsync("SendMessageToRequest", PlayerID, c.ParsedCommand.Arguments);
+                    break;
+
             }
         }
     }
