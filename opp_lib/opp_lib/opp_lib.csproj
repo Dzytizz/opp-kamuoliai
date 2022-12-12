@@ -47,7 +47,6 @@
     <Compile Include="AdapterMath\Adaptee.cs" />
     <Compile Include="AdapterMath\ITarget.cs" />
     <Compile Include="AdapterMath\MathAdapter.cs" />
-    <Compile Include="IteratorPattern\Aggregator.cs" />
     <Compile Include="Ball.cs" />
     <Compile Include="BallVisual.cs" />
     <Compile Include="Bridge\Color.cs" />
@@ -68,9 +67,6 @@
     <Compile Include="Command\JumpUp.cs" />
     <Compile Include="Decorator\Decorator.cs" />
     <Compile Include="Decorator\IDecorator.cs" />
-    <Compile Include="IteratorPattern\ListIterator.cs" />
-    <Compile Include="IteratorPattern\Iterator.cs" />
-    <Compile Include="IteratorPattern\TeamList.cs" />
     <Compile Include="OvalPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
