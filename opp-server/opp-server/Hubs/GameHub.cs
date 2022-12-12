@@ -7,6 +7,7 @@ using System.Timers;
 using Microsoft.Extensions.Hosting.Internal;
 using opp_lib;
 using Newtonsoft.Json;
+using opp_lib.Iterator;
 using opp_server.Classes.Factory;
 using opp_server.Classes.Abstract_Factory;
 using opp_server.Classes.Observer;
@@ -178,6 +179,18 @@ namespace opp_server.Hubs
 
         public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
         {
+            Team team1 = new Team("Red");
+            Team team2 = new Team("Blue");
+
+            TeamList teamList = new TeamList();
+            teamList.Add(team1);
+            teamList.Add(team2);
+
+            foreach (Team team in teamList)
+            {
+                Console.WriteLine(team.Color);
+            }
+
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
             if (existingTeamIndex == -1) // if doesn't exist generate new ID

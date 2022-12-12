@@ -25,6 +25,11 @@ namespace opp_lib.Iterator
         {
             get => _collection[index];
         }
+
+        public int Count
+        {
+            get => _collection.Count;
+        }
         
         public override IEnumerator GetEnumerator()
         {
