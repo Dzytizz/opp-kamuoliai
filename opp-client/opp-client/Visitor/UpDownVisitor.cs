@@ -12,11 +12,9 @@ namespace opp_client.Visitor
     {
         public void Visit(Element animatedElement)
         {
-            AnimatedFan fan = animatedElement as AnimatedFan;
+            Fan fan = animatedElement as Fan;
 
-            Point location = fan.PictureBox.Location;
-            location.Y += 1 * fan.Direction;
-            fan.PictureBox.Location = location;
+            fan.YPosition += 2 * animatedElement.Direction;
         }
     }
 }

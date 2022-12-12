@@ -10,11 +10,12 @@ using opp_client.Visitor;
 
 namespace opp_client.Prototype
 {
-    public class Fan : ICloneable
+    public class Fan : Element, ICloneable
     {
         public int XPosition { get; set; }
         public int YPosition { get; set; }
         public string ColorOfFan { get; set; }
+        public int IsLighter { get; set; } = 1;
         public int Radius { get; set; }
 
         public Fan(int xPosition, int yPosition, string color, int radius)
@@ -38,6 +39,12 @@ namespace opp_client.Prototype
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public override void Animate(IVisitor visitor)
+        {
+            base.Animate(visitor);
+            visitor.Visit(this);
         }
     }
 }

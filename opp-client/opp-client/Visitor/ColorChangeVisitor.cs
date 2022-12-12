@@ -5,17 +5,24 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace opp_client.Visitor
 {
-    public class LeftRightVisitor : IVisitor
+    public class ColorChangeVisitor : IVisitor
     {
-
         public void Visit(Element animatedElement)
         {
             Fan fan = animatedElement as Fan;
 
-            fan.XPosition += 1 * animatedElement.Direction;
+            if (animatedElement.Direction > 0)
+            {
+                fan.IsLighter = 1;
+            }
+            else
+            {
+                fan.IsLighter = -1;
+            }
         }
     }
 }

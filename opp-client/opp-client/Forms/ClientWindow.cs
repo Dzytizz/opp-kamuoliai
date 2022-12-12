@@ -45,7 +45,7 @@ namespace opp_client
         Fans animatedFans = new Fans();
         UpDownVisitor upDownVisitor = new UpDownVisitor();
         LeftRightVisitor leftRightVisitor = new LeftRightVisitor();
-        SizeIncreaseVisitor sizeIncreaseVisitor = new SizeIncreaseVisitor();
+        ColorChangeVisitor colorChangeVisitor = new ColorChangeVisitor();
         System.Random rng = new System.Random();
 
         public ClientWindow(HubConnection connection, string playerID)
@@ -113,7 +113,7 @@ namespace opp_client
                     //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
 
-                    animatedFans.Attach(new AnimatedFan(fanBox, 1, 0.2f, 3f));
+                    animatedFans.Attach(fan, fanBox);
                 }
 
                 fan1 = new Fan(nullPosition, nullPosition, team2Color, radius);
@@ -129,7 +129,7 @@ namespace opp_client
                     //Console.WriteLine("Antra komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
 
-                    animatedFans.Attach(new AnimatedFan(fanBox, 1, 0.2f, 3f));
+                    animatedFans.Attach(fan, fanBox);
                 }
             });
 
@@ -508,6 +508,8 @@ namespace opp_client
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
+            SuspendLayout();
+      
             foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
             {
                 tuple.Item1.MoveDown();
@@ -516,7 +518,10 @@ namespace opp_client
 
             animatedFans.Animate(upDownVisitor);
             animatedFans.Animate(leftRightVisitor);
-            //animatedFans.Animate(sizeIncreaseVisitor);
+            animatedFans.Animate(colorChangeVisitor);
+            animatedFans.Render();
+
+            ResumeLayout(false);
         }
 
         //private async void button1_Click(object sender, EventArgs e)

@@ -234,12 +234,11 @@
     <Compile Include="Proxy\Messenger.cs" />
     <Compile Include="Proxy\MessengerProxy.cs" />
     <Compile Include="Singleton\ThemeManager.cs" />
-    <Compile Include="Visitor\AnimatedFan.cs" />
+    <Compile Include="Visitor\ColorChangeVisitor.cs" />
     <Compile Include="Visitor\Element.cs" />
     <Compile Include="Visitor\Fans.cs" />
     <Compile Include="Visitor\IVisitor.cs" />
     <Compile Include="Visitor\LeftRightVisitor.cs" />
-    <Compile Include="Visitor\SizeIncreaseVisitor.cs" />
     <Compile Include="Visitor\UpDownVisitor.cs" />
     <EmbeddedResource Include="Forms\ClientWindow.resx">
       <DependentUpon>ClientWindow.cs</DependentUpon>
