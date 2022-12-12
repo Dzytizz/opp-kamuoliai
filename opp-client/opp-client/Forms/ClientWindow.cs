@@ -19,6 +19,7 @@ using opp_client.Prototype;
 using opp_client.Facade;
 using opp_client.Flyweight;
 using opp_client.Proxy;
+using opp_client.Visitor;
 
 namespace opp_client
 {
@@ -40,6 +41,12 @@ namespace opp_client
         bool isTyping = false;
 
         IMessenger messenger;
+
+        Fans animatedFans = new Fans();
+        UpDownVisitor upDownVisitor = new UpDownVisitor();
+        LeftRightVisitor leftRightVisitor = new LeftRightVisitor();
+        ColorChangeVisitor colorChangeVisitor = new ColorChangeVisitor();
+        System.Random rng = new System.Random();
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -105,6 +112,8 @@ namespace opp_client
                     // Console.WriteLine(ihash);
                     //  Console.WriteLine("Pirma komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
+
+                    animatedFans.Attach(fan, fanBox);
                 }
 
                 fan1 = new Fan(nullPosition, nullPosition, team2Color, radius);
@@ -119,6 +128,8 @@ namespace opp_client
                     //Console.WriteLine(ihash);
                     //Console.WriteLine("Antra komanda " + j + ": " + ihash);
                     this.Controls.Add(fanBox);
+
+                    animatedFans.Attach(fan, fanBox);
                 }
             });
 
@@ -281,12 +292,6 @@ namespace opp_client
                         logList.Items.Add(ex.Message);
                     }
                 }
-            }
-
-            foreach(Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
-            {
-                tuple.Item1.MoveDown();
-                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
             }
         }
 
@@ -499,6 +504,24 @@ namespace opp_client
                 chatTextBox.Hide();
                 this.ActiveControl = logList;
             }
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            SuspendLayout();
+      
+            foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
+            {
+                tuple.Item1.MoveDown();
+                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
+            }
+
+            animatedFans.Animate(upDownVisitor);
+            animatedFans.Animate(leftRightVisitor);
+            animatedFans.Animate(colorChangeVisitor);
+            animatedFans.Render();
+
+            ResumeLayout(false);
         }
 
         //private async void button1_Click(object sender, EventArgs e)
