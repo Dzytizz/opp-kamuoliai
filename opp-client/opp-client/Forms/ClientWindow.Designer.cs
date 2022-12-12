@@ -80,7 +80,6 @@ namespace opp_client
             // AnimationTimer
             // 
             this.AnimationTimer.Enabled = true;
-            this.AnimationTimer.Interval = 20;
             this.AnimationTimer.Tick += new System.EventHandler(this.AnimationTimer_Tick);
             // 
             // ClientWindow

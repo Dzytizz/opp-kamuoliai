@@ -14,7 +14,8 @@ namespace opp_server.Classes.Mediator
         }
         public override void Receive(string from, string message)
         {
-            clientProxy.SendAsync("SendMessageToResponse", from + message);
+            string formattedMessage = String.Format("{0}: {1}", from, message);
+            clientProxy.SendAsync("SendMessageToResponse", formattedMessage);
             base.Receive(from, message);
         }
     }
