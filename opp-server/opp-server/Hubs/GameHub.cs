@@ -198,10 +198,7 @@ namespace opp_server.Hubs
             ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
             client.Ball = Ball;
             Server.Subscribe(client);
-            Team currentTeam = GameState.Teams[teamIndex];
-
-            Console.WriteLine(currentTeam.Color);
-            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, currentTeam.Color);
+            await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }
         public async Task PlayerCountRequest()
