@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using opp_lib.Iterator;
 
 namespace opp_lib
 {
     public class GameState
     {
         private static GameState Instance { get; set; } = new GameState();
-        public List<Team> Teams { get; set; }
+        public TeamList Teams { get; set; }
         public bool AdminExists { get; set; } = false;
         public int CurrentLevel { get; set; }
 
         private GameState()
         {
-            Teams = new List<Team>();
+            Teams = new TeamList();
             CurrentLevel = 1;
         }
 
@@ -27,7 +28,7 @@ namespace opp_lib
 
         public GameState Copy()
         {
-            List<Team> newTeams = new List<Team>();
+            TeamList newTeams = new TeamList();
             for (int i = 0; i < Teams.Count; i++)
             {
                 newTeams.Add(new Team());

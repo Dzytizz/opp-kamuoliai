@@ -16,7 +16,7 @@ namespace opp_lib.Iterator
         public T Current { get; set; }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
