@@ -46,7 +46,6 @@ namespace opp_client
         UpDownVisitor upDownVisitor = new UpDownVisitor();
         LeftRightVisitor leftRightVisitor = new LeftRightVisitor();
         ColorChangeVisitor colorChangeVisitor = new ColorChangeVisitor();
-        System.Random rng = new System.Random();
 
         public ClientWindow(HubConnection connection, string playerID)
         {
@@ -460,7 +459,7 @@ namespace opp_client
         private void GenerateSnowflakes()
         {
             Random r = new Random();
-            for(int i = 0; i < 30/2; i++)
+            for(int i = 0; i < 30/3; i++)
             {
                 SnowflakeType type = SnowflakeFactory.GetSnowflakeType("small", "blue", 5, 15);
                 Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
@@ -514,11 +513,15 @@ namespace opp_client
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             SuspendLayout();
-      
+
+            Snowflake snowflake;
+            OvalPictureBox pictureBox;
             foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
             {
-                tuple.Item1.MoveDown();
-                tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
+                snowflake = tuple.Item1;
+                pictureBox = tuple.Item2;
+                snowflake.MoveDown();
+                pictureBox.Location = new Point(snowflake.XPosition, snowflake.YPosition);
             }
 
             animatedFans.Animate(upDownVisitor);
