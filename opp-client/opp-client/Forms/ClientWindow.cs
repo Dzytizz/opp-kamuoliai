@@ -217,7 +217,6 @@ namespace opp_client
                                 pb.BackColor = ControlPaint.LightLight(pb.BackColor);
                             }
                             mpObjects.Add(entry.Key, pb);
-                            logList.Items.Add(entry.Value);
                             this.Controls.Add(pb);
 
                         }

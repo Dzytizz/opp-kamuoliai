@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace opp_lib.Iterator
 {
-    public abstract class IteratorAggregate<T> : IEnumerable, ICollection<T>
+    public abstract class IteratorAggregate<T> : ICollection<T>
     {
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        public abstract IEnumerator GetEnumerator();
 
         public abstract void Add(T item);
         public abstract void Clear();
@@ -23,5 +17,10 @@ namespace opp_lib.Iterator
         public abstract bool Remove(T item);
         public abstract int Count { get; }
         public abstract bool IsReadOnly { get; }
+        public abstract IEnumerator<T> GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

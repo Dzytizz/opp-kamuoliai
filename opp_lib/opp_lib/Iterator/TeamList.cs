@@ -19,12 +19,12 @@ namespace opp_lib.Iterator
 
         public override void Clear()
         {
-            throw new NotImplementedException();
+            _collection.Clear();
         }
 
         public override bool Contains(Team item)
         {
-            throw new NotImplementedException();
+            return _collection.Contains(item);
         }
 
         public override void CopyTo(Team[] array, int arrayIndex)
@@ -58,36 +58,15 @@ namespace opp_lib.Iterator
             return _collection.Remove(team);
         }
 
-        public Team this[int index]
+        public Team Get(int index)
         {
-            get => _collection[index];
+            return _collection[index];
         }
 
-        //public override void CopyTo(Array array, int index)
-        //{
-        //    if (array != null && array.Rank != 1)
-        //        throw new ArgumentException("Only single dimensional arrays are supported for the requested action.", "array");
-
-        //    // 1. call the generic version
-        //    Team[] typedArray = array as Team[];
-        //    if (typedArray != null)
-        //    {
-        //        CopyTo(typedArray, index);
-        //        return;
-        //    }
-
-        //    // 2. object[]
-        //    object[] objectArray = array as object[];
-        //    if (objectArray != null)
-        //    {
-        //        for (int i = 0; i < _collection.Count; i++)
-        //        {
-        //            objectArray[index++] = _collection[i];
-        //        }
-        //    }
-
-        //    throw new ArgumentException("Target array type is not compatible with the type of items in the collection.");
-        //}
+        public Team this[int index]
+        {
+            get => Get(index);
+        }
 
         public override int Count
         {
@@ -96,7 +75,7 @@ namespace opp_lib.Iterator
 
         public override bool IsReadOnly { get; }
 
-        public override IEnumerator GetEnumerator()
+        public override IEnumerator<Team> GetEnumerator()
         {
             return new ListIterator(this);
         }

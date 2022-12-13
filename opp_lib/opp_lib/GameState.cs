@@ -34,7 +34,7 @@ namespace opp_lib
                 newTeams.Add(new Team());
                 newTeams[i].Color = Teams[i].Color;
 
-                foreach(KeyValuePair<string,Player> entry in Teams[i].Players.ToList())
+                foreach(KeyValuePair<string,Player> entry in Teams[i].Players)
                 {
                     newTeams[i].Players.Add(entry.Key, entry.Value);
                 }

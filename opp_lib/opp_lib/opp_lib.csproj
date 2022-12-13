@@ -67,9 +67,11 @@
     <Compile Include="Command\JumpUp.cs" />
     <Compile Include="Decorator\Decorator.cs" />
     <Compile Include="Decorator\IDecorator.cs" />
+    <Compile Include="Iterator\DictionaryIterator.cs" />
     <Compile Include="Iterator\Iterator.cs" />
     <Compile Include="Iterator\IteratorAggregate.cs" />
     <Compile Include="Iterator\ListIterator.cs" />
+    <Compile Include="Iterator\PlayerDictionary.cs" />
     <Compile Include="Iterator\TeamList.cs" />
     <Compile Include="OvalPictureBox.cs">
       <SubType>Component</SubType>
