@@ -20,6 +20,7 @@ using opp_client.Facade;
 using opp_client.Flyweight;
 using opp_client.Proxy;
 using opp_client.Visitor;
+using System.Drawing.Printing;
 
 namespace opp_client
 {
@@ -459,7 +460,7 @@ namespace opp_client
         private void GenerateSnowflakes()
         {
             Random r = new Random();
-            for(int i = 0; i < 30/3; i++)
+            for(int i = 0; i < 30/2; i++)
             {
                 SnowflakeType type = SnowflakeFactory.GetSnowflakeType("small", "blue", 5, 15);
                 Snowflake snowflake = new Snowflake(r.Next(0, 850), r.Next(0, 458), type);
@@ -510,19 +511,46 @@ namespace opp_client
             }
         }
 
+        //private int snowflakeIndex = 0;
+
+        private int snowflakeBlock = 1;
+        private int snowflakeBlockCount = 3;
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             SuspendLayout();
 
-            Snowflake snowflake;
-            OvalPictureBox pictureBox;
-            foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
+            //if (snowflakeIndex == snowflakes.Count)
+            //{
+            //    snowflakeIndex = 0;
+            //}
+            //Snowflake snowflake = snowflakes[snowflakeIndex].Item1;
+            //snowflake.MoveDown();
+            //OvalPictureBox pictureBox = snowflakes[snowflakeIndex].Item2;
+            //pictureBox.Location = new Point(snowflake.XPosition, snowflake.YPosition);
+            //snowflakeIndex++;
+
+
+            if (snowflakeBlock > snowflakeBlockCount)
             {
-                snowflake = tuple.Item1;
-                pictureBox = tuple.Item2;
+                snowflakeBlock = 1;
+            }
+
+            int blockSize = snowflakes.Count / snowflakeBlockCount;
+            for (int i = (snowflakeBlock-1)*snowflakeBlock; i < snowflakeBlock * blockSize; i++)
+            {
+                Snowflake snowflake = snowflakes[i].Item1;
                 snowflake.MoveDown();
+                OvalPictureBox pictureBox = snowflakes[i].Item2;
                 pictureBox.Location = new Point(snowflake.XPosition, snowflake.YPosition);
             }
+            snowflakeBlock++;
+
+
+            //foreach (Tuple<Snowflake, OvalPictureBox> tuple in snowflakes)
+            //{
+            //    tuple.Item1.MoveDown();
+            //    tuple.Item2.Location = new Point(tuple.Item1.XPosition, tuple.Item1.YPosition);
+            //}
 
             animatedFans.Animate(upDownVisitor);
             animatedFans.Animate(leftRightVisitor);
