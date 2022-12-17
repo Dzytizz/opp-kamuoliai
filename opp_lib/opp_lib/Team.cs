@@ -12,11 +12,13 @@ namespace opp_lib
         public PlayerDictionary Players { get; set; }
         //public List<Player> Players { get; set; }
         public string Color { get; set; }
+        public int Goals { get; set; }
 
         public Team()
         {
             this.Players = new PlayerDictionary();
             this.Color = "Gray";
+            this.Goals = 0;
         }
 
         public Team(string color)

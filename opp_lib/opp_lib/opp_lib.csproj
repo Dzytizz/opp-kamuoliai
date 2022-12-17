@@ -91,6 +91,10 @@
     <Compile Include="PlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Command\Invoker.cs" />
+    <Compile Include="State\GoalState.cs" />
+    <Compile Include="State\AbstractState.cs" />
+    <Compile Include="State\PlayingState.cs" />
+    <Compile Include="State\WaitingState.cs" />
     <Compile Include="Strategy\MovementMode.cs" />
     <Compile Include="Strategy\Jog.cs" />
     <Compile Include="Strategy\Jump.cs" />

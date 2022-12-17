@@ -29,7 +29,9 @@ namespace opp_client.Proxy
                 case "msg":
                     await connection.InvokeAsync("SendMessageToRequest", PlayerID, c.ParsedCommand.Arguments);
                     break;
-
+                case "start":
+                    await connection.InvokeAsync("StartGameRequest");
+                    break;
             }
         }
     }
