@@ -90,6 +90,7 @@ namespace opp_client
             }
 
             comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
         }
 
         private void StartGameButton_Click(object sender, EventArgs e)
@@ -114,11 +115,12 @@ namespace opp_client
                 string playerName = textBox1.Text;
                 int playerNumber = int.Parse(textBox2.Text);
                 string playerUniform = comboBox1.SelectedItem.ToString();
+                string playerPosition = comboBox2.SelectedItem.ToString();
                 if (string.IsNullOrWhiteSpace(playerName) || string.IsNullOrWhiteSpace(playerUniform))
                 {
                     return;
                 }
-                await connection.InvokeAsync("JoinTeamRequest", 0, playerID, playerName, playerUniform, playerNumber);
+                await connection.InvokeAsync("JoinTeamRequest", 0, playerID, playerName, playerUniform, playerNumber, playerPosition);
             }
             catch (Exception ex)
             {
@@ -155,6 +157,16 @@ namespace opp_client
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
