@@ -14,6 +14,7 @@ using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
 using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
+using opp_lib.CompositePattern;
 
 namespace opp_server.Hubs
 {
@@ -177,7 +178,7 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
+        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber, string playerPosition)
         {
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
@@ -189,6 +190,10 @@ namespace opp_server.Hubs
             {
                 GameState.Teams[existingTeamIndex].Players.Remove(oldPlayerID);
                 await Clients.All.SendAsync("ReceivePlayerCount", existingTeamIndex, -1);   // also update teamCounter in all clients (removes one)
+                Player tempPlayer;
+                GameState.Teams[existingTeamIndex].Players.TryGetValue(oldPlayerID, out tempPlayer);
+                GameState.Teams[existingTeamIndex].AttackPlayer.Remove(new Leaf(tempPlayer));
+                GameState.Teams[existingTeamIndex].DefendPlayer.Remove(new Leaf(tempPlayer));
                 newPlayerID = oldPlayerID;
             }
 
@@ -198,6 +203,16 @@ namespace opp_server.Hubs
             ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
             client.Ball = Ball;
             Server.Subscribe(client);
+            if(playerPosition.Equals("Defend player"))
+            {
+                GameState.Teams[teamIndex].DefendPlayer.Add(new Leaf(newPlayer));
+            }
+            if (playerPosition.Equals("Attack player"))
+            {
+                GameState.Teams[teamIndex].AttackPlayer.Add(new Leaf(newPlayer));
+            }
+            GameState.Teams[teamIndex].AttackPlayer.SetValues(5,50);
+            GameState.Teams[teamIndex].DefendPlayer.SetValues(3, 70);
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }
