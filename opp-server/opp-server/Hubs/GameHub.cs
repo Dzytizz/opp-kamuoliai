@@ -30,6 +30,7 @@ namespace opp_server.Hubs
         public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements, ChatRoom chatRoom)
         {
             this.GameState = GameState.GetInstance();
+            this.GameState.Ball = ball;
             this.Level = level;
             this.Server = server;
             this.Ball = ball;
@@ -40,6 +41,16 @@ namespace opp_server.Hubs
                 bm.Server = this.Server;
                 bm.Level = this.Level;
             }
+        }
+
+        public async Task StartGameRequest()
+        {
+            GameState.StartGame();
+        }
+
+        public async Task StateStatusRequest()
+        {
+            await Clients.Client(Context.ConnectionId).SendAsync("StateStatusResponse", GameState.State.GetStateStatus());
         }
 
         //public async Task JoinGameRequest()

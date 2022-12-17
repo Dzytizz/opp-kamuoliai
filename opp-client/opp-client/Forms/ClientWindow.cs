@@ -192,7 +192,8 @@ namespace opp_client
             connection.On<string>("GameStateResponse", (response) =>
             {
                 GameState gameStateResponse = JsonConvert.DeserializeObject<GameState>(response);
-                //logList.Items.Add(gameStateResponse.ToString());
+                //stateLabel.Text = gameStateResponse.State.GetStateStatus();
+                //logList.Items.Add(gameStateResponse.State.GetStateStatus());
 
                 int teamNumber = 0;
                 for (int i = gameStateResponse.Teams.Count - 1; i >= 0; i--)
@@ -273,6 +274,11 @@ namespace opp_client
                 logList.Items.Add(message);
             });
 
+            connection.On<string>("StateStatusResponse", (message) =>
+            {
+                stateLabel.Text = message;
+            }
+            
             connection.On<List<Obstacle>>("WallResponse", (walls) => {
                 foreach (var wall in walls)
                 {
@@ -326,6 +332,12 @@ namespace opp_client
                         logList.Items.Add(ex.Message);
                     }
                 }
+            }
+            if(!playerID.Equals(""))
+            {
+                await connection.InvokeAsync("GameStateRequest");
+                await connection.InvokeAsync("BallRequest");
+                await connection.InvokeAsync("StateStatusRequest");
             }
         }
 

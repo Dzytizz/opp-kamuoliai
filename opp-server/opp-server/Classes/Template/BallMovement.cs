@@ -18,6 +18,7 @@ namespace opp_server.Classes.Template
         public Timer BallLoop = new Timer(50);
         public Server Server { get; set; }
         public Level Level { get; set; }
+
         public BallMovement(Ball ball)
         {
             Ball = ball;
@@ -29,6 +30,15 @@ namespace opp_server.Classes.Template
 
         private void BallLoop_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if(Ball.XPosition < 0)
+            {
+                GameState.GetInstance().Score(1);
+            }
+            else if(Ball.XPosition > 850)
+            {
+                GameState.GetInstance().Score(0);
+            }
+
             if (Ball.Speed > 0)
             {
                 AccelerateBall();

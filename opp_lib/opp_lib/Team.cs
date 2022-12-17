@@ -13,6 +13,7 @@ namespace opp_lib
         public PlayerDictionary Players { get; set; }
         //public List<Player> Players { get; set; }
         public string Color { get; set; }
+        public int Goals { get; set; }
         public Composite AttackPlayer { get; set; }
         public Composite DefendPlayer { get; set; }
 
@@ -20,6 +21,7 @@ namespace opp_lib
         {
             this.Players = new PlayerDictionary();
             this.Color = "Gray";
+            this.Goals = 0;
             this.AttackPlayer = new Composite();
             this.DefendPlayer = new Composite();
         }
