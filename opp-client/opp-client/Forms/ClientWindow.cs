@@ -277,7 +277,7 @@ namespace opp_client
             connection.On<string>("StateStatusResponse", (message) =>
             {
                 stateLabel.Text = message;
-            }
+            });
             
             connection.On<List<Obstacle>>("WallResponse", (walls) => {
                 foreach (var wall in walls)
