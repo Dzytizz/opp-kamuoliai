@@ -190,6 +190,10 @@ namespace opp_server.Hubs
             {
                 GameState.Teams[existingTeamIndex].Players.Remove(oldPlayerID);
                 await Clients.All.SendAsync("ReceivePlayerCount", existingTeamIndex, -1);   // also update teamCounter in all clients (removes one)
+                Player tempPlayer;
+                GameState.Teams[existingTeamIndex].Players.TryGetValue(oldPlayerID, out tempPlayer);
+                GameState.Teams[existingTeamIndex].AttackPlayer.Remove(new Leaf(tempPlayer));
+                GameState.Teams[existingTeamIndex].DefendPlayer.Remove(new Leaf(tempPlayer));
                 newPlayerID = oldPlayerID;
             }
 

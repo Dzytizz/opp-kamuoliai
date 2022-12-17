@@ -137,11 +137,12 @@ namespace opp_client
                 string playerName = textBox1.Text;
                 int playerNumber = int.Parse(textBox2.Text);
                 string playerUniform = comboBox1.SelectedItem.ToString();
+                string playerPosition = comboBox2.SelectedItem.ToString();
                 if (string.IsNullOrWhiteSpace(playerName) || string.IsNullOrWhiteSpace(playerUniform))
                 {
                     return;
                 }
-                await connection.InvokeAsync("JoinTeamRequest", 1, playerID, playerName, playerUniform, playerNumber);
+                await connection.InvokeAsync("JoinTeamRequest", 1, playerID, playerName, playerUniform, playerNumber, playerPosition);
             }
             catch (Exception ex)
             {
