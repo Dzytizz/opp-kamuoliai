@@ -34,6 +34,7 @@ namespace opp_client
         PictureBox leftGates;
         PictureBox rightGates;
         List<PictureBox> obstacles;
+        List<PictureBox> wallsPb;
         Control ballControl;
         List<Tuple<Snowflake, OvalPictureBox>> snowflakes;
 
@@ -54,7 +55,7 @@ namespace opp_client
 
             this.connection = connection;
             this.playerID = playerID;
-            messenger = new MessengerProxy(playerID);
+            messenger = new MessengerProxy(playerID, ClientSize.Width, ClientSize.Height);
 
             connection.Closed += async (error) =>
             {
@@ -78,6 +79,10 @@ namespace opp_client
         {
             //ThemeManager tm = ThemeManager.GetInstance();
             themeClient.ApplyTheme(this);
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
 
             //connection.On<string, string>("ReceiveMessage", (user, message) =>
             //{
@@ -268,12 +273,36 @@ namespace opp_client
                 logList.Items.Add(message);
             });
 
+            connection.On<List<Obstacle>>("WallResponse", (walls) => {
+                foreach (var wall in walls)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.Location = new Point(wall.XPosition, wall.YPosition);
+                    pb.Width = wall.Width;
+                    pb.Height = wall.Height;
+                    pb.BackColor = Color.FromName(wall.Color);
+                    wallsPb.Add(pb);
+                    this.Controls.Add(pb);
+                    pb.BringToFront();
+                }
+            });
+
+            connection.On("WallRemoveResponse", () =>
+            {
+                foreach (var pb in wallsPb)
+                {
+                    this.Controls.Remove(pb);
+                }
+                wallsPb.Clear();
+            });
+
             try
             {
                 await connection.InvokeAsync("LevelRequest");
                 await connection.InvokeAsync("GameStateRequest");
                 await connection.InvokeAsync("BallRequest");
                 await connection.InvokeAsync("TeamColorsRequest");
+                await connection.InvokeAsync("WallRequest", ClientSize.Width, ClientSize.Height);
             }
             catch (Exception ex)
             {

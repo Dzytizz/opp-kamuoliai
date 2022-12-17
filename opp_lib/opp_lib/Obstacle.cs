@@ -23,5 +23,14 @@ namespace opp_lib
             // this.Height = height;
             // this.Color = color;
         }
+
+        public Obstacle(int XPosition, int YPosition, int Width, int Height, string Color)
+        {
+            this.XPosition = XPosition;
+            this.YPosition = YPosition;
+            this.Width = Width;
+            this.Height = Height;
+            this.Color = Color;
+        }
     }
 }

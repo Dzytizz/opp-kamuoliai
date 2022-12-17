@@ -11,16 +11,19 @@ namespace opp_client.Proxy
     {
         protected Messenger messenger;
         protected string PlayerID { get; set; }
-        public MessengerProxy(string playerID)
+        protected int ClientWidth { get; set; }
+        protected int ClientHeight { get; set; }
+        public MessengerProxy(string playerID, int clientWidth, int clientHeight)
         {
             this.PlayerID = playerID;
-            
+            this.ClientWidth = clientWidth;
+            this.ClientHeight = clientHeight;
         }
         public void HandleMessageAsync(string message, HubConnection connection)
         {
             if(message[0] == '/')
             {
-                messenger = new CommandMessenger(this.PlayerID);
+                messenger = new CommandMessenger(this.PlayerID, ClientWidth, ClientHeight);
             }
             else
             {

@@ -221,6 +221,37 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
         }
 
+        public async Task WallRequest(int screenWidth, int screenHeight)
+        {
+            Obstacle upperWall = new Obstacle(0, 0, screenWidth, 1, "Black");
+            Obstacle leftWall1 = new Obstacle(0, 0, 1, Level.LeftGates.YPosition, "Black");
+            Obstacle leftWall2 = new Obstacle(0, Level.LeftGates.YPosition + Level.LeftGates.Height, 1, screenHeight - (Level.LeftGates.YPosition + Level.LeftGates.Height), "Black");
+            Obstacle downWall = new Obstacle(0, screenHeight, screenWidth, 1, "Black");
+            Obstacle rightWall1 = new Obstacle(screenWidth, 0, 1, Level.RightGates.YPosition, "Black");
+            Obstacle rightWall2 = new Obstacle(screenWidth, Level.RightGates.YPosition+Level.RightGates.Height, 1, screenHeight - (Level.RightGates.YPosition + Level.RightGates.Height), "Black");
+            List<Obstacle> walls = new List<Obstacle>() { upperWall, leftWall1, leftWall2, downWall, rightWall1, rightWall2 };
+            this.Level.Obstacles.AddRange(walls);
+            await Clients.Client(Context.ConnectionId)
+                .SendAsync("WallResponse", walls);
+        }
+
+        public async Task WallRemoveRequest(int screenWidth, int screenHeight)
+        {
+            Obstacle upperWall = new Obstacle(0, 0, screenWidth, 1, "Black");
+            Obstacle leftWall1 = new Obstacle(0, 0, 1, Level.LeftGates.YPosition, "Black");
+            Obstacle leftWall2 = new Obstacle(0, Level.LeftGates.YPosition + Level.LeftGates.Height, 1, screenHeight - (Level.LeftGates.YPosition + Level.LeftGates.Height), "Black");
+            Obstacle downWall = new Obstacle(0, screenHeight, screenWidth, 1, "Black");
+            Obstacle rightWall1 = new Obstacle(screenWidth, 0, 1, Level.RightGates.YPosition, "Black");
+            Obstacle rightWall2 = new Obstacle(screenWidth, Level.RightGates.YPosition + Level.RightGates.Height, 1, screenHeight - (Level.RightGates.YPosition + Level.RightGates.Height), "Black");
+            this.Level.Obstacles.Remove(upperWall);
+            this.Level.Obstacles.Remove(leftWall1);
+            this.Level.Obstacles.Remove(leftWall2);
+            this.Level.Obstacles.Remove(downWall);
+            this.Level.Obstacles.Remove(rightWall1);
+            this.Level.Obstacles.Remove(rightWall2);
+            await Clients.Client(Context.ConnectionId).SendAsync("WallRemoveResponse");
+        }
+
         private void GenerateLevel()
         {
             AbstractLevelFactory factory;
@@ -248,9 +279,10 @@ namespace opp_server.Hubs
             {
                 bm.Field = field;
             }
-            //Padaryt random ir daug
-            Obstacle obstacle = factory.CreateObstacle(375, 150);
             List<Obstacle> obstacles = new List<Obstacle>();
+            // viena kliutis
+            Obstacle obstacle = factory.CreateObstacle(375, 150);
+
             obstacles.Add(obstacle);
         
             Level.SetLevel(leftGates, rightGates, field, obstacles);
