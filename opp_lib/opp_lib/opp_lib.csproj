@@ -65,6 +65,9 @@
     <Compile Include="Command\JumpLeft.cs" />
     <Compile Include="Command\JumpRight.cs" />
     <Compile Include="Command\JumpUp.cs" />
+    <Compile Include="CompositePattern\Component.cs" />
+    <Compile Include="CompositePattern\Composite.cs" />
+    <Compile Include="CompositePattern\Leaf.cs" />
     <Compile Include="Decorator\Decorator.cs" />
     <Compile Include="Decorator\IDecorator.cs" />
     <Compile Include="Iterator\DictionaryIterator.cs" />

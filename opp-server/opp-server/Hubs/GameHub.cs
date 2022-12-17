@@ -14,6 +14,7 @@ using opp_server.Classes.Observer;
 using opp_server.Classes.Builder;
 using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
+using opp_lib.CompositePattern;
 
 namespace opp_server.Hubs
 {
@@ -188,7 +189,7 @@ namespace opp_server.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("GameStateResponse", gameStateJSON);
         }
 
-        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber)
+        public async Task JoinTeamRequest(int teamIndex, string oldPlayerID, string playerName, string playerUniform, int playerNumber, string playerPosition)
         {
             int existingTeamIndex = GameState.TryFindPlayerTeamIndex(oldPlayerID); // check if oldPlayerID exists
             string newPlayerID = "";
@@ -200,6 +201,10 @@ namespace opp_server.Hubs
             {
                 GameState.Teams[existingTeamIndex].Players.Remove(oldPlayerID);
                 await Clients.All.SendAsync("ReceivePlayerCount", existingTeamIndex, -1);   // also update teamCounter in all clients (removes one)
+                Player tempPlayer;
+                GameState.Teams[existingTeamIndex].Players.TryGetValue(oldPlayerID, out tempPlayer);
+                GameState.Teams[existingTeamIndex].AttackPlayer.Remove(new Leaf(tempPlayer));
+                GameState.Teams[existingTeamIndex].DefendPlayer.Remove(new Leaf(tempPlayer));
                 newPlayerID = oldPlayerID;
             }
 
@@ -209,12 +214,53 @@ namespace opp_server.Hubs
             ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
             client.Ball = Ball;
             Server.Subscribe(client);
+            if(playerPosition.Equals("Defend player"))
+            {
+                GameState.Teams[teamIndex].DefendPlayer.Add(new Leaf(newPlayer));
+            }
+            if (playerPosition.Equals("Attack player"))
+            {
+                GameState.Teams[teamIndex].AttackPlayer.Add(new Leaf(newPlayer));
+            }
+            GameState.Teams[teamIndex].AttackPlayer.SetValues(5,50);
+            GameState.Teams[teamIndex].DefendPlayer.SetValues(3, 70);
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }
         public async Task PlayerCountRequest()
         {
             await Clients.Client(Context.ConnectionId).SendAsync("PlayerCountResponse", GameState.Teams[0].Players.Count(), GameState.Teams[1].Players.Count());
+        }
+
+        public async Task WallRequest(int screenWidth, int screenHeight)
+        {
+            Obstacle upperWall = new Obstacle(0, 0, screenWidth, 1, "Black");
+            Obstacle leftWall1 = new Obstacle(0, 0, 1, Level.LeftGates.YPosition, "Black");
+            Obstacle leftWall2 = new Obstacle(0, Level.LeftGates.YPosition + Level.LeftGates.Height, 1, screenHeight - (Level.LeftGates.YPosition + Level.LeftGates.Height), "Black");
+            Obstacle downWall = new Obstacle(0, screenHeight, screenWidth, 1, "Black");
+            Obstacle rightWall1 = new Obstacle(screenWidth, 0, 1, Level.RightGates.YPosition, "Black");
+            Obstacle rightWall2 = new Obstacle(screenWidth, Level.RightGates.YPosition+Level.RightGates.Height, 1, screenHeight - (Level.RightGates.YPosition + Level.RightGates.Height), "Black");
+            List<Obstacle> walls = new List<Obstacle>() { upperWall, leftWall1, leftWall2, downWall, rightWall1, rightWall2 };
+            this.Level.Obstacles.AddRange(walls);
+            await Clients.Client(Context.ConnectionId)
+                .SendAsync("WallResponse", walls);
+        }
+
+        public async Task WallRemoveRequest(int screenWidth, int screenHeight)
+        {
+            Obstacle upperWall = new Obstacle(0, 0, screenWidth, 1, "Black");
+            Obstacle leftWall1 = new Obstacle(0, 0, 1, Level.LeftGates.YPosition, "Black");
+            Obstacle leftWall2 = new Obstacle(0, Level.LeftGates.YPosition + Level.LeftGates.Height, 1, screenHeight - (Level.LeftGates.YPosition + Level.LeftGates.Height), "Black");
+            Obstacle downWall = new Obstacle(0, screenHeight, screenWidth, 1, "Black");
+            Obstacle rightWall1 = new Obstacle(screenWidth, 0, 1, Level.RightGates.YPosition, "Black");
+            Obstacle rightWall2 = new Obstacle(screenWidth, Level.RightGates.YPosition + Level.RightGates.Height, 1, screenHeight - (Level.RightGates.YPosition + Level.RightGates.Height), "Black");
+            this.Level.Obstacles.Remove(upperWall);
+            this.Level.Obstacles.Remove(leftWall1);
+            this.Level.Obstacles.Remove(leftWall2);
+            this.Level.Obstacles.Remove(downWall);
+            this.Level.Obstacles.Remove(rightWall1);
+            this.Level.Obstacles.Remove(rightWall2);
+            await Clients.Client(Context.ConnectionId).SendAsync("WallRemoveResponse");
         }
 
         private void GenerateLevel()
@@ -244,9 +290,10 @@ namespace opp_server.Hubs
             {
                 bm.Field = field;
             }
-            //Padaryt random ir daug
-            Obstacle obstacle = factory.CreateObstacle(375, 150);
             List<Obstacle> obstacles = new List<Obstacle>();
+            // viena kliutis
+            Obstacle obstacle = factory.CreateObstacle(375, 150);
+
             obstacles.Add(obstacle);
         
             Level.SetLevel(leftGates, rightGates, field, obstacles);

@@ -11,10 +11,14 @@ namespace opp_client.Proxy
     public class CommandMessenger : Messenger
     {
         string PlayerID { get; set; }
+        int ClientWidth {get; set; }
+        int ClientHeight { get; set; }
 
-        public CommandMessenger(string playerID)
+        public CommandMessenger(string playerID, int clientWidth, int clientHeight)
         {
             this.PlayerID = playerID;
+            ClientWidth = clientWidth;
+            ClientHeight = clientHeight;
         }
         public override async void HandleMessageAsync(string message, HubConnection connection)
         {
@@ -25,6 +29,8 @@ namespace opp_client.Proxy
             {
                 case "changeLevel":
                     await connection.InvokeAsync("LevelChangeRequest", c.ParsedCommand.Arguments);
+                    await connection.InvokeAsync("WallRemoveRequest", ClientWidth, ClientHeight);
+                    await connection.InvokeAsync("WallRequest", ClientWidth, ClientHeight);
                     break;
                 case "msg":
                     await connection.InvokeAsync("SendMessageToRequest", PlayerID, c.ParsedCommand.Arguments);
