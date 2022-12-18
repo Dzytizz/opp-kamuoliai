@@ -21,11 +21,12 @@ namespace opp_lib.State
         {
             var t = Task.Run(async delegate
             {
-                await Task.Delay(3000);
+                await Task.Delay(5000);
                 return 0;
             });
             t.Wait();
-            GameState.ChangeState(new PlayingState(GameState));
+            if (GameState.Teams[0].Goals == 3 || GameState.Teams[1].Goals == 3) GameState.ChangeState(new WinnerState(GameState));
+            else GameState.ChangeState(new PlayingState(GameState));
         }
     }
 }

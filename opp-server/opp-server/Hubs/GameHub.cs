@@ -15,6 +15,7 @@ using opp_server.Classes.Builder;
 using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
 using opp_lib.CompositePattern;
+using opp_lib.State;
 
 namespace opp_server.Hubs
 {
@@ -45,7 +46,7 @@ namespace opp_server.Hubs
 
         public async Task StartGameRequest()
         {
-            GameState.StartGame();
+            if(GameState.State is WaitingState) GameState.StartGame();
         }
 
         public async Task StateStatusRequest()
@@ -156,6 +157,7 @@ namespace opp_server.Hubs
         {
             //if(GameState.CurrentLevel < 3)
             //    GameState.CurrentLevel++;
+            if (!(GameState.State is WaitingState)) return;
             try
             {
                 int level = Int32.Parse(arguments[0]);
@@ -292,7 +294,7 @@ namespace opp_server.Hubs
             }
             List<Obstacle> obstacles = new List<Obstacle>();
             // viena kliutis
-            Obstacle obstacle = factory.CreateObstacle(375, 150);
+            Obstacle obstacle = factory.CreateObstacle(400, 31);
 
             obstacles.Add(obstacle);
         

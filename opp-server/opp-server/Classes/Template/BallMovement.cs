@@ -34,7 +34,7 @@ namespace opp_server.Classes.Template
             {
                 GameState.GetInstance().Score(1);
             }
-            else if(Ball.XPosition > 850)
+            else if(Ball.XPosition > 810)
             {
                 GameState.GetInstance().Score(0);
             }

@@ -12,12 +12,12 @@ namespace opp_lib.State
 
         public override string GetStateStatus()
         {
-            return "Waiting for players";
+            return "Waiting for players to choose level and start";
         }
 
         public override void StateStartAction()
         {
-            return;
+            GameState.ResetScore();
         }
     }
 }

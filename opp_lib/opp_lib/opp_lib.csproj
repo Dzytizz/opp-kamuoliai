@@ -98,6 +98,7 @@
     <Compile Include="State\AbstractState.cs" />
     <Compile Include="State\PlayingState.cs" />
     <Compile Include="State\WaitingState.cs" />
+    <Compile Include="State\WinnerState.cs" />
     <Compile Include="Strategy\MovementMode.cs" />
     <Compile Include="Strategy\Jog.cs" />
     <Compile Include="Strategy\Jump.cs" />

@@ -41,21 +41,21 @@ namespace opp_lib
         public void ResetPlayersAndBall()
         {
             int teamId = 0;
-            int startingXPosition = 100;
-            int startingYPosition = 100;
+            int startingXPosition = 325;
+            int startingYPosition = 85;
             foreach(Team team in Teams)
             {
                 int playerId = 0;
                 foreach (KeyValuePair<string, Player> player in team.Players)
                 {
-                    player.Value.XPosition = startingXPosition + (teamId * 100);
-                    player.Value.YPosition = startingYPosition + (playerId * 100);
+                    player.Value.XPosition = startingXPosition + (teamId * 200) - (player.Value.Radius / 2);
+                    player.Value.YPosition = startingYPosition + (playerId * 200) - (player.Value.Radius / 2);
                     playerId++;
                 }
                 teamId++;
             }
-            Ball.XPosition = 150;
-            Ball.YPosition = 150;
+            Ball.XPosition = (850 / 2) - (Ball.Radius / 2);
+            Ball.YPosition = (370 / 2) - (Ball.Radius / 2);
         }
 
         public void Score(int teamId)
@@ -63,6 +63,14 @@ namespace opp_lib
             if (State is PlayingState) { 
                 Teams[teamId].Goals++;
                 ChangeState(new GoalState(this));
+            }
+        }
+
+        public void ResetScore()
+        {
+            foreach(Team team in Teams)
+            {
+                team.Goals = 0;
             }
         }
 
