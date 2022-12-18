@@ -343,7 +343,7 @@ namespace opp_client
             }
             if(!playerID.Equals(""))
             {
-                await connection.InvokeAsync("GameStateRequest");
+                //await connection.InvokeAsync("GameStateRequest");
                 await connection.InvokeAsync("BallRequest");
                 await connection.InvokeAsync("StateStatusRequest");
             }

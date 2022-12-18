@@ -242,12 +242,7 @@ namespace opp_server.Hubs
             }
 
             Player newPlayer = new Player(playerName, 0, 0, playerUniform, playerNumber);
-            GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
-            Client client = new Client(Clients.Client(Context.ConnectionId));
-            ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
-            client.Ball = Ball;
-            Server.Subscribe(client);
-            if(playerPosition.Equals("Defend player"))
+            if (playerPosition.Equals("Defend player"))
             {
                 GameState.Teams[teamIndex].DefendPlayer.Add(new Leaf(newPlayer));
             }
@@ -255,8 +250,15 @@ namespace opp_server.Hubs
             {
                 GameState.Teams[teamIndex].AttackPlayer.Add(new Leaf(newPlayer));
             }
-            GameState.Teams[teamIndex].AttackPlayer.SetValues(5,50);
+            GameState.Teams[teamIndex].AttackPlayer.SetValues(5, 50);
             GameState.Teams[teamIndex].DefendPlayer.SetValues(3, 70);
+            GameState.Teams[teamIndex].Players.Add(newPlayerID, newPlayer);
+
+            Client client = new Client(Clients.Client(Context.ConnectionId));
+            ChatRoom.Register(new SingleChatRoomMember(playerName, Clients.Client(Context.ConnectionId)));
+            client.Ball = Ball;
+            Server.Subscribe(client);
+            
             await Clients.Client(Context.ConnectionId).SendAsync("JoinTeamResponse", newPlayerID, GameState.Teams[teamIndex].Color);
             await Clients.All.SendAsync("ReceivePlayerCount", teamIndex, 1); // update teamCounter for all clients (adds one)
         }

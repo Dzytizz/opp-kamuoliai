@@ -108,6 +108,8 @@ namespace opp_lib
                 {
                     Player oldPlayer = entry.Value;
                     Player newPlayer = new Player(oldPlayer.Name, oldPlayer.XPosition, oldPlayer.YPosition, oldPlayer.UniformName, oldPlayer.Number);
+                    newPlayer.Radius = oldPlayer.Radius;
+                    newPlayer.Speed = oldPlayer.Speed;
                     newTeams[i].Players.Add(entry.Key, newPlayer);
                 }
                 
