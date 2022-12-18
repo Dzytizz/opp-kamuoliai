@@ -38,6 +38,12 @@ namespace opp_client.Proxy
                 case "start":
                     await connection.InvokeAsync("StartGameRequest");
                     break;
+                case "save":
+                    await connection.InvokeAsync("SaveGameState");
+                    break;
+                case "restart":
+                    await connection.InvokeAsync("RestartGameState");
+                    break;
             }
         }
     }

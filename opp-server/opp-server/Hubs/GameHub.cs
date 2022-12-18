@@ -16,6 +16,7 @@ using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
 using opp_lib.CompositePattern;
 using opp_lib.State;
+using opp_server.Classes.Memento;
 
 namespace opp_server.Hubs
 {
@@ -27,8 +28,12 @@ namespace opp_server.Hubs
         public Ball Ball;
         public BallMovement[] BallMovements;
         public ChatRoom ChatRoom;
+        public Originator Originator;
+        //private Memento Memento;
+        private Caretaker Caretaker;
+        
 
-        public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements, ChatRoom chatRoom)
+        public GameHub(Level level, Server server, Ball ball, BallMovement[] ballMovements, ChatRoom chatRoom, Originator originator, Caretaker caretaker)
         {
             this.GameState = GameState.GetInstance();
             this.GameState.Ball = ball;
@@ -37,16 +42,34 @@ namespace opp_server.Hubs
             this.Ball = ball;
             this.BallMovements = ballMovements;
             this.ChatRoom = chatRoom;
+            this.Originator = originator;
+            this.Originator.State = this.GameState.Copy();
+            this.Caretaker = caretaker;
             foreach (var bm in ballMovements)
             {
                 bm.Server = this.Server;
                 bm.Level = this.Level;
             }
+            
+        }
+
+        public async Task SaveGameState()
+        {
+            this.Caretaker.Memento = this.Originator.CreateMemento();
+            
+        }
+
+        public async Task RestartGameState()
+        {
+            this.Originator.SetMemento(this.Caretaker.Memento);
+            GameState = Originator.State;
+            //await Clients.All.SendAsync("RestartGameStateResponse");
         }
 
         public async Task StartGameRequest()
         {
-            if(GameState.State is WaitingState) GameState.StartGame();
+            if (GameState.State is WaitingState) GameState.StartGame();
+
         }
 
         public async Task StateStatusRequest()
@@ -162,6 +185,8 @@ namespace opp_server.Hubs
             {
                 int level = Int32.Parse(arguments[0]);
                 GameState.CurrentLevel = level;
+                Originator.State = GameState;
+                Caretaker.Memento = Originator.CreateMemento();
             }
             catch
             {

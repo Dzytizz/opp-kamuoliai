@@ -12,6 +12,7 @@ using opp_server.Classes.Builder;
 using opp_server.Classes;
 using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
+using opp_server.Classes.Memento;
 
 namespace opp_server
 {
@@ -42,6 +43,8 @@ namespace opp_server
             services.AddSingleton(opt => createdBall);
             services.AddSingleton(opt => ballMovements);
             services.AddSingleton(opt => new ChatRoom());
+            services.AddSingleton(opt => new Originator());
+            services.AddSingleton(opt => new Caretaker());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });
