@@ -43,7 +43,7 @@ namespace opp_server.Hubs
             this.BallMovements = ballMovements;
             this.ChatRoom = chatRoom;
             this.Originator = originator;
-            this.Originator.State = this.GameState.Copy();
+            //this.Originator.State = this.GameState.Copy();
             this.Caretaker = caretaker;
             foreach (var bm in ballMovements)
             {
@@ -55,21 +55,27 @@ namespace opp_server.Hubs
 
         public async Task SaveGameState()
         {
+            this.Originator.State = GameState.Copy();
             this.Caretaker.Memento = this.Originator.CreateMemento();
-            
         }
 
         public async Task RestartGameState()
         {
             this.Originator.SetMemento(this.Caretaker.Memento);
-            GameState = Originator.State;
+            GameState = Originator.State.Copy();
+
+            GameState.GetInstance().Teams = Originator.State.Copy().Teams;
+            GameState.GetInstance().Ball = Originator.State.Copy().Ball;
+            GameState.SetupGamestate(Originator.State.Copy());
+            GameState gsCopy = GameState.Copy();
+            string gameStateJSON = JsonConvert.SerializeObject(gsCopy);
+            await Clients.All.SendAsync("GameStateResponse", gameStateJSON);
             //await Clients.All.SendAsync("RestartGameStateResponse");
         }
 
         public async Task StartGameRequest()
         {
             if (GameState.State is WaitingState) GameState.StartGame();
-
         }
 
         public async Task StateStatusRequest()

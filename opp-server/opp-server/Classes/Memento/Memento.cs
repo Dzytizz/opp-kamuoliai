@@ -16,7 +16,7 @@ namespace opp_server.Classes.Memento
         }
         public GameState State
         {
-            get { return state; }
+            get { return state.Copy(); }
         }
     }
 }

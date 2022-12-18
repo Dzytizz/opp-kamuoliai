@@ -11,16 +11,16 @@ namespace opp_server.Classes.Memento
         GameState state;
         public GameState State
         {
-            get { return state; }
+            get { return state.Copy(); }
             set
             {
-                state = value;
+                state = value.Copy();
             }
         }
 
         public Memento CreateMemento()
         {
-            return (new Memento(state));
+            return (new Memento(state.Copy()));
         }
        
         public void SetMemento(Memento memento)
