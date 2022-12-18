@@ -15,7 +15,6 @@ namespace opp_lib
         public TeamList Teams { get; set; }
         public bool AdminExists { get; set; } = false;
         public int CurrentLevel { get; set; }
-
         public Ball Ball { get; set; }
 
         public AbstractState State { get; set; }
@@ -58,6 +57,23 @@ namespace opp_lib
             Ball.YPosition = (370 / 2) - (Ball.Radius / 2);
         }
 
+        public void SetupGamestate(GameState copy)
+        {
+            foreach (Team team in Teams)
+            {
+                foreach (KeyValuePair<string, Player> player in team.Players)
+                {
+                    Player neededPlayer = copy.TryFindPlayer(player.Key);
+                    player.Value.XPosition = neededPlayer.XPosition;
+                    player.Value.YPosition = neededPlayer.YPosition;
+                }
+            }
+
+            Ball oldBall = this.Ball;
+            Ball newBall = new Ball(oldBall.Radius, oldBall.XPosition, oldBall.YPosition, oldBall.MainColor);
+            this.Ball = newBall;
+        }
+
         public void Score(int teamId)
         {
             if (State is PlayingState) { 
@@ -90,7 +106,9 @@ namespace opp_lib
 
                 foreach(KeyValuePair<string,Player> entry in Teams[i].Players)
                 {
-                    newTeams[i].Players.Add(entry.Key, entry.Value);
+                    Player oldPlayer = entry.Value;
+                    Player newPlayer = new Player(oldPlayer.Name, oldPlayer.XPosition, oldPlayer.YPosition, oldPlayer.UniformName, oldPlayer.Number);
+                    newTeams[i].Players.Add(entry.Key, newPlayer);
                 }
                 
             }
@@ -99,6 +117,11 @@ namespace opp_lib
             if (oldState is WaitingState) newGameState.State = new WaitingState(newGameState);
             else if (oldState is PlayingState) newGameState.State = new PlayingState(newGameState);
             else if (oldState is GoalState) newGameState.State = new GoalState(newGameState);
+
+            Ball oldBall = this.Ball;
+            Ball newBall = new Ball(oldBall.Radius, oldBall.XPosition, oldBall.YPosition, oldBall.MainColor);
+            newGameState.Ball = newBall;
+
             newGameState.Teams = newTeams;
             return newGameState;
         }

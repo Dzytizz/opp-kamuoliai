@@ -12,6 +12,7 @@ using opp_server.Classes.Builder;
 using opp_server.Classes;
 using opp_server.Classes.Template;
 using opp_server.Classes.Mediator;
+using opp_server.Classes.Memento;
 
 namespace opp_server
 {
@@ -36,12 +37,16 @@ namespace opp_server
             BallMovement[] ballMovements = new BallMovement[]
                 { new NormalBallMovement(createdBall), new FrictionlessBallMovement(createdBall), new NormalBallMovement(createdBall) };
 
+            Originator originator = new Originator();
+
             services.AddSingleton(opt => GameState.GetInstance());
             services.AddSingleton(opt => new Server());
             services.AddSingleton(opt => new Level());
             services.AddSingleton(opt => createdBall);
             services.AddSingleton(opt => ballMovements);
             services.AddSingleton(opt => new ChatRoom());
+            services.AddSingleton(opt => originator);
+            services.AddSingleton(opt => new Caretaker());
             services.AddSignalR(o => {
                 o.EnableDetailedErrors = true;
             });

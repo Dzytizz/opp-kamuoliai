@@ -251,6 +251,12 @@ namespace opp_client
                 }
             });
 
+            //connection.On<string>("RestartGameStateResponse", (response) =>
+            //{
+            //    ///////VA CIA
+                
+            //});
+
             connection.On<string>("LevelChangeResponse", (response) =>
             {
                 Level level = JsonConvert.DeserializeObject<Level>(response);
