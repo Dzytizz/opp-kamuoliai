@@ -82,13 +82,14 @@ namespace opp_client
             // 
             // stateLabel
             // 
-            this.stateLabel.AutoSize = true;
+            this.stateLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.stateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stateLabel.Location = new System.Drawing.Point(368, 9);
+            this.stateLabel.Location = new System.Drawing.Point(0, 0);
             this.stateLabel.Name = "stateLabel";
-            this.stateLabel.Size = new System.Drawing.Size(86, 31);
+            this.stateLabel.Size = new System.Drawing.Size(834, 31);
             this.stateLabel.TabIndex = 3;
             this.stateLabel.Text = "label1";
+            this.stateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ClientWindow
             // 

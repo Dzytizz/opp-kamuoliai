@@ -66,6 +66,7 @@ namespace opp_client
             //playerID = "";
             playerInput = new PlayerInput();
             mpObjects = new Dictionary<string, PictureBox>();
+            wallsPb = new List<PictureBox>();
 
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
@@ -79,6 +80,7 @@ namespace opp_client
         {
             //ThemeManager tm = ThemeManager.GetInstance();
             themeClient.ApplyTheme(this);
+            stateLabel.BackColor = Color.Transparent;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
